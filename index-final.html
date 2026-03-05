@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RookDashboard Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-hover: #f8fafc;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-tertiary: #94a3b8;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-light: #eef2ff;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --success-border: #bbf7d0;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --warning-border: #fde68a;
+      --danger: #e11d48;
+      --danger-light: #fff1f2;
+      --danger-border: #fecdd3;
+      --sidebar-width: 220px;
+      --topbar-height: 56px;
+      --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      --r: 8px;
+      --r-sm: 6px;
+      --r-lg: 12px;
+    }
+
+    html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+    /* ── LOGIN ────────────────────────────────────────────── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--bg); position: relative;
+    }
+    #login-screen::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 45% at 15% 15%, rgba(79,70,229,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 55% at 85% 85%, rgba(129,140,248,0.05) 0%, transparent 65%);
+    }
+    .login-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+      padding: 40px; width: 400px; box-shadow: var(--shadow-lg); position: relative; z-index: 1;
+    }
+    .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; color: white;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .logo-text { font-size: 17px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+    .login-heading { font-size: 22px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.4px; margin-bottom: 5px; }
+    .login-sub { color: var(--text-secondary); font-size: 14px; margin-bottom: 28px; }
+    .field { margin-bottom: 16px; }
+    .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .field-wrap { position: relative; }
+    .field-input {
+      width: 100%; height: 40px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0 12px; font-family: var(--font); font-size: 14px; color: var(--text-primary);
+      background: var(--surface); outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
+    .field-input.pr { padding-right: 48px; }
+    .field-action {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-tertiary);
+      font-size: 12px; font-weight: 600; font-family: var(--font); padding: 2px 4px;
+      border-radius: 4px; transition: color .12s;
+    }
+    .field-action:hover { color: var(--accent); }
+    .login-forgot { text-align: center; margin-top: 14px; font-size: 12px; color: var(--text-tertiary); }
+
+    /* ── BUTTONS ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 36px; padding: 0 14px; border-radius: var(--r-sm); font-family: var(--font);
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s;
+      border: 1px solid transparent; text-decoration: none; white-space: nowrap;
+    }
+    .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
+    .btn-secondary:hover { background: var(--bg); border-color: #cbd5e1; }
+    .btn-ghost { background: transparent; color: var(--text-secondary); border-color: transparent; }
+    .btn-ghost:hover { background: var(--bg); color: var(--text-primary); }
+    .btn-icon {
+      background: transparent; color: var(--text-secondary); border: none;
+      padding: 4px 8px; height: auto; min-width: auto; font-size: 16px;
+      cursor: pointer; border-radius: 4px; transition: all .15s;
+    }
+    .btn-icon:hover { background: var(--bg); color: var(--text-primary); }
+    .btn-full { width: 100%; }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; }
+    .btn-lg { height: 40px; padding: 0 18px; font-size: 14px; }
+
+    /* ── APP SHELL ───────────────────────────────────────── */
+    #app-shell { display: none; height: 100vh; overflow: hidden; flex-direction: column; }
+    #app-shell.visible { display: flex; }
+
+    /* TOP BAR */
+    .topbar {
+      height: var(--topbar-height); background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px; gap: 0; flex-shrink: 0; z-index: 100;
+    }
+    .topbar-brand {
+      display: flex; align-items: center; gap: 8px; width: var(--sidebar-width); flex-shrink: 0;
+      padding-right: 20px; border-right: 1px solid var(--border); margin-right: 16px;
+    }
+    .tb-logo-mark {
+      width: 26px; height: 26px; background: var(--accent); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; color: white;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .tb-logo-text { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
+    .topbar-mid { display: flex; align-items: center; gap: 10px; flex: 1; }
+
+    /* Game switcher */
+    .game-sw { position: relative; }
+    .game-sw-btn {
+      display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm);
+      cursor: pointer; font-family: var(--font); font-size: 13px; font-weight: 600;
+      color: var(--text-primary); transition: all .15s;
+    }
+    .game-sw-btn:hover { background: white; border-color: #cbd5e1; }
+    .g-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .chev { color: var(--text-tertiary); font-size: 10px; margin-left: 2px; }
+    .dropdown {
+      position: absolute; top: calc(100% + 6px); left: 0; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-lg);
+      min-width: 210px; z-index: 1000; overflow: hidden; display: none;
+    }
+    .dropdown.open { display: block; }
+    .dd-header { padding: 8px 12px 6px; font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .07em; }
+    .dd-item {
+      display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+      cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-primary); transition: background .1s;
+    }
+    .dd-item:hover { background: var(--bg); }
+    .dd-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+    .dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* Env toggle */
+    .env-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 3px; gap: 2px; }
+    .env-btn {
+      height: 26px; padding: 0 12px; border-radius: 4px; border: none; cursor: pointer;
+      font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+      background: transparent; transition: all .15s;
+    }
+    .env-btn.active { background: var(--surface); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+    .env-btn.active.prod { color: var(--accent); }
+
+    .topbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .user-btn {
+      display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px;
+      border: 1px solid transparent; border-radius: var(--r-sm); cursor: pointer;
+      background: transparent; font-family: var(--font); font-size: 13px; font-weight: 500;
+      color: var(--text-primary); transition: all .15s;
+    }
+    .user-btn:hover { background: var(--bg); border-color: var(--border); }
+    .user-av {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--accent-light);
+      color: var(--accent); font-size: 10px; font-weight: 700; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    /* Sandbox banner */
+    .sb-banner {
+      background: var(--warning-light); border-bottom: 1px solid var(--warning-border);
+      padding: 7px 20px; font-size: 12px; font-weight: 500; color: var(--warning);
+      display: none; align-items: center; gap: 6px; flex-shrink: 0;
+    }
+    .sb-banner.visible { display: flex; }
+
+    /* Layout */
+    .app-layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
+    }
+    .sb-section { padding: 12px 10px 4px; }
+    .sb-label {
+      font-size: 10px; font-weight: 700; color: var(--text-tertiary); letter-spacing: .08em;
+      text-transform: uppercase; padding: 0 8px; margin-bottom: 3px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 8px;
+      border-radius: var(--r-sm); cursor: pointer; font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); transition: all .12s; position: relative; user-select: none;
+      border: none; background: transparent; width: 100%; text-align: left; font-family: var(--font);
+    }
+    .nav-item:hover { background: var(--bg); color: var(--text-primary); }
+    .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+    .nav-item.active::before {
+      content: ''; position: absolute; left: -10px; top: 5px; bottom: 5px;
+      width: 3px; background: var(--accent); border-radius: 0 3px 3px 0;
+    }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto; font-size: 10px; font-weight: 600; background: #f1f5f9;
+      color: var(--text-tertiary); padding: 2px 6px; border-radius: 20px;
+    }
+    .nav-item.disabled { opacity: 0.45; cursor: not-allowed; }
+    .nav-item.disabled:hover { background: transparent; color: var(--text-secondary); }
+    .sb-divider { height: 1px; background: var(--border); margin: 8px 10px; }
+    .sb-bottom { margin-top: auto; padding: 10px; }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; background: var(--bg); }
+
+    .page { display: none; padding: 32px; max-width: 1100px; }
+    .page.active { display: block; }
+    .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; }
+    .page-title { font-size: 21px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.4px; }
+    .page-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+    .page-actions { display: flex; align-items: center; gap: 8px; }
+
+    /* CARDS */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); }
+    .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .card-body { padding: 18px; }
+
+    /* ── OVERVIEW ─────────────────────────────────────────── */
+    .vitals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .vital-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 18px 20px; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; cursor: default;
+    }
+    .vital-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .vital-label { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+    .vital-value { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1; }
+    .vital-delta { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .delta-up { color: var(--success); }
+    .delta-down { color: var(--danger); }
+    .delta-neutral { color: var(--text-tertiary); }
+
+    .charts-row { display: grid; grid-template-columns: 1fr 260px; gap: 14px; margin-bottom: 20px; }
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+    .chart-head { padding: 14px 18px 10px; display: flex; align-items: center; justify-content: space-between; }
+    .chart-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .chart-legend { display: flex; gap: 14px; }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+    .leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .chart-body { padding: 0 18px 16px; }
+    .chart-body svg { width: 100%; height: 150px; }
+
+    .quick-stats { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px; }
+    .qs-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; }
+    .qs-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+    .qs-item:last-child { border-bottom: none; }
+    .qs-label { font-size: 13px; color: var(--text-secondary); }
+    .qs-val { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text-primary); }
+    .qs-divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+    /* TABLE */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+    .table-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .table-head-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 9px 16px; font-size: 11px; font-weight: 700;
+      color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .06em;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border-subtle); color: var(--text-primary); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background .1s; cursor: pointer; }
+    tbody tr:hover { background: #fafbff; }
+    .tf { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .tf-link { font-size: 13px; font-weight: 600; color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .tf-link:hover { color: var(--accent-hover); }
+    .tf-meta { font-size: 12px; color: var(--text-tertiary); }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px;
+      border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap;
+    }
+    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+    .badge-paid { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-refunded { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger-border); }
+    .badge-cancelled { background: #f1f5f9; color: #94a3b8; border: 1px solid var(--border); }
+    .badge-pending { background: var(--warning-light); color: var(--warning); border: 1px solid var(--warning-border); }
+    .badge-approved { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-active { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-invited { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+
+    /* FILTERS */
+    .filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .sel {
+      height: 32px; padding: 0 28px 0 10px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-primary);
+      background: var(--surface); cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 9px center;
+    }
+    .sel:focus { outline: none; border-color: var(--accent); }
+    .search-wrap { position: relative; }
+    .search-in {
+      width: 220px; height: 32px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0 12px 0 32px; font-family: var(--font); font-size: 13px; color: var(--text-primary);
+      background: var(--surface); outline: none; transition: border-color .15s;
+    }
+    .search-in:focus { border-color: var(--accent); }
+    .search-ico { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); font-size: 13px; pointer-events: none; }
+
+    /* PAGINATION */
+    .pag { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--border); }
+    .pag-meta { font-size: 13px; color: var(--text-secondary); }
+    .pag-controls { display: flex; align-items: center; gap: 6px; }
+    .pag-btn {
+      height: 30px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--surface); font-family: var(--font); font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); cursor: pointer; transition: all .12s;
+    }
+    .pag-btn:hover:not(:disabled) { border-color: #cbd5e1; color: var(--text-primary); }
+    .pag-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pag-info { font-size: 12px; color: var(--text-tertiary); padding: 0 4px; }
+
+    /* ── TRANSACTION DETAIL ──────────────────────────────── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600;
+      color: var(--text-secondary); cursor: pointer; margin-bottom: 20px; transition: color .15s;
+      border: none; background: none; padding: 0; font-family: var(--font);
+    }
+    .back-btn:hover { color: var(--text-primary); }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; }
+    .detail-row:last-child { border-bottom: none; }
+    .dk { color: var(--text-secondary); font-weight: 500; }
+    .dv { font-weight: 500; color: var(--text-primary); text-align: right; }
+    .dv.mono { font-family: var(--mono); font-size: 12px; }
+
+    /* Timeline */
+    .timeline-item { display: flex; gap: 12px; padding: 9px 0; position: relative; }
+    .timeline-item:not(:last-child)::after { content: ''; position: absolute; left: 7px; top: 26px; bottom: -4px; width: 1px; background: var(--border); }
+    .tl-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); flex-shrink: 0; margin-top: 2px; }
+    .tl-dot.filled { background: var(--accent); border-color: var(--accent); }
+    .tl-dot.success { background: var(--success); border-color: var(--success); }
+    .tl-content { flex: 1; }
+    .tl-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .tl-meta { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+    .tl-ok { font-size: 12px; font-weight: 600; color: var(--success); }
+
+    /* ── CONFIG ──────────────────────────────────────────── */
+    .tabs { display: flex; gap: 2px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 3px; width: fit-content; margin-bottom: 18px; }
+    .tab {
+      height: 28px; padding: 0 14px; border-radius: 4px; border: none; cursor: pointer;
+      font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      background: transparent; transition: all .12s;
+    }
+    .tab.active { background: var(--surface); color: var(--text-primary); font-weight: 600; box-shadow: var(--shadow-sm); }
+    .tab.add-tab { color: var(--accent); }
+
+    .plat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .plat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+    .plat-head { background: var(--bg); border-bottom: 1px solid var(--border); padding: 11px 16px; font-size: 13px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .plat-body { padding: 14px 16px; }
+    .cf { margin-bottom: 14px; }
+    .cf:last-of-type { margin-bottom: 0; }
+    .cf-label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+    .cf-wrap { position: relative; }
+    .cf-input {
+      width: 100%; height: 34px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0 11px; font-family: var(--mono); font-size: 12px; color: var(--text-primary);
+      background: var(--surface); outline: none; transition: border-color .15s;
+    }
+    .cf-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+    .cf-input.ro { background: var(--bg); color: var(--text-secondary); cursor: default; }
+    .cf-input.masked { letter-spacing: .15em; color: var(--text-tertiary); }
+    .cf-input.pr { padding-right: 48px; }
+    .cf-action {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--accent);
+      font-size: 11px; font-weight: 700; font-family: var(--font); padding: 3px 6px;
+      border-radius: 4px; transition: all .12s;
+    }
+    .cf-action:hover { background: var(--accent-light); }
+    .cf-copy {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-tertiary);
+      font-size: 13px; padding: 3px; border-radius: 4px; transition: all .12s;
+    }
+    .cf-copy:hover { background: var(--bg); color: var(--text-secondary); }
+    .plat-foot { padding: 10px 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; }
+
+    /* Progress items */
+    .progress-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+    .progress-item:hover { background: var(--bg); }
+    .progress-item.completed { color: var(--success); }
+    .progress-item .progress-icon { font-weight: 700; font-size: 14px; }
+    .progress-item.completed .progress-icon { color: var(--success); }
+
+    .section-label { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px; }
+    .ep-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .ep-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); width: 230px; flex-shrink: 0; }
+    .ep-input {
+      flex: 1; height: 34px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0 11px; font-family: var(--mono); font-size: 12px; color: var(--text-primary);
+      background: var(--surface); outline: none; transition: border-color .15s;
+    }
+    .ep-input:focus { border-color: var(--accent); }
+    .test-result { font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 4px; display: none; }
+    .test-result.ok { background: var(--success-light); color: var(--success); display: inline-block; }
+    .test-result.err { background: var(--danger-light); color: var(--danger); display: inline-block; }
+
+    .status-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; margin-top: 20px; }
+    .status-head { padding: 13px 18px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+    .status-body { padding: 18px; }
+    .sub-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 13px 14px; margin-bottom: 14px; }
+    .sub-row { display: flex; gap: 12px; margin-bottom: 8px; font-size: 13px; }
+    .sub-row:last-child { margin-bottom: 0; }
+    .sub-key { font-weight: 600; color: var(--text-primary); width: 110px; flex-shrink: 0; }
+    .sub-val { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+    .sdk-sent { display: flex; align-items: center; justify-content: space-between; background: var(--accent-light); border: 1px solid #c7d2fe; border-radius: var(--r-sm); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: var(--accent); font-weight: 500; }
+    .notes-area {
+      width: 100%; min-height: 72px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 10px 12px; font-family: var(--font); font-size: 13px; color: var(--text-primary);
+      background: var(--surface); outline: none; resize: vertical; transition: border-color .15s; margin-bottom: 14px;
+    }
+    .notes-area:focus { border-color: var(--accent); }
+
+    /* ── USERS ───────────────────────────────────────────── */
+    .users-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+
+    /* ── DRAWER ──────────────────────────────────────────── */
+    .overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.35); z-index: 500; display: none; backdrop-filter: blur(2px); }
+    .overlay.open { display: block; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 420px; background: var(--surface);
+      border-left: 1px solid var(--border); z-index: 501; display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.22s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: -6px 0 24px rgba(0,0,0,0.08);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .drawer-title { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+    .drawer-close { width: 28px; height: 28px; border-radius: var(--r-sm); border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-tertiary); transition: all .12s; }
+    .drawer-close:hover { background: var(--bg); color: var(--text-primary); }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
+    .drawer-foot { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+
+    .dfield { margin-bottom: 16px; }
+    .dfield-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .dfield-input {
+      width: 100%; height: 38px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0 12px; font-family: var(--font); font-size: 13px; color: var(--text-primary);
+      background: var(--surface); outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .dfield-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+    .dfield-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+    .autogen-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .autogen-btn { font-size: 12px; font-weight: 600; color: var(--accent); background: none; border: none; cursor: pointer; font-family: var(--font); padding: 0; }
+    .autogen-btn:hover { color: var(--accent-hover); }
+
+    .radio-group { display: flex; flex-direction: column; gap: 6px; }
+    .radio-opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--r-sm); cursor: pointer; transition: all .12s; }
+    .radio-opt:hover { border-color: #cbd5e1; background: var(--bg); }
+    .radio-opt.sel { border-color: var(--accent); background: var(--accent-light); }
+    .radio-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; transition: all .12s; }
+    .radio-opt.sel .radio-dot { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--surface); }
+    .radio-lbl { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+
+    .check-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg); border-radius: var(--r-sm); border: 1px solid var(--border); }
+    .checkmark { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--accent); background: var(--accent); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; }
+    .check-lbl { font-size: 13px; color: var(--text-primary); }
+
+    /* ── MODAL ───────────────────────────────────────────── */
+    .modal-ov { position: fixed; inset: 0; background: rgba(15,23,42,0.35); z-index: 600; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+    .modal-ov.open { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.14); overflow: hidden; }
+    .modal-head { padding: 20px 20px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+    .modal-body { padding: 0 20px 8px; }
+    .modal-foot { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* MISC */
+    .mono { font-family: var(--mono); font-size: 12px; }
+    .text-sec { color: var(--text-secondary); }
+    .text-tert { color: var(--text-tertiary); }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-8 { gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-20 { margin-top: 20px; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+    .full-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden; }
+    .arrow-icon { color: var(--text-tertiary); }
+    tbody tr:hover .arrow-icon { color: var(--accent); }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; background: #f1f5f9; color: var(--text-secondary); padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); }
+
+    /* Game Admin role-gating */
+    #app-shell[data-role="gameadmin"] .sa-only { display: none !important; }
+    #app-shell[data-role="gameadmin"] #game-sw-btn { display: none; }
+    #app-shell[data-role="gameadmin"] .plat-input { background: var(--border-subtle); color: var(--text-secondary); pointer-events: none; cursor: default; }
+
+    /* Static game label (visible only for game admin) */
+    #game-label-static { display: none; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    #app-shell[data-role="gameadmin"] #game-label-static { display: flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  LOGIN                                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-mark">R</div>
+      <span class="logo-text">RookDashboard</span>
+    </div>
+    <h1 class="login-heading">Welcome back</h1>
+    <p class="login-sub">Sign in to your dashboard account</p>
+
+    <div class="field">
+      <label class="field-label">Username</label>
+      <input class="field-input" type="text" placeholder="e.g. avery.dao" id="login-user">
+    </div>
+    <div class="field">
+      <label class="field-label">Password</label>
+      <div class="field-wrap">
+        <input class="field-input pr" type="password" placeholder="Enter your password" id="login-pass">
+        <button class="field-action" onclick="togglePass()">Show</button>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">Sign In</button>
+    </div>
+    <p class="login-forgot">Forgot password? Contact your admin.</p>
+    <p style="text-align:center;margin-top:12px;font-size:11px;color:var(--text-tertiary);">Demo: Use <strong>avery</strong> for Superadmin · <strong>rr2team</strong> for Game Admin</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  APP SHELL                                              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="app-shell">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="tb-logo-mark">R</div>
+      <span class="tb-logo-text">RookDashboard</span>
+    </div>
+    <div class="topbar-mid">
+      <!-- Game switcher -->
+      <div class="game-sw" id="game-sw">
+        <button class="game-sw-btn" id="game-sw-btn" onclick="toggleGameDD()">
+          <span class="g-dot"></span>
+          <span id="game-label">Royal Revolt 2</span>
+          <span class="chev game-sw-chevron">▼</span>
+        </button>
+        <div class="dropdown" id="game-dd">
+          <div class="dd-header">Switch Game</div>
+          <div class="dd-item active" onclick="selectGame('Royal Revolt 2')">
+            <span class="g-dot"></span> Royal Revolt 2
+          </div>
+          <div class="dd-item" onclick="selectGame('Smurf Village')">
+            <span class="g-dot" style="background:#10b981"></span> Smurf Village
+          </div>
+          <div class="dd-item" onclick="selectGame('EMHQ')">
+            <span class="g-dot" style="background:#f59e0b"></span> EMHQ
+          </div>
+          <div class="dd-item" onclick="selectGame('War of Nations')">
+            <span class="g-dot" style="background:#e11d48"></span> War of Nations
+          </div>
+          <div class="dd-item" onclick="selectGame('Kitchen Scramble')">
+            <span class="g-dot" style="background:#8b5cf6"></span> Kitchen Scramble
+          </div>
+          <div class="dd-divider"></div>
+          <div class="dd-item" style="color:var(--text-tertiary);font-size:12px;" onclick="closeGameDD()">All Games →</div>
+        </div>
+      </div>
+
+      <span id="game-label-static"></span>
+
+      <!-- Environment toggle -->
+      <div class="env-toggle">
+        <button class="env-btn active" id="env-sandbox" onclick="setEnv('sandbox')">Sandbox</button>
+        <button class="env-btn prod" id="env-prod" onclick="setEnv('production')">Production</button>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="user-btn">
+        <div class="user-av" id="user-av">AD</div>
+        <span id="user-name">Avery Dao</span>
+        <span class="chev">▼</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SANDBOX BANNER -->
+  <div class="sb-banner visible" id="sb-banner">
+    ⚠ You are viewing <strong>Sandbox</strong> data — not real transactions
+  </div>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sb-section">
+        <button class="nav-item active" onclick="navigate('overview')" id="nav-overview">
+          <span class="nav-icon">▦</span> Overview
+        </button>
+        <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
+          <span class="nav-icon">↕</span> Transactions
+        </button>
+        <button class="nav-item" onclick="navigate('config')" id="nav-config">
+          <span class="nav-icon">⚙</span> Config
+        </button>
+        <button class="nav-item" onclick="navigate('products')" id="nav-products">
+          <span class="nav-icon">⊞</span> Products
+        </button>
+      </div>
+      <div class="sb-divider sa-only"></div>
+      <div class="sb-section sa-only">
+        <button class="nav-item" onclick="navigate('users')" id="nav-users">
+          <span class="nav-icon">◉</span> Users
+        </button>
+        <button class="nav-item disabled">
+          <span class="nav-icon">☰</span> Audit Log
+          <span class="nav-badge">Soon</span>
+        </button>
+        <button class="nav-item disabled">
+          <span class="nav-icon">◈</span> Settings
+          <span class="nav-badge">Soon</span>
+        </button>
+      </div>
+      <div class="sb-bottom">
+        <button class="nav-item" onclick="doLogout()" style="color:var(--text-tertiary);">
+          <span class="nav-icon">⇤</span> Sign Out
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- ─── OVERVIEW ─────────────────────────────────────── -->
+      <div class="page active" id="page-overview">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Overview</h1>
+            <p class="page-sub">Royal Revolt 2 · <span id="ov-env-label">Sandbox</span></p>
+          </div>
+          <div class="page-actions">
+            <select class="sel">
+              <option>This month</option>
+              <option>Last 7 days</option>
+              <option>Last month</option>
+              <option>Custom range</option>
+            </select>
+            <button class="btn btn-secondary">Export</button>
+          </div>
+        </div>
+
+        <!-- Vitals -->
+        <div class="vitals">
+          <div class="vital-card">
+            <div class="vital-label">Revenue</div>
+            <div class="vital-value">$284,120</div>
+            <div class="vital-delta delta-up">▲ +12% MoM</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">ARPU</div>
+            <div class="vital-value">$4.20</div>
+            <div class="vital-delta delta-down">▼ −0.3% MoM</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Refunds</div>
+            <div class="vital-value">$1,204</div>
+            <div class="vital-delta delta-up" style="color:var(--warning);">▲ +2% MoM</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Net Revenue</div>
+            <div class="vital-value">$271,340</div>
+            <div class="vital-delta delta-up">▲ +11% MoM</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-head">
+              <span class="chart-title">Revenue over time</span>
+              <div class="chart-legend">
+                <div class="leg-item"><div class="leg-dot" style="background:#4f46e5"></div>Revenue</div>
+                <div class="leg-item"><div class="leg-dot" style="background:#f43f5e"></div>Refunds</div>
+              </div>
+            </div>
+            <div class="chart-body">
+              <svg viewBox="0 0 560 150" preserveAspectRatio="none" style="height:150px;">
+                <defs>
+                  <linearGradient id="rev-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.12"/>
+                    <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Revenue area fill -->
+                <path d="M0,110 C40,105 80,98 120,88 C160,78 200,72 240,60 C280,48 320,42 360,35 C400,28 440,22 480,16 C510,12 540,8 560,5 L560,150 L0,150 Z" fill="url(#rev-grad)"/>
+                <!-- Revenue line -->
+                <path d="M0,110 C40,105 80,98 120,88 C160,78 200,72 240,60 C280,48 320,42 360,35 C400,28 440,22 480,16 C510,12 540,8 560,5" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+                <!-- Refunds line -->
+                <path d="M0,140 C40,139 80,138 120,136 C160,134 200,133 240,131 C280,130 320,129 360,130 C400,131 440,132 480,133 C510,134 540,135 560,136" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3,2"/>
+                <!-- X axis labels -->
+                <text x="0" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Aug</text>
+                <text x="80" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Sep</text>
+                <text x="160" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Oct</text>
+                <text x="240" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Nov</text>
+                <text x="320" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Dec</text>
+                <text x="400" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Jan</text>
+                <text x="490" y="148" font-size="10" fill="#94a3b8" font-family="Plus Jakarta Sans">Feb</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="quick-stats">
+            <div class="qs-title">Quick stats</div>
+            <div class="qs-item"><span class="qs-label">Transactions</span><span class="qs-val">3,241</span></div>
+            <div class="qs-item"><span class="qs-label">Unique buyers</span><span class="qs-val">892</span></div>
+            <div class="qs-item"><span class="qs-label">Avg order</span><span class="qs-val">$4.80</span></div>
+            <div class="qs-item"><span class="qs-label">Refund rate</span><span class="qs-val">0.4%</span></div>
+            <div class="qs-divider"></div>
+            <div class="qs-item"><span class="qs-label">Fees est.</span><span class="qs-val">$12,480</span></div>
+            <div class="qs-item"><span class="qs-label">Fees saved</span><span class="qs-val" style="color:var(--success);">$2,840</span></div>
+          </div>
+        </div>
+
+        <!-- Recent transactions -->
+        <div class="table-wrap">
+          <div class="table-head">
+            <span class="table-head-title">Recent Transactions</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Invoice ID</th><th>User ID</th><th>Product</th><th>Platform</th><th>Amount</th><th>Status</th><th>Date</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="navigate('txn-detail')">
+                <td class="mono">INV-00821</td><td class="mono">user_9821</td><td>Gold Pack 500</td><td><span class="tag">iOS</span></td><td class="mono">$4.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 14</td><td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="navigate('txn-detail')">
+                <td class="mono">INV-00820</td><td class="mono">user_4401</td><td>Starter Bundle</td><td><span class="tag">Android</span></td><td class="mono">$9.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 14</td><td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="navigate('txn-detail')">
+                <td class="mono">INV-00819</td><td class="mono">user_3390</td><td>Gold Pack 500</td><td><span class="tag">iOS</span></td><td class="mono">$4.99</td><td><span class="badge badge-refunded">Refunded</span></td><td class="text-sec">Jun 13</td><td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="navigate('txn-detail')">
+                <td class="mono">INV-00818</td><td class="mono">user_7712</td><td>Premium Pass</td><td><span class="tag">iOS</span></td><td class="mono">$19.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 13</td><td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="navigate('txn-detail')">
+                <td class="mono">INV-00817</td><td class="mono">user_2201</td><td>Gold Pack 500</td><td><span class="tag">Android</span></td><td class="mono">$4.99</td><td><span class="badge badge-cancelled">Cancelled</span></td><td class="text-sec">Jun 12</td><td class="arrow-icon">→</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tf">
+            <span class="tf-meta">Last 5 transactions</span>
+            <span class="tf-link" onclick="navigate('transactions')">View all transactions →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TRANSACTIONS ──────────────────────────────────── -->
+      <div class="page" id="page-transactions">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Transactions</h1>
+            <p class="page-sub">Royal Revolt 2 · Sandbox</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="openModal('csv-modal')">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select class="sel"><option>This month</option><option>Last 7 days</option><option>Last month</option></select>
+          <select class="sel"><option>All statuses</option><option>Paid</option><option>Refunded</option><option>Cancelled</option></select>
+          <select class="sel"><option>All platforms</option><option>iOS</option><option>Android</option></select>
+          <div class="search-wrap">
+            <span class="search-ico">🔍</span>
+            <input class="search-in" type="text" placeholder="Search user ID...">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Invoice ID</th><th>User ID</th><th>Product</th><th>Platform</th><th>Amount</th><th>Status</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00821</td><td class="mono">user_9821</td><td>Gold Pack 500</td><td><span class="tag">iOS</span></td><td class="mono">$4.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 14</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00820</td><td class="mono">user_4401</td><td>Starter Bundle</td><td><span class="tag">Android</span></td><td class="mono">$9.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 14</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00819</td><td class="mono">user_3390</td><td>Gold Pack 500</td><td><span class="tag">iOS</span></td><td class="mono">$4.99</td><td><span class="badge badge-refunded">Refunded</span></td><td class="text-sec">Jun 13</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00818</td><td class="mono">user_7712</td><td>Premium Pass</td><td><span class="tag">iOS</span></td><td class="mono">$19.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 13</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00817</td><td class="mono">user_2201</td><td>Gold Pack 500</td><td><span class="tag">Android</span></td><td class="mono">$4.99</td><td><span class="badge badge-cancelled">Cancelled</span></td><td class="text-sec">Jun 12</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00816</td><td class="mono">user_8843</td><td>Starter Bundle</td><td><span class="tag">Android</span></td><td class="mono">$9.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 12</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00815</td><td class="mono">user_1102</td><td>Premium Pass</td><td><span class="tag">iOS</span></td><td class="mono">$19.99</td><td><span class="badge badge-paid">Paid</span></td><td class="text-sec">Jun 11</td><td class="arrow-icon">→</td></tr>
+              <tr onclick="navigate('txn-detail')"><td class="mono">INV-00814</td><td class="mono">user_5530</td><td>Gold Pack 500</td><td><span class="tag">iOS</span></td><td class="mono">$4.99</td><td><span class="badge badge-refunded">Refunded</span></td><td class="text-sec">Jun 11</td><td class="arrow-icon">→</td></tr>
+            </tbody>
+          </table>
+          <div class="pag">
+            <span class="pag-meta">Showing 1–8 of 3,241</span>
+            <div class="pag-controls">
+              <button class="pag-btn" disabled>← Prev</button>
+              <span class="pag-info">Page 1 of 406</span>
+              <button class="pag-btn">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TRANSACTION DETAIL ────────────────────────────── -->
+      <div class="page" id="page-txn-detail">
+        <button class="back-btn" onclick="navigate('transactions')">← Back to Transactions</button>
+
+        <div class="page-header">
+          <div class="flex items-center gap-8">
+            <h1 class="page-title" style="margin-bottom:0;">INV-00821</h1>
+            <span id="txn-status-badge" class="badge badge-paid" style="font-size:13px;padding:4px 10px;">Paid</span>
+          </div>
+          <div class="page-actions" style="gap:6px;">
+            <span style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-right:4px;">Demo status:</span>
+            <button class="btn btn-sm btn-secondary" onclick="setTxnStatus('paid')">Paid</button>
+            <button class="btn btn-sm btn-secondary" onclick="setTxnStatus('refunded')">Refunded</button>
+            <button class="btn btn-sm btn-secondary" onclick="setTxnStatus('cancelled')">Cancelled</button>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <div class="full-card">
+            <div class="card-header"><span class="card-title">Transaction Details</span></div>
+            <div class="card-body">
+              <div class="detail-row"><span class="dk">Invoice ID</span><span class="dv mono">INV-00821</span></div>
+              <div class="detail-row"><span class="dk">User ID</span><span class="dv mono">user_9821</span></div>
+              <div class="detail-row"><span class="dk">Payment provider</span><span class="dv">Xsolla</span></div>
+              <div class="detail-row"><span class="dk">Payment method</span><span class="dv">Credit Card</span></div>
+              <div class="detail-row"><span class="dk">Currency</span><span class="dv">USD</span></div>
+              <div class="detail-row"><span class="dk">Amount</span><span class="dv mono" style="color:var(--success);font-size:15px;">$4.99</span></div>
+              <div class="detail-row"><span class="dk">Paid at</span><span class="dv">Jun 14, 2025 · 09:32 UTC</span></div>
+            </div>
+          </div>
+          <div class="full-card">
+            <div class="card-header"><span class="card-title">Product</span></div>
+            <div class="card-body">
+              <div class="detail-row"><span class="dk">SKU</span><span class="dv mono">gold_pack_500</span></div>
+              <div class="detail-row"><span class="dk">Name</span><span class="dv">Gold Pack 500</span></div>
+              <div class="detail-row"><span class="dk">Quantity</span><span class="dv">1</span></div>
+              <div class="detail-row"><span class="dk">Platform</span><span class="dv"><span class="tag">iOS</span></span></div>
+              <div class="detail-row"><span class="dk">Environment</span><span class="dv"><span class="badge badge-pending">Sandbox</span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="full-card">
+          <div class="card-header"><span class="card-title">Custom Parameters</span></div>
+          <div class="card-body">
+            <div class="detail-row"><span class="dk">playerID</span><span class="dv mono">8821004</span></div>
+            <div class="detail-row"><span class="dk">region</span><span class="dv mono">EU</span></div>
+            <div class="detail-row"><span class="dk">sessionToken</span><span class="dv mono">tok_xk2j9af8c1...</span></div>
+          </div>
+        </div>
+
+        <div class="full-card">
+          <div class="card-header"><span class="card-title">Timeline</span></div>
+          <div class="card-body" id="txn-timeline">
+            <!-- Timeline populated by renderTimeline() based on current status -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CONFIG ───────────────────────────────────────── -->
+      <div class="page" id="page-config">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Configuration</h1>
+            <p class="page-sub">Royal Revolt 2 · <span id="cfg-env-label">Sandbox</span></p>
+          </div>
+          <div class="page-actions">
+            <span class="badge badge-approved">● Approved</span>
+          </div>
+        </div>
+
+        <!-- General Information -->
+        <div class="full-card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <h2 class="card-title">General Information</h2>
+          </div>
+          <div class="card-body">
+            <div class="cf" style="max-width:400px;margin-bottom:24px;">
+              <div class="cf-label">App ID (read-only)</div>
+              <div class="cf-wrap">
+                <input class="cf-input ro" type="text" value="12" readonly>
+                <button class="cf-copy" onclick="copyText('12',this)" title="Copy">⎘</button>
+              </div>
+            </div>
+
+            <!-- Configuration Progress -->
+            <div style="padding-top:20px;border-top:1px solid var(--border);">
+              <h3 style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Configuration Progress</h3>
+
+              <!-- Progress Bar -->
+              <div style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <span style="font-size:13px;font-weight:600;color:var(--text-primary);" id="progress-text">0/7 completed</span>
+                  <span style="font-size:12px;color:var(--text-secondary);" id="progress-percent">0%</span>
+                </div>
+                <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
+                  <div id="progress-bar" style="height:100%;background:var(--accent);width:0%;transition:width 0.3s ease;"></div>
+                </div>
+              </div>
+
+              <!-- Checklist -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div class="progress-item" data-field="validation-rule" onclick="scrollToField('validation-rule')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Validation Rule configured</span>
+                </div>
+                <div class="progress-item" data-field="user-validation-curl" onclick="scrollToField('user-validation-curl')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">User Validation cURL configured</span>
+                </div>
+                <div class="progress-item" data-field="valid-test-user-id" onclick="scrollToField('valid-test-user-id')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Valid Test User ID configured</span>
+                </div>
+                <div class="progress-item" data-field="invalid-test-user-id" onclick="scrollToField('invalid-test-user-id')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Invalid Test User ID configured</span>
+                </div>
+                <div class="progress-item" data-field="purchase-callback" onclick="scrollToField('purchase-callback')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Purchase Callback cURL configured</span>
+                </div>
+                <div class="progress-item" data-field="refund-callback" onclick="scrollToField('refund-callback')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Refund Callback cURL configured</span>
+                </div>
+                <div class="progress-item" data-field="ios-credentials" onclick="scrollToField('ios-credentials')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">iOS Xsolla credentials configured</span>
+                </div>
+                <div class="progress-item" data-field="android-credentials" onclick="scrollToField('android-credentials')" style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                  <span class="progress-icon">○</span>
+                  <span class="progress-label">Android Xsolla credentials configured</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Validation Rules -->
+        <div class="full-card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <h2 class="card-title">Validation Rules</h2>
+          </div>
+          <div class="card-body">
+            <p style="font-size:13px;color:#64748b;margin-bottom:12px;">
+              The rule must be written in JMESPath syntax. <a href="https://jmespath.org/" target="_blank" rel="noopener" style="color:var(--accent);">https://jmespath.org/ ↗</a>
+            </p>
+
+            <div class="ep-row">
+              <span class="ep-label">Validation Rule (JMESPath)</span>
+              <input
+                id="validation-rule"
+                class="ep-input"
+                type="text"
+                value="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                placeholder="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                style="font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;">
+            </div>
+
+            <div style="margin-top:12px;">
+              <button class="btn btn-primary btn-sm">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoints -->
+        <div class="full-card" style="margin-bottom:16px;">
+          <div class="card-header">
+            <span class="card-title">Endpoints</span>
+            <span class="text-sec" style="font-size:12px;">Shared across platforms · Sandbox</span>
+          </div>
+          <div class="card-body">
+            <!-- User Validation cURL -->
+            <div class="ep-row">
+              <span class="ep-label">User Validation cURL</span>
+              <div class="cf-wrap" style="flex:1;">
+                <input id="ep-validation-curl" class="ep-input pr" type="password" value="curl -X GET https://game.com/api/validate -H 'Content-Type: application/json'" style="font-family:var(--mono);font-size:12px;padding-right:80px;">
+                <button class="cf-action" style="right:44px;" onclick="toggleEpField('ep-validation-curl',this)">Show</button>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="tryItOut(this)">Try it out</button>
+            </div>
+            <div class="response-panel" id="curl-response" style="display:none;margin-top:8px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-family:monospace;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div id="curl-status"></div>
+                <button class="btn btn-icon" onclick="copyResponseBody()" title="Copy response">⎘</button>
+              </div>
+              <div style="max-height:200px;overflow-y:auto;background:#fff;padding:8px;border-radius:4px;">
+                <pre id="curl-body" style="margin:0;white-space:pre-wrap;word-wrap:break-word;"></pre>
+              </div>
+            </div>
+
+            <!-- Test User IDs -->
+            <div style="margin-top:14px;margin-bottom:14px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
+              <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Test User IDs</div>
+              <div class="ep-row" style="margin-bottom:8px;">
+                <span class="ep-label" style="width:180px;">Valid Test User ID</span>
+                <input id="valid-test-user-id" class="ep-input" type="text" value="user_sandbox_001" placeholder="A user ID that should pass validation">
+              </div>
+              <div class="ep-row" style="margin-bottom:0;">
+                <span class="ep-label" style="width:180px;">Invalid Test User ID</span>
+                <input id="invalid-test-user-id" class="ep-input" type="text" value="" placeholder="A user ID that should fail validation">
+              </div>
+            </div>
+
+            <!-- Purchase Callback cURL -->
+            <div class="ep-row">
+              <span class="ep-label">Purchase Callback cURL</span>
+              <div class="cf-wrap" style="flex:1;">
+                <input id="ep-purchase-curl" class="ep-input pr" type="password" value="curl -X POST https://game.com/api/purchase -H 'Content-Type: application/json' -d '{&quot;invoice_id&quot;:&quot;{{invoice_id}}&quot;}'" style="font-family:var(--mono);font-size:12px;padding-right:52px;">
+                <button class="cf-action" onclick="toggleEpField('ep-purchase-curl',this)">Show</button>
+              </div>
+            </div>
+
+            <!-- Refund Callback cURL -->
+            <div class="ep-row">
+              <span class="ep-label">Refund Callback cURL</span>
+              <div class="cf-wrap" style="flex:1;">
+                <input id="ep-refund-curl" class="ep-input pr" type="password" value="curl -X POST https://game.com/api/refund -H 'Content-Type: application/json' -d '{&quot;invoice_id&quot;:&quot;{{invoice_id}}&quot;}'" style="font-family:var(--mono);font-size:12px;padding-right:52px;">
+                <button class="cf-action" onclick="toggleEpField('ep-refund-curl',this)">Show</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <button class="btn btn-primary btn-sm">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Provider tabs -->
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab(this,'xsolla')">Xsolla</button>
+          <button class="tab sa-only" onclick="switchTab(this,'appcharge')">AppCharge</button>
+          <button class="tab add-tab sa-only">+ Add Provider</button>
+        </div>
+
+        <!-- Export Configuration -->
+        <div style="margin:20px 0;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
+          <button class="btn btn-primary" onclick="exportRookConfig()">Export RookConfig.json files</button>
+          <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;margin-bottom:0;">
+            Downloads configuration files for all platform-environment combinations
+          </p>
+        </div>
+
+        <!-- Xsolla tab content -->
+        <div id="tab-xsolla">
+          <div class="plat-grid">
+            <!-- iOS -->
+            <div class="plat-card">
+              <div class="plat-head">
+                <span>📱</span> iOS
+              </div>
+              <div class="plat-body">
+                <div class="cf">
+                  <div class="cf-label">Login Project ID</div>
+                  <input class="cf-input plat-input" type="text" value="login-royalrevolt2-ios-sb">
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Merchant ID</div>
+                  <input class="cf-input plat-input" type="text" value="merchant_rr2_ios_123">
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Xsolla Project ID</div>
+                  <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-ios-sb">
+                </div>
+                <div class="cf sa-only">
+                  <div class="cf-label">API Key</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input masked pr" type="password" id="ios-key" value="sk_live_abcdef123456">
+                    <button class="cf-action" onclick="toggleField('ios-key',this)">Show</button>
+                  </div>
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Webhook URL (read-only)</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input ro" type="text" value="https://rook.io/wh/ios/rr2-sb" readonly>
+                    <button class="cf-copy" onclick="copyText('https://rook.io/wh/ios/rr2-sb',this)" title="Copy">⎘</button>
+                  </div>
+                </div>
+              </div>
+              <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+            </div>
+            <!-- Android -->
+            <div class="plat-card">
+              <div class="plat-head">
+                <span>🤖</span> Android
+              </div>
+              <div class="plat-body">
+                <div class="cf">
+                  <div class="cf-label">Login Project ID</div>
+                  <input class="cf-input plat-input" type="text" value="login-royalrevolt2-and-sb">
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Merchant ID</div>
+                  <input class="cf-input plat-input" type="text" value="merchant_rr2_and_456">
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Xsolla Project ID</div>
+                  <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-and-sb">
+                </div>
+                <div class="cf sa-only">
+                  <div class="cf-label">API Key</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input masked pr" type="password" id="and-key" value="sk_live_xyz789456">
+                    <button class="cf-action" onclick="toggleField('and-key',this)">Show</button>
+                  </div>
+                </div>
+                <div class="cf">
+                  <div class="cf-label">Webhook URL (read-only)</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input ro" type="text" value="https://rook.io/wh/and/rr2-sb" readonly>
+                    <button class="cf-copy" onclick="copyText('https://rook.io/wh/and/rr2-sb',this)" title="Copy">⎘</button>
+                  </div>
+                </div>
+              </div>
+              <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AppCharge tab content (hidden) -->
+        <div id="tab-appcharge" style="display:none;">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
+            <div style="font-size:24px;margin-bottom:12px;">⚡</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">AppCharge not configured</div>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect AppCharge to enable an additional payment provider for this game.</p>
+            <button class="btn btn-primary">Set up AppCharge</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── USERS ─────────────────────────────────────────── -->
+      <div class="page" id="page-users">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Users</h1>
+            <p class="page-sub">Manage access and roles</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openDrawer()">+ Create User</button>
+          </div>
+        </div>
+
+        <div class="users-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Username</th><th>Role</th><th>Game</th><th>Status</th><th>Created</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Nils Freitag</strong></td>
+                <td class="mono">nils.freitag</td>
+                <td><span class="badge" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span></td>
+                <td class="text-tert">—</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Jan 10, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Avery Dao</strong></td>
+                <td class="mono">avery.dao</td>
+                <td><span class="badge" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span></td>
+                <td class="text-tert">—</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Jan 12, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Ty Pham</strong></td>
+                <td class="mono">ty.pham</td>
+                <td><span class="badge" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span></td>
+                <td class="text-tert">—</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Jan 15, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Linh Pham</strong></td>
+                <td class="mono">linh.pham</td>
+                <td><span class="badge" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span></td>
+                <td class="text-tert">—</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Jan 15, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Royal Revolt 2 Team</strong></td>
+                <td class="mono">studio-royalrevolt2</td>
+                <td><span class="badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game Admin</span></td>
+                <td>Royal Revolt 2</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Feb 1, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Smurf Village Team</strong></td>
+                <td class="mono">studio-smurfvillage</td>
+                <td><span class="badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game Admin</span></td>
+                <td>Smurf Village</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="text-sec">Feb 5, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>EMHQ Team</strong></td>
+                <td class="mono">studio-emhq</td>
+                <td><span class="badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game Admin</span></td>
+                <td>EMHQ</td>
+                <td><span class="badge badge-invited">Invited</span></td>
+                <td class="text-sec">Feb 18, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>War of Nations Team</strong></td>
+                <td class="mono">studio-warnations</td>
+                <td><span class="badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game Admin</span></td>
+                <td>War of Nations</td>
+                <td><span class="badge badge-invited">Invited</span></td>
+                <td class="text-sec">Feb 19, 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Kitchen Scramble Team</strong></td>
+                <td class="mono">studio-kitchenscramble</td>
+                <td><span class="badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game Admin</span></td>
+                <td>Kitchen Scramble</td>
+                <td><span class="badge badge-invited">Invited</span></td>
+                <td class="text-sec">Feb 20, 2025</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── PRODUCTS ─────────────────────────────────────── -->
+      <div class="page" id="page-products">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Products</h1>
+            <p class="page-sub">Royal Revolt 2 · <span id="prod-env-label">Sandbox</span></p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openProductDrawer()">+ Add Product</button>
+          </div>
+        </div>
+
+        <!-- Vitals -->
+        <div class="vitals" style="margin-bottom:16px;">
+          <div class="vital-card">
+            <div class="vital-label">Total SKUs</div>
+            <div class="vital-value">8</div>
+            <div class="vital-delta delta-neutral">2 platforms</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Active</div>
+            <div class="vital-value">7</div>
+            <div class="vital-delta delta-up">▲ 1 added last sync</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">iOS SKUs</div>
+            <div class="vital-value">7</div>
+            <div class="vital-delta delta-neutral">No change</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Android SKUs</div>
+            <div class="vital-value">7</div>
+            <div class="vital-delta delta-neutral">No change</div>
+          </div>
+        </div>
+
+        <!-- Provider sync status (read-only — syncs automatically) -->
+        <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
+            <span style="color:var(--success);font-size:10px;">●</span>
+            <div>
+              <div style="font-weight:600;color:var(--text-primary);">Xsolla</div>
+              <div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC</div>
+            </div>
+          </div>
+          <div class="sa-only" style="display:flex;align-items:center;gap:10px;background:var(--border-subtle);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
+            <span style="color:var(--text-tertiary);font-size:10px;">○</span>
+            <div>
+              <div style="font-weight:600;color:var(--text-secondary);">AppCharge</div>
+              <div style="font-size:11px;color:var(--text-tertiary);">Not configured · <span style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">Set up in Config →</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product table -->
+        <div class="table-wrap">
+          <div class="table-head" style="flex-wrap:wrap;gap:10px;">
+            <span class="table-head-title">Product Catalog</span>
+            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
+              <select class="sel">
+                <option>All platforms</option>
+                <option>iOS</option>
+                <option>Android</option>
+              </select>
+              <select class="sel">
+                <option>All types</option>
+                <option>Consumable</option>
+                <option>Non-consumable</option>
+                <option>Subscription</option>
+              </select>
+              <select class="sel">
+                <option>All statuses</option>
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+              <div class="search-wrap">
+                <span class="search-ico">🔍</span>
+                <input class="search-in" type="text" placeholder="Search SKU or name…">
+              </div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Status</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">gold_100</td>
+                <td><strong>Gold Pack 100</strong></td>
+                <td><span class="tag">Consumable</span></td>
+                <td class="mono">$0.99</td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">gold_500</td>
+                <td><strong>Gold Pack 500</strong></td>
+                <td><span class="tag">Consumable</span></td>
+                <td class="mono">$4.99</td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">gold_2000</td>
+                <td><strong>Gold Pack 2000</strong></td>
+                <td><span class="tag">Consumable</span></td>
+                <td class="mono">$19.99</td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">starter_bundle</td>
+                <td><strong>Starter Bundle</strong></td>
+                <td><span class="tag">Consumable</span></td>
+                <td class="mono">$9.99</td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">premium_pass_mo</td>
+                <td><strong>Premium Pass</strong></td>
+                <td><span class="tag" style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span></td>
+                <td class="mono">$9.99<span style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span></td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">royal_shield_7d</td>
+                <td><strong>Royal Shield (7d)</strong></td>
+                <td><span class="tag">Consumable</span></td>
+                <td class="mono">$2.99</td>
+                <td><span class="tag">iOS</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">vip_pack_30d</td>
+                <td><strong>VIP Pack (30d)</strong></td>
+                <td><span class="tag" style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span></td>
+                <td class="mono">$14.99<span style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span></td>
+                <td><span class="tag">Android</span></td>
+                <td><span class="badge badge-cancelled" style="background:#f1f5f9;color:#94a3b8;border:1px solid var(--border);">Inactive</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr>
+                <td class="mono">season_pass_2025</td>
+                <td><strong>Season Pass 2025</strong></td>
+                <td><span class="tag" style="background:#f5f3ff;color:#7c3aed;border-color:#ddd6fe;">Non-consumable</span></td>
+                <td class="mono">$24.99</td>
+                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pag">
+            <span class="pag-meta">Showing 1–8 of 8 products</span>
+            <div class="pag-controls">
+              <button class="pag-btn" disabled>← Prev</button>
+              <span class="pag-info">Page 1 of 1</span>
+              <button class="pag-btn" disabled>Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  CREATE USER DRAWER                                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="create-drawer">
+  <div class="drawer-head">
+    <span class="drawer-title">Create User</span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="dfield">
+      <label class="dfield-label">Full Name</label>
+      <input class="dfield-input" type="text" placeholder="e.g. Studio A Team">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Email</label>
+      <input class="dfield-input" type="email" placeholder="studio@game.com">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Username</label>
+      <input class="dfield-input" type="text" placeholder="e.g. studio-gamename">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Temporary Password</label>
+      <input class="dfield-input" type="text" id="temp-pass" placeholder="Set a temporary password">
+      <div class="autogen-row">
+        <button class="autogen-btn" onclick="generatePass()">⚡ Auto-generate</button>
+        <span style="font-size:11px;color:var(--text-tertiary);">User must change on first login</span>
+      </div>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Role</label>
+      <div class="radio-group">
+        <div class="radio-opt sel" onclick="selectRole(this,'gameadmin')">
+          <div class="radio-dot"></div>
+          <span class="radio-lbl">Game Admin</span>
+        </div>
+        <div class="radio-opt" onclick="selectRole(this,'superadmin')">
+          <div class="radio-dot"></div>
+          <span class="radio-lbl">Superadmin</span>
+        </div>
+      </div>
+    </div>
+    <div class="dfield" id="game-assign-field">
+      <label class="dfield-label">Assign to Game</label>
+      <select class="sel" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+        <option value="">Select game...</option>
+        <option>Royal Revolt 2</option>
+        <option>Smurf Village</option>
+        <option>EMHQ</option>
+        <option>War of Nations</option>
+        <option>Kitchen Scramble</option>
+      </select>
+      <div class="dfield-hint">Required for Game Admin role.</div>
+    </div>
+    <div class="check-row">
+      <div class="checkmark">✓</div>
+      <span class="check-lbl">Send credentials via email</span>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" onclick="closeDrawer()">Cancel</button>
+    <button class="btn btn-primary" onclick="createUser()">Create User</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  CSV EXPORT MODAL                                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="modal-ov" id="csv-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Export Transactions</span>
+      <button class="drawer-close" onclick="closeModal('csv-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="dfield">
+        <label class="dfield-label">Date Range</label>
+        <div class="flex gap-8 items-center">
+          <input class="dfield-input" type="date" value="2025-06-01" style="flex:1;">
+          <span class="text-tert" style="font-size:13px;">→</span>
+          <input class="dfield-input" type="date" value="2025-06-14" style="flex:1;">
+        </div>
+      </div>
+      <div class="check-row" style="margin-bottom:16px;">
+        <div class="checkmark">✓</div>
+        <span class="check-lbl">Apply current filters</span>
+      </div>
+      <div class="dfield" style="margin-bottom:0;">
+        <label class="dfield-label">Format</label>
+        <input class="dfield-input" type="text" value="CSV" disabled style="background:var(--bg);color:var(--text-secondary);">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('csv-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('csv-modal')">⬇ Download CSV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  SCRIPT                                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+  let currentRole = 'superadmin';
+  let currentGameName = 'Royal Revolt 2';
+
+  // ── Auth ────────────────────────────────────────────────
+  function doLogin() {
+    const u = document.getElementById('login-user').value;
+    const p = document.getElementById('login-pass').value;
+    if (!u || !p) { alert('Please enter username and password.'); return; }
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-shell').classList.add('visible');
+
+    const ul = u.toLowerCase();
+    if (ul.includes('nils')) {
+      document.getElementById('user-av').textContent = 'NF';
+      document.getElementById('user-name').textContent = 'Nils Freitag';
+      currentRole = 'superadmin';
+    } else if (ul === 'rr2' || ul === 'royalrevolt' || ul === 'rr2team') {
+      currentRole = 'gameadmin';
+      currentGameName = 'Royal Revolt 2';
+      document.getElementById('user-av').textContent = 'RR';
+      document.getElementById('user-name').textContent = 'Royal Revolt 2 Team';
+    } else if (ul === 'smurf') {
+      currentRole = 'gameadmin';
+      currentGameName = 'Smurf Village';
+      document.getElementById('user-av').textContent = 'SV';
+      document.getElementById('user-name').textContent = 'Smurf Village Team';
+    } else if (ul === 'emhq') {
+      currentRole = 'gameadmin';
+      currentGameName = 'EMHQ';
+      document.getElementById('user-av').textContent = 'EM';
+      document.getElementById('user-name').textContent = 'EMHQ Team';
+    } else if (ul === 'warofnations' || ul === 'wow') {
+      currentRole = 'gameadmin';
+      currentGameName = 'War of Nations';
+      document.getElementById('user-av').textContent = 'WN';
+      document.getElementById('user-name').textContent = 'War of Nations Team';
+    } else if (ul === 'kitchen') {
+      currentRole = 'gameadmin';
+      currentGameName = 'Kitchen Scramble';
+      document.getElementById('user-av').textContent = 'KS';
+      document.getElementById('user-name').textContent = 'Kitchen Scramble Team';
+    } else {
+      currentRole = 'superadmin';
+    }
+
+    applyRoleUI();
+  }
+
+  function applyRoleUI() {
+    const shell = document.getElementById('app-shell');
+    shell.dataset.role = currentRole;
+    const staticLabel = document.getElementById('game-label-static');
+    if (currentRole === 'gameadmin') {
+      staticLabel.textContent = currentGameName;
+    } else {
+      staticLabel.textContent = '';
+    }
+  }
+
+
+  function openProductDrawer() {
+    // placeholder — drawer coming in next iteration
+  }
+
+  function doLogout() {
+    currentRole = 'superadmin';
+    applyRoleUI();
+    document.getElementById('app-shell').classList.remove('visible');
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('user-av').textContent = 'AD';
+    document.getElementById('user-name').textContent = 'Avery Dao';
+  }
+
+  function togglePass() {
+    const f = document.getElementById('login-pass');
+    const btn = f.nextElementSibling;
+    if (f.type === 'password') { f.type = 'text'; btn.textContent = 'Hide'; }
+    else { f.type = 'password'; btn.textContent = 'Show'; }
+  }
+
+  // ── Navigation ──────────────────────────────────────────
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('active');
+
+    const navEl = document.getElementById('nav-' + page);
+    if (navEl) navEl.classList.add('active');
+
+    closeGameDD();
+  }
+
+  // ── Game switcher ────────────────────────────────────────
+  function toggleGameDD() {
+    document.getElementById('game-dd').classList.toggle('open');
+  }
+
+  function closeGameDD() {
+    document.getElementById('game-dd').classList.remove('open');
+  }
+
+  function selectGame(name) {
+    document.getElementById('game-label').textContent = name;
+    document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active'));
+    event.target.classList.add('active');
+    closeGameDD();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('game-sw').contains(e.target)) closeGameDD();
+  });
+
+  // ── Environment ──────────────────────────────────────────
+  function setEnv(env) {
+    const sbBtn = document.getElementById('env-sandbox');
+    const prodBtn = document.getElementById('env-prod');
+    const banner = document.getElementById('sb-banner');
+    const ovLabel = document.getElementById('ov-env-label');
+    const cfgLabel = document.getElementById('cfg-env-label');
+    const prodLabel = document.getElementById('prod-env-label');
+
+    if (env === 'sandbox') {
+      sbBtn.classList.add('active');
+      prodBtn.classList.remove('active');
+      banner.classList.add('visible');
+      if (ovLabel) ovLabel.textContent = 'Sandbox';
+      if (cfgLabel) cfgLabel.textContent = 'Sandbox';
+      if (prodLabel) prodLabel.textContent = 'Sandbox';
+    } else {
+      prodBtn.classList.add('active', 'prod');
+      sbBtn.classList.remove('active');
+      banner.classList.remove('visible');
+      if (ovLabel) ovLabel.textContent = 'Production';
+      if (cfgLabel) cfgLabel.textContent = 'Production';
+      if (prodLabel) prodLabel.textContent = 'Production';
+    }
+  }
+
+  // ── Config tabs ──────────────────────────────────────────
+  function switchTab(btn, tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-xsolla').style.display = tab === 'xsolla' ? 'block' : 'none';
+    document.getElementById('tab-appcharge').style.display = tab === 'appcharge' ? 'block' : 'none';
+  }
+
+  // ── Field helpers ────────────────────────────────────────
+  function toggleField(id, btn) {
+    const f = document.getElementById(id);
+    if (f.type === 'password') { f.type = 'text'; f.classList.remove('masked'); btn.textContent = 'Hide'; }
+    else { f.type = 'password'; f.classList.add('masked'); btn.textContent = 'Show'; }
+  }
+
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      btn.style.color = 'var(--success)';
+      setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+    });
+  }
+
+
+  function tryItOut(btn) {
+    const row = btn.closest('.ep-row');
+    const curlInput = row.querySelector('.ep-input') || document.getElementById('ep-validation-curl');
+    const curlCommand = curlInput.value;
+    const responsePanel = document.getElementById('curl-response');
+    const statusEl = document.getElementById('curl-status');
+    const bodyEl = document.getElementById('curl-body');
+    const validationRuleInput = document.getElementById('validation-rule');
+
+    btn.textContent = 'Executing…';
+    btn.disabled = true;
+
+    // Simulate cURL execution (in real implementation, this would call backend)
+    setTimeout(() => {
+      const mockResponse = {
+        status: 200,
+        body: {
+          "user-properties": {
+            "country": "US",
+            "age": 20,
+            "user_id": "user_sandbox_001"
+          },
+          "valid": true
+        }
+      };
+
+      // Show response panel
+      responsePanel.style.display = 'block';
+
+      // Show response code
+      if (mockResponse.status === 200) {
+        statusEl.innerHTML = `<span class="test-result ok">✓ ${mockResponse.status} OK</span>`;
+      } else {
+        statusEl.innerHTML = `<span class="test-result err">✗ ${mockResponse.status}</span>`;
+      }
+
+      // Apply validation rule if it exists
+      const validationRule = validationRuleInput.value.trim();
+      if (validationRule && mockResponse.status === 200) {
+        try {
+          const validationResult = evaluateJMESPath(validationRule, mockResponse.body);
+          if (validationResult === true) {
+            statusEl.innerHTML += `<span class="test-result ok" style="margin-left:12px;">✓ Rule validated: true</span>`;
+          } else if (validationResult === false) {
+            statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Rule validated: false</span>`;
+          } else {
+            statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Rule returned non-boolean: ${validationResult}</span>`;
+          }
+        } catch (error) {
+          statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Invalid JMESPath syntax: ${error.message}</span>`;
+        }
+      }
+
+      // Update body with syntax highlighting
+      bodyEl.textContent = JSON.stringify(mockResponse.body, null, 2);
+
+      btn.textContent = 'Try it out';
+      btn.disabled = false;
+    }, 1000);
+  }
+
+  // Simple JMESPath evaluator (basic implementation for demo)
+  // In production, use a proper JMESPath library
+  function evaluateJMESPath(expression, data) {
+    // This is a simplified evaluator for demo purposes
+    // Replace with actual JMESPath library in production
+
+    // Handle backtick-quoted literals (like `18`, `US`) and property access (like `user-properties`)
+    let evalExpression = expression.replace(/`([^`]+)`/g, (match, content) => {
+      // If it's a number, return as-is
+      if (!isNaN(content)) {
+        return content;
+      }
+      // If it looks like a property name (contains -, or special chars), treat as data access
+      return `data["${content}"]`;
+    });
+
+    // Handle property access with dots after data references
+    evalExpression = evalExpression.replace(/data\["([^"]+)"\]\.(\w+)/g, 'data["$1"]?.["$2"]');
+
+    // Replace comparison operators
+    evalExpression = evalExpression
+      .replace(/=="([^"]+)"/g, '==="$1"')  // String comparison
+      .replace(/=='([^']+)'/g, "==='$1'")  // String comparison
+      .replace(/>=/g, '>=')
+      .replace(/<=/g, '<=')
+      .replace(/!=/g, '!==')
+      .replace(/&&/g, '&&')
+      .replace(/\|\|/g, '||');
+
+    // For the example rule: `user-properties`.country == 'US' && `user-properties`.age >= `18`
+    // Should become: data["user-properties"]?.["country"] === "US" && data["user-properties"]?.["age"] >= 18
+
+    // Safer eval using Function constructor
+    try {
+      const func = new Function('data', `return ${evalExpression}`);
+      return func(data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  function copyResponseBody() {
+    const bodyEl = document.getElementById('curl-body');
+    navigator.clipboard.writeText(bodyEl.textContent).then(() => {
+      // Show brief confirmation
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = '✓';
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 1000);
+    });
+  }
+
+  function testEndpoint(btn) {
+    btn.textContent = 'Testing…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Test';
+      btn.disabled = false;
+      // Show result next to button
+      const row = btn.closest('.ep-row');
+      const result = row.querySelector('.test-result');
+      if (result) {
+        result.className = 'test-result ok';
+        result.textContent = '✓ 200 OK';
+      }
+    }, 800);
+  }
+
+  // ── Endpoint field show/hide ─────────────────────────────
+  function toggleEpField(id, btn) {
+    const f = document.getElementById(id);
+    if (f.type === 'password') { f.type = 'text'; btn.textContent = 'Hide'; }
+    else { f.type = 'password'; btn.textContent = 'Show'; }
+  }
+
+  // ── Transaction timeline ─────────────────────────────────
+  function tlItem(dotClass, title, meta, badge) {
+    return `<div class="timeline-item">
+      <div class="tl-dot ${dotClass}"></div>
+      <div class="tl-content">
+        <div class="flex items-center gap-8"><span class="tl-title">${title}</span>${badge ? `<span class="${badge.cls}">${badge.text}</span>` : ''}</div>
+        <div class="tl-meta">${meta}</div>
+      </div>
+    </div>`;
+  }
+
+  function renderTimeline(status) {
+    const el = document.getElementById('txn-timeline');
+    if (!el) return;
+    let html = '';
+    if (status === 'paid') {
+      html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
+      html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
+      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
+    } else if (status === 'refunded') {
+      html += tlItem('filled', 'Game server notified (refund)', 'Jun 15, 2025 · 14:10 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
+      html += tlItem('', 'Refunded', 'Jun 15, 2025 · 14:10 UTC', null);
+      html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
+      html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
+      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
+    } else if (status === 'cancelled') {
+      html += tlItem('', 'Cancelled', 'Jun 14, 2025 · 09:33 UTC', null);
+      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
+    }
+    el.innerHTML = html;
+  }
+
+  function setTxnStatus(status) {
+    const badge = document.getElementById('txn-status-badge');
+    badge.className = 'badge badge-' + status;
+    badge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    renderTimeline(status);
+  }
+
+  // ── Configuration Progress ──────────────────────────────
+  function updateConfigProgress() {
+    const checks = {
+      'validation-rule': () => {
+        const val = document.getElementById('validation-rule')?.value || '';
+        return val.trim().length > 0 && val !== '`user-properties`.country == \'US\' && `user-properties`.age >= `18`';
+      },
+      'user-validation-curl': () => {
+        const val = document.getElementById('ep-validation-curl')?.value || '';
+        return val.trim().length > 0 && !val.includes('game.com/api/validate');
+      },
+      'valid-test-user-id': () => {
+        const val = document.getElementById('valid-test-user-id')?.value || '';
+        return val.trim().length > 0 && val !== 'user_sandbox_001';
+      },
+      'invalid-test-user-id': () => {
+        const val = document.getElementById('invalid-test-user-id')?.value || '';
+        return val.trim().length > 0;
+      },
+      'purchase-callback': () => {
+        const val = document.getElementById('ep-purchase-curl')?.value || '';
+        return val.trim().length > 0 && !val.includes('game.com/api/purchase');
+      },
+      'refund-callback': () => {
+        const val = document.getElementById('ep-refund-curl')?.value || '';
+        return val.trim().length > 0 && !val.includes('game.com/api/refund');
+      },
+      'ios-credentials': () => {
+        const iosCard = document.querySelector('.plat-card');
+        if (!iosCard) return false;
+        const inputs = iosCard.querySelectorAll('.cf-input');
+        return inputs.length >= 3 &&
+               inputs[0]?.value?.trim().length > 0 &&
+               inputs[1]?.value?.trim().length > 0 &&
+               inputs[2]?.value?.trim().length > 0;
+      },
+      'android-credentials': () => {
+        const cards = document.querySelectorAll('.plat-card');
+        if (cards.length < 2) return false;
+        const androidCard = cards[1];
+        const inputs = androidCard.querySelectorAll('.cf-input');
+        return inputs.length >= 3 &&
+               inputs[0]?.value?.trim().length > 0 &&
+               inputs[1]?.value?.trim().length > 0 &&
+               inputs[2]?.value?.trim().length > 0;
+      }
+    };
+
+    let completed = 0;
+    const total = Object.keys(checks).length;
+
+    Object.keys(checks).forEach(field => {
+      const item = document.querySelector(`.progress-item[data-field="${field}"]`);
+      if (!item) return;
+
+      const isCompleted = checks[field]();
+      const icon = item.querySelector('.progress-icon');
+
+      if (isCompleted) {
+        item.classList.add('completed');
+        icon.textContent = '✓';
+        completed++;
+      } else {
+        item.classList.remove('completed');
+        icon.textContent = '○';
+      }
+    });
+
+    // Update progress bar
+    const percent = Math.round((completed / total) * 100);
+    document.getElementById('progress-bar').style.width = `${percent}%`;
+    document.getElementById('progress-text').textContent = `${completed}/${total} completed`;
+    document.getElementById('progress-percent').textContent = `${percent}%`;
+  }
+
+  function scrollToField(fieldId) {
+    let targetElement;
+
+    switch(fieldId) {
+      case 'validation-rule':
+        targetElement = document.getElementById('validation-rule');
+        break;
+      case 'user-validation-curl':
+        targetElement = document.getElementById('ep-validation-curl');
+        break;
+      case 'valid-test-user-id':
+        targetElement = document.getElementById('valid-test-user-id');
+        break;
+      case 'invalid-test-user-id':
+        targetElement = document.getElementById('invalid-test-user-id');
+        break;
+      case 'purchase-callback':
+        targetElement = document.getElementById('ep-purchase-curl');
+        break;
+      case 'refund-callback':
+        targetElement = document.getElementById('ep-refund-curl');
+        break;
+      case 'ios-credentials':
+        targetElement = document.querySelector('.plat-card');
+        break;
+      case 'android-credentials': {
+        const cards = document.querySelectorAll('.plat-card');
+        targetElement = cards.length > 1 ? cards[1] : null;
+        break;
+      }
+    }
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetElement.focus();
+    }
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    renderTimeline('paid');
+    updateConfigProgress();
+
+    // Add event listeners to all inputs to update progress in real-time
+    document.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('input', updateConfigProgress);
+      input.addEventListener('change', updateConfigProgress);
+    });
+  });
+
+  function exportRookConfig() {
+    // Base configuration shared across all files
+    const baseConfig = {
+      game: "Pixel Odyssey",
+      appId: 12,
+      validationRule: document.getElementById('validation-rule')?.value || "",
+      endpoints: {
+        userValidationCurl: document.querySelector('input[value*="curl"]')?.value || "",
+        purchaseCallback: document.querySelectorAll('.ep-input')[1]?.value || "",
+        refundCallback: document.querySelectorAll('.ep-input')[2]?.value || "",
+        testUserId: document.querySelectorAll('.ep-input')[3]?.value || ""
+      },
+      exportedAt: new Date().toISOString()
+    };
+
+    // Platform and environment specific configurations
+    const configs = [
+      {
+        filename: 'ios-sandbox-RookConfig.json',
+        platform: 'iOS',
+        environment: 'Sandbox',
+        config: {
+          ...baseConfig,
+          platform: 'iOS',
+          environment: 'Sandbox',
+          provider: {
+            name: 'Xsolla',
+            loginProjectId: 'login-royalrevolt2-ios-sb',
+            merchantId: 'merchant_rr2_ios_123',
+            xsollaProjectId: 'xsolla-royalrevolt2-ios-sb',
+            webhookUrl: 'https://rook.io/wh/ios/rr2-sb'
+          }
+        }
+      },
+      {
+        filename: 'ios-production-RookConfig.json',
+        platform: 'iOS',
+        environment: 'Production',
+        config: {
+          ...baseConfig,
+          platform: 'iOS',
+          environment: 'Production',
+          provider: {
+            name: 'Xsolla',
+            loginProjectId: 'login-royalrevolt2-ios-prod',
+            merchantId: 'merchant_rr2_ios_prod',
+            xsollaProjectId: 'xsolla-royalrevolt2-ios-prod',
+            webhookUrl: 'https://rook.io/wh/ios/rr2-prod'
+          }
+        }
+      },
+      {
+        filename: 'android-sandbox-RookConfig.json',
+        platform: 'Android',
+        environment: 'Sandbox',
+        config: {
+          ...baseConfig,
+          platform: 'Android',
+          environment: 'Sandbox',
+          provider: {
+            name: 'Xsolla',
+            loginProjectId: 'login-royalrevolt2-android-sb',
+            merchantId: 'merchant_rr2_android_456',
+            xsollaProjectId: 'xsolla-royalrevolt2-android-sb',
+            webhookUrl: 'https://rook.io/wh/android/rr2-sb'
+          }
+        }
+      },
+      {
+        filename: 'android-production-RookConfig.json',
+        platform: 'Android',
+        environment: 'Production',
+        config: {
+          ...baseConfig,
+          platform: 'Android',
+          environment: 'Production',
+          provider: {
+            name: 'Xsolla',
+            loginProjectId: 'login-royalrevolt2-android-prod',
+            merchantId: 'merchant_rr2_android_prod',
+            xsollaProjectId: 'xsolla-royalrevolt2-android-prod',
+            webhookUrl: 'https://rook.io/wh/android/rr2-prod'
+          }
+        }
+      }
+    ];
+
+    // Download each config file with a slight delay between downloads
+    configs.forEach((item, index) => {
+      setTimeout(() => {
+        const json = JSON.stringify(item.config, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = item.filename;
+        a.click();
+
+        // Clean up
+        URL.revokeObjectURL(url);
+      }, index * 200); // 200ms delay between each download
+    });
+  }
+
+  // ── Drawer ───────────────────────────────────────────────
+  function openDrawer() {
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.getElementById('create-drawer').classList.add('open');
+  }
+
+  function closeDrawer() {
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.getElementById('create-drawer').classList.remove('open');
+  }
+
+  function selectRole(el, role) {
+    document.querySelectorAll('.radio-opt').forEach(r => r.classList.remove('sel'));
+    el.classList.add('sel');
+    const gameField = document.getElementById('game-assign-field');
+    gameField.style.display = role === 'gameadmin' ? 'block' : 'none';
+  }
+
+  function generatePass() {
+    const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefghjkmnpqrstwxyz23456789!@#';
+    const pass = Array.from({length: 12}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('temp-pass').value = pass;
+  }
+
+  function createUser() {
+    closeDrawer();
+    // In real app: POST to API
+    alert('User created and credentials email sent.');
+  }
+
+  // ── Modal ────────────────────────────────────────────────
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Close modal on overlay click
+  document.querySelectorAll('.modal-ov').forEach(ov => {
+    ov.addEventListener('click', function(e) {
+      if (e.target === ov) ov.classList.remove('open');
+    });
+  });
+</script>
+</body>
+</html>
