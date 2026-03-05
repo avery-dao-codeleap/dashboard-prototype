@@ -516,6 +516,53 @@
     tbody tr:hover .arrow-icon { color: var(--accent); }
     .tag { display: inline-block; font-size: 11px; font-weight: 600; background: #f1f5f9; color: var(--text-secondary); padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); }
 
+    /* ── CURL BUILDER ─────────────────────────────────────── */
+    .cb-step { border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; background: var(--surface); }
+    .cb-step-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg); border-bottom: 1px solid var(--border); border-radius: var(--r) var(--r) 0 0; }
+    .cb-name { flex: 1; height: 28px; border: 1px solid transparent; border-radius: var(--r-sm); padding: 0 8px; font-family: var(--font); font-size: 13px; font-weight: 600; background: transparent; outline: none; color: var(--text-primary); min-width: 0; }
+    .cb-name:hover, .cb-name:focus { border-color: var(--border); background: var(--surface); }
+    .cb-method { height: 28px; padding: 0 8px; border: 1px solid #c7d2fe; border-radius: var(--r-sm); font-family: var(--font); font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-light); cursor: pointer; outline: none; }
+    .cb-step-body { padding: 14px; }
+    .cb-url-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .cb-url { flex: 1; height: 30px; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 10px; font-family: var(--mono); font-size: 12px; background: var(--surface); outline: none; color: var(--text-primary); }
+    .cb-url:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.08); }
+    .cb-sec { margin-bottom: 12px; }
+    .cb-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .cb-sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-tertiary); }
+    .cb-kv { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 5px; }
+    .cb-key { width: 130px; flex-shrink: 0; height: 30px; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 8px; font-family: var(--mono); font-size: 12px; background: var(--surface); outline: none; color: var(--text-primary); }
+    .cb-key:focus { border-color: var(--accent); }
+    .cb-val-wrap { flex: 1; min-width: 0; }
+    .cb-val-btn { display: flex; align-items: center; gap: 6px; width: 100%; height: 30px; padding: 0 8px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font); font-size: 12px; cursor: pointer; text-align: left; transition: all .12s; overflow: hidden; }
+    .cb-val-btn:hover { border-color: #cbd5e1; background: var(--bg); }
+    .cb-val-btn.active { border-color: var(--accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: var(--accent-light); }
+    .cb-chip { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 4px; font-family: var(--mono); white-space: nowrap; }
+    .cb-chip-pred { background: var(--accent-light); color: var(--accent); }
+    .cb-chip-cust { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+    .cb-chip-fn { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+    .cb-picker { display: none; border: 1px solid var(--accent); border-top: none; border-radius: 0 0 var(--r-sm) var(--r-sm); background: var(--surface); box-shadow: 0 4px 16px rgba(79,70,229,0.12); }
+    .cb-picker.open { display: block; }
+    .cb-ptabs { display: flex; border-bottom: 1px solid var(--border); }
+    .cb-ptab { flex: 1; height: 28px; border: none; font-family: var(--font); font-size: 11px; font-weight: 600; color: var(--text-secondary); background: transparent; cursor: pointer; transition: all .12s; }
+    .cb-ptab.active { color: var(--accent); background: var(--accent-light); }
+    .cb-pbody { padding: 8px; }
+    .cb-pval-list { display: flex; flex-direction: column; gap: 1px; max-height: 180px; overflow-y: auto; }
+    .cb-pval-opt { display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 4px; cursor: pointer; transition: background .1s; }
+    .cb-pval-opt:hover { background: var(--bg); }
+    .cb-pval-opt.sel { background: var(--accent-light); }
+    .cb-pval-radio { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; transition: all .12s; }
+    .cb-pval-opt.sel .cb-pval-radio { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 2px var(--surface); }
+    .cb-pval-name { font-size: 12px; color: var(--text-primary); flex: 1; }
+    .cb-pval-code { font-size: 10px; font-family: var(--mono); color: var(--text-tertiary); }
+    .cb-pcustom { display: flex; align-items: center; gap: 6px; padding: 5px 6px; border-top: 1px solid var(--border-subtle); margin-top: 4px; }
+    .cb-pcustom-in { flex: 1; height: 26px; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 8px; font-family: var(--mono); font-size: 11px; outline: none; color: var(--text-primary); }
+    .cb-pcustom-in:focus { border-color: var(--accent); }
+    .cb-fn-sel { width: 100%; height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: var(--r-sm); font-family: var(--font); font-size: 12px; background: var(--surface); outline: none; margin-bottom: 8px; cursor: pointer; color: var(--text-primary); }
+    .cb-fn-sel:focus { border-color: var(--accent); }
+    .cb-fn-params { display: flex; flex-direction: column; gap: 6px; }
+    .cb-fn-prow { display: flex; align-items: flex-start; gap: 6px; }
+    .cb-fn-pname { font-size: 11px; font-weight: 700; font-family: var(--mono); color: var(--text-secondary); width: 50px; flex-shrink: 0; padding-top: 8px; }
+
     /* Game Admin role-gating */
     #app-shell[data-role="gameadmin"] .sa-only { display: none !important; }
     #app-shell[data-role="gameadmin"] #game-sw-btn { display: none; }
@@ -1013,27 +1060,8 @@
             <span class="text-sec" style="font-size:12px;">Shared across platforms · Sandbox</span>
           </div>
           <div class="card-body">
-            <!-- User Validation cURL -->
-            <div class="ep-row">
-              <span class="ep-label">User Validation cURL</span>
-              <div class="cf-wrap" style="flex:1;">
-                <input id="ep-validation-curl" class="ep-input pr" type="password" value="curl -X GET https://game.com/api/validate -H 'Content-Type: application/json'" style="font-family:var(--mono);font-size:12px;padding-right:80px;">
-                <button class="cf-action" style="right:44px;" onclick="toggleEpField('ep-validation-curl',this)">Show</button>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="tryItOut(this)">Try it out</button>
-            </div>
-            <div class="response-panel" id="curl-response" style="display:none;margin-top:8px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-family:monospace;font-size:12px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <div id="curl-status"></div>
-                <button class="btn btn-icon" onclick="copyResponseBody()" title="Copy response">⎘</button>
-              </div>
-              <div style="max-height:200px;overflow-y:auto;background:#fff;padding:8px;border-radius:4px;">
-                <pre id="curl-body" style="margin:0;white-space:pre-wrap;word-wrap:break-word;"></pre>
-              </div>
-            </div>
-
             <!-- Test User IDs -->
-            <div style="margin-top:14px;margin-bottom:14px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
+            <div style="margin-bottom:16px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
               <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Test User IDs</div>
               <div class="ep-row" style="margin-bottom:8px;">
                 <span class="ep-label" style="width:180px;">Valid Test User ID</span>
@@ -1045,25 +1073,12 @@
               </div>
             </div>
 
-            <!-- Purchase Callback cURL -->
-            <div class="ep-row">
-              <span class="ep-label">Purchase Callback cURL</span>
-              <div class="cf-wrap" style="flex:1;">
-                <input id="ep-purchase-curl" class="ep-input pr" type="password" value="curl -X POST https://game.com/api/purchase -H 'Content-Type: application/json' -d '{&quot;invoice_id&quot;:&quot;{{invoice_id}}&quot;}'" style="font-family:var(--mono);font-size:12px;padding-right:52px;">
-                <button class="cf-action" onclick="toggleEpField('ep-purchase-curl',this)">Show</button>
-              </div>
-            </div>
+            <!-- Request Steps builder -->
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);margin-bottom:10px;">Request Steps</div>
+            <div id="cb-steps"></div>
+            <button class="btn btn-secondary btn-sm" onclick="cbAddStep()" style="margin-bottom:16px;">+ Add Step</button>
 
-            <!-- Refund Callback cURL -->
-            <div class="ep-row">
-              <span class="ep-label">Refund Callback cURL</span>
-              <div class="cf-wrap" style="flex:1;">
-                <input id="ep-refund-curl" class="ep-input pr" type="password" value="curl -X POST https://game.com/api/refund -H 'Content-Type: application/json' -d '{&quot;invoice_id&quot;:&quot;{{invoice_id}}&quot;}'" style="font-family:var(--mono);font-size:12px;padding-right:52px;">
-                <button class="cf-action" onclick="toggleEpField('ep-refund-curl',this)">Show</button>
-              </div>
-            </div>
-
-            <div style="margin-top:12px;">
+            <div>
               <button class="btn btn-primary btn-sm">Save Changes</button>
             </div>
           </div>
@@ -1275,6 +1290,15 @@
           </div>
           <div class="page-actions">
             <button class="btn btn-primary" onclick="openProductDrawer()">+ Add Product</button>
+          </div>
+        </div>
+
+        <!-- Under construction notice -->
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);margin-bottom:20px;">
+          <span style="font-size:20px;">🚧</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#92400e;">Under active development</div>
+            <div style="font-size:12px;color:#b45309;margin-top:2px;">Product management is being built out. Data shown below is read-only and for reference only.</div>
           </div>
         </div>
 
@@ -1870,16 +1894,13 @@
     if (status === 'paid') {
       html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
       html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
-      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
     } else if (status === 'refunded') {
       html += tlItem('filled', 'Game server notified (refund)', 'Jun 15, 2025 · 14:10 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
       html += tlItem('', 'Refunded', 'Jun 15, 2025 · 14:10 UTC', null);
       html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', {cls:'tl-ok', text:'✓ 200 OK'});
       html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
-      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
     } else if (status === 'cancelled') {
       html += tlItem('', 'Cancelled', 'Jun 14, 2025 · 09:33 UTC', null);
-      html += tlItem('', 'Created', 'Jun 14, 2025 · 09:31 UTC', null);
     }
     el.innerHTML = html;
   }
@@ -2007,6 +2028,7 @@
   // Initialize on page load
   window.addEventListener('DOMContentLoaded', () => {
     renderTimeline('paid');
+    cbRender();
     updateConfigProgress();
 
     // Add event listeners to all inputs to update progress in real-time
@@ -2165,6 +2187,291 @@
     ov.addEventListener('click', function(e) {
       if (e.target === ov) ov.classList.remove('open');
     });
+  });
+
+  // ── CURL Builder ─────────────────────────────────────────
+
+  const CB_PREDEFINED = [
+    { label: 'User ID',              val: '{{user_id}}' },
+    { label: 'Invoice ID',           val: '{{invoice_id}}' },
+    { label: 'Product SKU',          val: '{{product_sku}}' },
+    { label: 'Platform',             val: '{{platform}}' },
+    { label: 'Environment',          val: '{{environment}}' },
+    { label: 'Amount',               val: '{{amount}}' },
+    { label: 'Currency',             val: '{{currency}}' },
+    { label: 'App ID',               val: '{{app_id}}' },
+    { label: 'Valid Test User ID',   val: '{{valid_test_user_id}}' },
+    { label: 'Invalid Test User ID', val: '{{invalid_test_user_id}}' },
+    { label: 'Refund Reason',        val: '{{refund_reason}}' },
+  ];
+
+  const CB_FUNCTIONS = [
+    { name: 'HMAC_SHA256',  label: 'HMAC SHA-256',      params: ['secret', 'data'] },
+    { name: 'BASE64',       label: 'Base64 Encode',     params: ['value'] },
+    { name: 'MD5',          label: 'MD5 Hash',          params: ['value'] },
+    { name: 'CONCAT',       label: 'Concatenate',       params: ['a', 'b'] },
+    { name: 'TIMESTAMP',    label: 'Current Timestamp', params: [] },
+    { name: 'URL_ENCODE',   label: 'URL Encode',        params: ['value'] },
+  ];
+
+  function cbDefaultVal() { return { mode: 'predefined', val: '{{user_id}}' }; }
+
+  function cbDefaultFnParams(fnName) {
+    const fn = CB_FUNCTIONS.find(f => f.name === fnName);
+    return (fn ? fn.params : []).map(() => cbDefaultVal());
+  }
+
+  let cbSteps = [
+    {
+      id: 1, name: 'User Validation', method: 'POST',
+      url: 'https://game.com/api/validate',
+      headers: [{ id: 1, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
+      body:    [{ id: 2, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } }]
+    },
+    {
+      id: 2, name: 'Purchase Callback', method: 'POST',
+      url: 'https://game.com/api/purchase',
+      headers: [{ id: 3, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
+      body: [
+        { id: 4, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
+        { id: 5, key: 'user_id',    val: { mode: 'predefined', val: '{{user_id}}' } },
+      ]
+    },
+    {
+      id: 3, name: 'Refund Callback', method: 'POST',
+      url: 'https://game.com/api/refund',
+      headers: [{ id: 6, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
+      body: [
+        { id: 7, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
+        { id: 8, key: 'reason',     val: { mode: 'predefined', val: '{{refund_reason}}' } },
+      ]
+    },
+  ];
+  let cbNextId = 20;
+
+  function cbAddStep() {
+    cbSteps.push({ id: ++cbNextId, name: 'New Step', method: 'POST', url: '', headers: [], body: [] });
+    cbRender();
+  }
+  function cbRemoveStep(id) { cbSteps = cbSteps.filter(s => s.id !== id); cbRender(); }
+  function cbUpdateName(id, v)   { const s = cbSteps.find(s => s.id===id); if(s) s.name = v; }
+  function cbUpdateMethod(id, v) { const s = cbSteps.find(s => s.id===id); if(s) s.method = v; }
+  function cbUpdateUrl(id, v)    { const s = cbSteps.find(s => s.id===id); if(s) s.url = v; }
+  function cbUpdateKey(sid, sec, fid, v) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    const f = s[sec].find(f => f.id===fid); if(f) f.key = v;
+  }
+  function cbAddField(sid, sec) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    s[sec].push({ id: ++cbNextId, key: '', val: cbDefaultVal() }); cbRender();
+  }
+  function cbRemoveField(sid, sec, fid) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    s[sec] = s[sec].filter(f => f.id!==fid); cbRender();
+  }
+
+  function cbTogglePicker(pid) {
+    const picker = document.getElementById(pid);
+    if (!picker) return;
+    const isOpen = picker.classList.contains('open');
+    // Close all others
+    document.querySelectorAll('.cb-picker.open').forEach(p => {
+      p.classList.remove('open');
+      const b = p.previousElementSibling;
+      if (b && b.classList.contains('cb-val-btn')) b.classList.remove('active');
+    });
+    if (!isOpen) {
+      picker.classList.add('open');
+      const b = picker.previousElementSibling;
+      if (b && b.classList.contains('cb-val-btn')) b.classList.add('active');
+    }
+  }
+
+  function cbPickTab(pid, tab) {
+    const picker = document.getElementById(pid);
+    if (!picker) return;
+    picker.querySelectorAll('.cb-ptab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    picker.querySelector('.cb-pbody-value').style.display = tab === 'value' ? 'block' : 'none';
+    const fnPane = picker.querySelector('.cb-pbody-fn');
+    if (fnPane) fnPane.style.display = tab === 'fn' ? 'block' : 'none';
+  }
+
+  function cbSetPred(sid, sec, fid, pIdx, v) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    const f = s[sec].find(f => f.id===fid); if(!f) return;
+    if (pIdx != null) { if(f.val.mode==='function') f.val.params[pIdx] = { mode:'predefined', val:v }; }
+    else { f.val = { mode:'predefined', val:v }; }
+    cbRender();
+  }
+  function cbSetCustom(sid, sec, fid, pIdx, v) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    const f = s[sec].find(f => f.id===fid); if(!f) return;
+    if (pIdx != null) { if(f.val.mode==='function') f.val.params[pIdx] = { mode:'custom', val:v }; }
+    else { if(f.val.mode !== 'function') f.val = { mode:'custom', val:v }; }
+    // no re-render (preserve focus)
+  }
+  function cbSetFn(sid, sec, fid, fnName) {
+    const s = cbSteps.find(s => s.id===sid); if(!s) return;
+    const f = s[sec].find(f => f.id===fid); if(!f) return;
+    f.val = { mode:'function', fn:fnName, params: cbDefaultFnParams(fnName) };
+    cbRender();
+  }
+
+  function cbChip(valExpr) {
+    if (!valExpr) return '';
+    if (valExpr.mode === 'predefined') {
+      const p = CB_PREDEFINED.find(p => p.val === valExpr.val);
+      return `<span class="cb-chip cb-chip-pred">${p ? p.label : valExpr.val}</span>`;
+    }
+    if (valExpr.mode === 'custom') {
+      return `<span class="cb-chip cb-chip-cust">${valExpr.val || 'custom…'}</span>`;
+    }
+    if (valExpr.mode === 'function') {
+      const fn = CB_FUNCTIONS.find(f => f.name === valExpr.fn);
+      return `<span class="cb-chip cb-chip-fn">${fn ? fn.label : valExpr.fn}(…)</span>`;
+    }
+    return '';
+  }
+
+  function cbPredList(sid, sec, fid, pIdx, curVal) {
+    return CB_PREDEFINED.map(p => {
+      const sel = curVal && curVal.mode==='predefined' && curVal.val===p.val ? 'sel' : '';
+      return `<div class="cb-pval-opt ${sel}" onclick="cbSetPred(${sid},'${sec}',${fid},${pIdx},'${p.val}')">
+        <div class="cb-pval-radio"></div>
+        <span class="cb-pval-name">${p.label}</span>
+        <span class="cb-pval-code">${p.val}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function cbParamPicker(sid, sec, fid, pIdx, pName, pVal) {
+    const pid = `cbp-${sid}-${sec}-${fid}-p${pIdx}`;
+    const isCust = pVal && pVal.mode === 'custom';
+    return `<div class="cb-fn-prow">
+      <span class="cb-fn-pname">${pName}</span>
+      <div class="cb-val-wrap" style="flex:1;">
+        <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(pVal)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
+        <div class="cb-picker" id="${pid}">
+          <div class="cb-ptabs">
+            <button class="cb-ptab active" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
+          </div>
+          <div class="cb-pbody">
+            <div class="cb-pbody-value">
+              <div class="cb-pval-list">${cbPredList(sid, sec, fid, pIdx, pVal)}</div>
+              <div class="cb-pcustom">
+                <div class="cb-pval-radio ${isCust?'sel':''}"></div>
+                <input class="cb-pcustom-in" type="text" placeholder="Custom…" value="${isCust ? pVal.val : ''}"
+                  oninput="cbSetCustom(${sid},'${sec}',${fid},${pIdx},this.value)"
+                  onfocus="cbSetCustom(${sid},'${sec}',${fid},${pIdx},this.value)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function cbValPicker(sid, sec, fid, valExpr) {
+    const pid = `cbp-${sid}-${sec}-${fid}`;
+    const isFn = valExpr.mode === 'function';
+    const isCust = valExpr.mode === 'custom';
+    const curFnDef = isFn ? CB_FUNCTIONS.find(f => f.name === valExpr.fn) : CB_FUNCTIONS[0];
+    const fnOpts = CB_FUNCTIONS.map(f =>
+      `<option value="${f.name}" ${isFn && valExpr.fn===f.name ? 'selected' : ''}>${f.label}</option>`
+    ).join('');
+    const fnParams = isFn && curFnDef
+      ? curFnDef.params.map((pn, i) => cbParamPicker(sid, sec, fid, i, pn, valExpr.params[i] || cbDefaultVal())).join('')
+      : '';
+
+    return `<div class="cb-val-wrap">
+      <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(valExpr)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
+      <div class="cb-picker" id="${pid}">
+        <div class="cb-ptabs">
+          <button class="cb-ptab ${!isFn?'active':''}" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
+          <button class="cb-ptab ${isFn?'active':''}" data-tab="fn" onclick="cbPickTab('${pid}','fn')">Function</button>
+        </div>
+        <div class="cb-pbody">
+          <div class="cb-pbody-value" style="display:${!isFn?'block':'none'}">
+            <div class="cb-pval-list">${cbPredList(sid, sec, fid, null, valExpr)}</div>
+            <div class="cb-pcustom">
+              <div class="cb-pval-radio ${isCust?'sel':''}"></div>
+              <input class="cb-pcustom-in" type="text" placeholder="Custom value…" value="${isCust ? valExpr.val : ''}"
+                oninput="cbSetCustom(${sid},'${sec}',${fid},null,this.value)"
+                onfocus="cbSetCustom(${sid},'${sec}',${fid},null,this.value)">
+            </div>
+          </div>
+          <div class="cb-pbody-fn" style="display:${isFn?'block':'none'}">
+            <select class="cb-fn-sel" onchange="cbSetFn(${sid},'${sec}',${fid},this.value)">${fnOpts}</select>
+            <div class="cb-fn-params">${fnParams}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function cbRenderSection(step, sec, label) {
+    const rows = step[sec].map(f => `
+      <div class="cb-kv">
+        <input class="cb-key" type="text" placeholder="key" value="${f.key}"
+          oninput="cbUpdateKey(${step.id},'${sec}',${f.id},this.value)">
+        ${cbValPicker(step.id, sec, f.id, f.val)}
+        <button class="btn-icon" onclick="cbRemoveField(${step.id},'${sec}',${f.id})" title="Remove" style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
+      </div>`).join('');
+    return `<div class="cb-sec">
+      <div class="cb-sec-head">
+        <span class="cb-sec-label">${label}</span>
+        <button class="btn btn-ghost btn-sm" onclick="cbAddField(${step.id},'${sec}')">+ Add</button>
+      </div>
+      ${rows}
+    </div>`;
+  }
+
+  function cbRender() {
+    // Remember open pickers before re-render
+    const open = new Set([...document.querySelectorAll('.cb-picker.open')].map(p => p.id));
+
+    const container = document.getElementById('cb-steps');
+    if (!container) return;
+
+    container.innerHTML = cbSteps.map((step, idx) => `
+      <div class="cb-step">
+        <div class="cb-step-head">
+          <span style="font-size:11px;font-weight:700;color:var(--text-tertiary);flex-shrink:0;">${idx+1}</span>
+          <input class="cb-name" type="text" value="${step.name}" oninput="cbUpdateName(${step.id},this.value)">
+          <select class="cb-method" onchange="cbUpdateMethod(${step.id},this.value)">
+            ${['GET','POST','PUT','PATCH','DELETE'].map(m=>`<option ${step.method===m?'selected':''}>${m}</option>`).join('')}
+          </select>
+        </div>
+        <div class="cb-step-body">
+          <div class="cb-url-row">
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);flex-shrink:0;">URL</span>
+            <input class="cb-url" type="text" placeholder="https://…" value="${step.url}" oninput="cbUpdateUrl(${step.id},this.value)">
+          </div>
+          ${cbRenderSection(step, 'headers', 'Headers')}
+          ${cbRenderSection(step, 'body', 'Body')}
+        </div>
+      </div>`).join('');
+
+    // Re-open pickers that were open before re-render
+    open.forEach(id => {
+      const p = document.getElementById(id);
+      if (p) {
+        p.classList.add('open');
+        const b = p.previousElementSibling;
+        if (b && b.classList.contains('cb-val-btn')) b.classList.add('active');
+      }
+    });
+  }
+
+  // Close pickers on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.cb-val-wrap')) {
+      document.querySelectorAll('.cb-picker.open').forEach(p => {
+        p.classList.remove('open');
+        const b = p.previousElementSibling;
+        if (b && b.classList.contains('cb-val-btn')) b.classList.remove('active');
+      });
+    }
   });
 </script>
 </body>
