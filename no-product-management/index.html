@@ -1288,9 +1288,6 @@
             <h1 class="page-title">Products</h1>
             <p class="page-sub">Royal Revolt 2 · <span id="prod-env-label">Sandbox</span></p>
           </div>
-          <div class="page-actions">
-            <button class="btn btn-primary" onclick="openProductDrawer()">+ Add Product</button>
-          </div>
         </div>
 
         <!-- Under construction notice -->
@@ -1354,13 +1351,7 @@
                 <option>iOS</option>
                 <option>Android</option>
               </select>
-              <select class="sel">
-                <option>All types</option>
-                <option>Consumable</option>
-                <option>Non-consumable</option>
-                <option>Subscription</option>
-              </select>
-              <select class="sel">
+<select class="sel">
                 <option>All statuses</option>
                 <option>Active</option>
                 <option>Inactive</option>
@@ -1374,14 +1365,13 @@
           <table>
             <thead>
               <tr>
-                <th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Status</th><th></th>
+                <th>SKU</th><th>Name</th><th>Price</th><th>Platforms</th><th>Status</th><th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td class="mono">gold_100</td>
                 <td><strong>Gold Pack 100</strong></td>
-                <td><span class="tag">Consumable</span></td>
                 <td class="mono">$0.99</td>
                 <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
                 <td><span class="badge badge-active">Active</span></td>
@@ -1390,7 +1380,6 @@
               <tr>
                 <td class="mono">gold_500</td>
                 <td><strong>Gold Pack 500</strong></td>
-                <td><span class="tag">Consumable</span></td>
                 <td class="mono">$4.99</td>
                 <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
                 <td><span class="badge badge-active">Active</span></td>
@@ -1399,7 +1388,6 @@
               <tr>
                 <td class="mono">gold_2000</td>
                 <td><strong>Gold Pack 2000</strong></td>
-                <td><span class="tag">Consumable</span></td>
                 <td class="mono">$19.99</td>
                 <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
                 <td><span class="badge badge-active">Active</span></td>
@@ -1408,43 +1396,22 @@
               <tr>
                 <td class="mono">starter_bundle</td>
                 <td><strong>Starter Bundle</strong></td>
-                <td><span class="tag">Consumable</span></td>
                 <td class="mono">$9.99</td>
                 <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
                 <td><span class="badge badge-active">Active</span></td>
                 <td class="arrow-icon">→</td>
               </tr>
-              <tr>
-                <td class="mono">premium_pass_mo</td>
-                <td><strong>Premium Pass</strong></td>
-                <td><span class="tag" style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span></td>
-                <td class="mono">$9.99<span style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span></td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td class="arrow-icon">→</td>
-              </tr>
-              <tr>
+<tr>
                 <td class="mono">royal_shield_7d</td>
                 <td><strong>Royal Shield (7d)</strong></td>
-                <td><span class="tag">Consumable</span></td>
                 <td class="mono">$2.99</td>
                 <td><span class="tag">iOS</span></td>
                 <td><span class="badge badge-active">Active</span></td>
                 <td class="arrow-icon">→</td>
               </tr>
-              <tr>
-                <td class="mono">vip_pack_30d</td>
-                <td><strong>VIP Pack (30d)</strong></td>
-                <td><span class="tag" style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span></td>
-                <td class="mono">$14.99<span style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span></td>
-                <td><span class="tag">Android</span></td>
-                <td><span class="badge badge-cancelled" style="background:#f1f5f9;color:#94a3b8;border:1px solid var(--border);">Inactive</span></td>
-                <td class="arrow-icon">→</td>
-              </tr>
-              <tr>
+<tr>
                 <td class="mono">season_pass_2025</td>
                 <td><strong>Season Pass 2025</strong></td>
-                <td><span class="tag" style="background:#f5f3ff;color:#7c3aed;border-color:#ddd6fe;">Non-consumable</span></td>
                 <td class="mono">$24.99</td>
                 <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
                 <td><span class="badge badge-active">Active</span></td>
@@ -1453,7 +1420,7 @@
             </tbody>
           </table>
           <div class="pag">
-            <span class="pag-meta">Showing 1–8 of 8 products</span>
+            <span class="pag-meta">Showing 1–6 of 6 products</span>
             <div class="pag-controls">
               <button class="pag-btn" disabled>← Prev</button>
               <span class="pag-info">Page 1 of 1</span>
