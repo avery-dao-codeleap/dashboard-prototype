@@ -222,6 +222,56 @@
     }
     .nav-item.disabled { opacity: 0.45; cursor: not-allowed; }
     .nav-item.disabled:hover { background: transparent; color: var(--text-secondary); }
+
+    /* Products nav group */
+    .nav-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      border-radius: var(--r-sm);
+      user-select: none;
+    }
+    .nav-group-header:hover { background: var(--border-subtle); }
+    .nav-group-header .nav-icon { margin-right: 6px; }
+    .nav-group-arrow { font-size: 10px; color: var(--text-tertiary); transition: transform 0.15s; }
+    .nav-group.open .nav-group-arrow { transform: rotate(90deg); }
+    .nav-group-body { display: none; padding-bottom: 4px; }
+    .nav-group.open .nav-group-body { display: block; }
+    .nav-group-label {
+      padding: 6px 10px 2px 28px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .nav-sub-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 6px 10px 6px 32px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .nav-sub-item:hover { background: var(--border-subtle); color: var(--text-primary); }
+    .nav-sub-item.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+
     .sb-divider { height: 1px; background: var(--border); margin: 8px 10px; }
     .sb-bottom { margin-top: auto; padding: 10px; }
 
@@ -717,17 +767,20 @@
         <button class="nav-item" onclick="navigate('config')" id="nav-config">
           <span class="nav-icon">⚙</span> Config
         </button>
-        <button class="nav-item" onclick="navigate('products')" id="nav-products">
-          <span class="nav-icon">⊞</span> Products
-        </button>
-        <button class="nav-item" onclick="navigate('segmentation')" id="nav-segmentation">
-          <span class="nav-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-          </span> Segmentation Rules
-        </button>
-        <button class="nav-item" onclick="navigate('purchase-condition')" id="nav-purchase-condition">
-          <span class="nav-icon">⚿</span> Purchase Condition
-        </button>
+        <div class="nav-group" id="nav-group-products">
+          <div class="nav-group-header" onclick="toggleProductsGroup()">
+            <span><span class="nav-icon">⊞</span> Products</span>
+            <span class="nav-group-arrow">▶</span>
+          </div>
+          <div class="nav-group-body">
+            <div class="nav-group-label">SDK</div>
+            <button class="nav-sub-item" onclick="navigate('sdk-catalog')" id="nav-sdk-catalog">Catalog</button>
+            <button class="nav-sub-item" onclick="navigate('sdk-rules')" id="nav-sdk-rules">Rules</button>
+            <div class="nav-group-label" style="margin-top:4px;">Webstore</div>
+            <button class="nav-sub-item" onclick="navigate('webstore-catalog')" id="nav-webstore-catalog">Catalog</button>
+            <button class="nav-sub-item" onclick="navigate('webstore-rules')" id="nav-webstore-rules">Rules</button>
+          </div>
+        </div>
       </div>
       <div class="sb-divider sa-only"></div>
       <div class="sb-section sa-only">
@@ -1748,80 +1801,6 @@
   </div>
 </div>
 
-      <!-- ─── PURCHASE CONDITION ────────────────────────────── -->
-      <div class="page" id="page-purchase-condition">
-        <div class="page-header">
-          <div>
-            <h1 class="page-title">Purchase Condition</h1>
-            <p class="page-sub">Define purchase conditions based on data models</p>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-          <!-- Model Import Section -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">1. Import Data Model</div>
-            </div>
-            <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
-              <div class="field-wrap">
-                <label class="field-label">Fetch from cURL / Endpoint</label>
-                <div style="display:flex;gap:8px;">
-                  <input type="text" id="pc-curl-input" class="field-input" placeholder="https://api.example.com/model" style="flex:1;">
-                  <button class="btn btn-secondary" onclick="pcFetchModel()" id="pc-fetch-btn">Fetch</button>
-                </div>
-              </div>
-              <div style="text-align:center;font-size:12px;color:var(--text-tertiary);font-weight:600;">OR</div>
-              <div class="field-wrap">
-                <label class="field-label">Paste JSON Model</label>
-                <textarea id="pc-json-input" class="field-input" style="height:120px;padding:12px;resize:vertical;font-family:var(--mono);font-size:12px;" placeholder='{"user_id": 123, "level": 10, "is_vip": true}'></textarea>
-              </div>
-              <button class="btn btn-primary btn-full" onclick="pcImportModel()">Import Model</button>
-              <div id="pc-import-status" style="font-size:13px;color:var(--success);display:none;font-weight:600;margin-top:4px;">✓ Model imported successfully</div>
-            </div>
-          </div>
-
-          <!-- Condition Setup Section -->
-          <div class="card" id="pc-condition-card" style="opacity:0.5;pointer-events:none;transition:opacity 0.2s;">
-            <div class="card-header">
-              <div class="card-title">2. Setup Condition</div>
-            </div>
-            <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
-              <div style="display:flex;gap:12px;align-items:flex-end;">
-                <div class="field-wrap" style="flex:2;">
-                  <label class="field-label">Field</label>
-                  <select id="pc-field-select" class="field-input">
-                    <option value="">Select a field...</option>
-                  </select>
-                </div>
-                <div class="field-wrap" style="flex:1;">
-                  <label class="field-label">Operator</label>
-                  <select id="pc-operator-select" class="field-input">
-                    <option value="==">==</option>
-                    <option value="!=">!=</option>
-                    <option value=">">&gt;</option>
-                    <option value=">=">&gt;=</option>
-                    <option value="<">&lt;</option>
-                    <option value="<=">&lt;=</option>
-                  </select>
-                </div>
-                <div class="field-wrap" style="flex:2;">
-                  <label class="field-label">Value</label>
-                  <input type="text" id="pc-value-input" class="field-input" placeholder="e.g. 10">
-                </div>
-              </div>
-              <button class="btn btn-primary" onclick="pcSaveCondition()" style="align-self:flex-start;">Save Condition</button>
-              <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
-                <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text-primary);">Saved Conditions</div>
-                <div id="pc-saved-conditions" style="display:flex;flex-direction:column;gap:8px;">
-                  <div style="font-size:13px;color:var(--text-tertiary);font-style:italic;">No conditions saved yet.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </main>
   </div>
 </div>
@@ -2199,8 +2178,17 @@
     const navKey = page === 'product-detail' ? 'products' : page;
     const navEl = document.getElementById('nav-' + navKey);
     if (navEl) navEl.classList.add('active');
+    // Auto-open Products group for product sub-pages
+    const productPages = ['sdk-catalog', 'sdk-rules', 'webstore-catalog', 'webstore-rules'];
+    if (productPages.includes(page)) {
+      document.getElementById('nav-group-products').classList.add('open');
+    }
 
     closeGameDD();
+  }
+
+  function toggleProductsGroup() {
+    document.getElementById('nav-group-products').classList.toggle('open');
   }
 
   // ── Game switcher ────────────────────────────────────────
@@ -3010,94 +2998,6 @@
     }
   });
 
-  // ── PURCHASE CONDITION LOGIC ─────────────────────────────
-  let pcDataModel = null;
-  let pcSavedConditions = [];
-
-  async function pcFetchModel() {
-    const btn = document.getElementById('pc-fetch-btn');
-    const url = document.getElementById('pc-curl-input').value.trim();
-    if (!url) { alert('Please enter a valid URL or cURL command.'); return; }
-    try {
-      btn.textContent = 'Fetching...';
-      btn.disabled = true;
-      let fetchUrl = url;
-      if (url.startsWith('curl')) {
-        const match = url.match(/'(https?:\/\/[^']+)'/);
-        if (match && match[1]) { fetchUrl = match[1]; }
-        else {
-          const words = url.split(' ');
-          const urlStr = words.find(w => w.startsWith('http') || w.startsWith("'http") || w.startsWith('"http'));
-          if (urlStr) fetchUrl = urlStr.replace(/['"]/g, '');
-        }
-      }
-      const res = await fetch(fetchUrl);
-      if (!res.ok) throw new Error('Network response was not ok');
-      const data = await res.json();
-      document.getElementById('pc-json-input').value = JSON.stringify(data, null, 2);
-      pcImportModel();
-    } catch (err) {
-      alert('Failed to fetch data: ' + err.message + '\n\nMake sure the endpoint supports CORS or paste JSON manually.');
-    } finally {
-      btn.textContent = 'Fetch';
-      btn.disabled = false;
-    }
-  }
-
-  function pcImportModel() {
-    const jsonText = document.getElementById('pc-json-input').value.trim();
-    if (!jsonText) { alert('Please paste a JSON model or fetch from an endpoint.'); return; }
-    try {
-      pcDataModel = JSON.parse(jsonText);
-      const fields = Object.keys(pcDataModel);
-      const select = document.getElementById('pc-field-select');
-      select.innerHTML = '<option value="">Select a field...</option>' +
-        fields.map(f => `<option value="${f}">${f}</option>`).join('');
-      const conditionCard = document.getElementById('pc-condition-card');
-      conditionCard.style.opacity = '1';
-      conditionCard.style.pointerEvents = 'auto';
-      const status = document.getElementById('pc-import-status');
-      status.style.display = 'block';
-      setTimeout(() => status.style.display = 'none', 3000);
-    } catch (err) {
-      alert('Invalid JSON format. Please check and try again.');
-    }
-  }
-
-  function pcSaveCondition() {
-    const field = document.getElementById('pc-field-select').value;
-    const op = document.getElementById('pc-operator-select').value;
-    const val = document.getElementById('pc-value-input').value.trim();
-    if (!field || !val) { alert('Please select a field and enter a value.'); return; }
-    pcSavedConditions.push({ field, op, value: val });
-    pcRenderConditions();
-    document.getElementById('pc-field-select').value = '';
-    document.getElementById('pc-operator-select').value = '==';
-    document.getElementById('pc-value-input').value = '';
-  }
-
-  function pcRenderConditions() {
-    const container = document.getElementById('pc-saved-conditions');
-    if (pcSavedConditions.length === 0) {
-      container.innerHTML = '<div style="font-size:13px;color:var(--text-tertiary);font-style:italic;">No conditions saved yet.</div>';
-      return;
-    }
-    container.innerHTML = pcSavedConditions.map((cond, idx) => `
-      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);padding:8px 12px;border-radius:var(--r-sm);">
-        <div style="font-size:13px;font-family:var(--mono);">
-          <span style="color:var(--accent);font-weight:600;">${cond.field}</span>
-          <span style="color:var(--text-primary);padding:0 4px;">${cond.op}</span>
-          <span style="color:var(--success);font-weight:600;">${cond.value}</span>
-        </div>
-        <button class="btn-icon" onclick="pcDeleteCondition(${idx})" style="color:var(--danger);" title="Remove">✕</button>
-      </div>
-    `).join('');
-  }
-
-  function pcDeleteCondition(idx) {
-    pcSavedConditions.splice(idx, 1);
-    pcRenderConditions();
-  }
 </script>
 </body>
 </html>
