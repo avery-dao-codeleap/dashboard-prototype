@@ -1622,6 +1622,127 @@
         </div>
       </div>
 
+      <!-- ─── WEBSTORE CATALOG ─────────────────────────────── -->
+      <div class="page" id="page-webstore-catalog">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Webstore Products</h1>
+            <p class="page-sub">Royal Revolt 2 · <span id="ws-env-label">Sandbox</span></p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openWsProductDrawer()">+ Add Product</button>
+          </div>
+        </div>
+
+        <!-- Vitals -->
+        <div class="vitals" style="margin-bottom:16px;">
+          <div class="vital-card">
+            <div class="vital-label">Total Products</div>
+            <div class="vital-value">4</div>
+            <div class="vital-delta delta-neutral">No change</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Active</div>
+            <div class="vital-value">4</div>
+            <div class="vital-delta delta-up">▲ 1 added this week</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Featured</div>
+            <div class="vital-value">2</div>
+            <div class="vital-delta delta-neutral">Homepage slots</div>
+          </div>
+        </div>
+
+        <!-- Provider sync status -->
+        <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
+            <span style="color:var(--success);font-size:10px;">●</span>
+            <div>
+              <div style="font-weight:600;color:var(--text-primary);">Xsolla</div>
+              <div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product table -->
+        <div class="table-wrap">
+          <div class="table-head" style="flex-wrap:wrap;gap:10px;">
+            <span class="table-head-title">Webstore Catalog</span>
+            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
+              <select class="sel">
+                <option>All categories</option>
+                <option>Pearls</option>
+                <option>Boosts</option>
+                <option>Dungeons</option>
+                <option>Bundles</option>
+              </select>
+              <select class="sel">
+                <option>All statuses</option>
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+              <div class="search-wrap">
+                <span class="search-ico">🔍</span>
+                <input class="search-in" type="text" placeholder="Search SKU or name…">
+              </div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th><th>Name</th><th>Price</th><th>Category</th><th>Status</th><th>Sync</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="openWsProductDrawer('ws_pearl_500')" style="cursor:pointer;">
+                <td class="mono">ws_pearl_500</td>
+                <td><strong>Pearl Pack 500</strong></td>
+                <td class="mono">$4.99</td>
+                <td><span class="tag">Pearls</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><span style="color:var(--success);font-size:12px;font-weight:600;">✓ Synced</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="openWsProductDrawer('ws_vip_bundle')" style="cursor:pointer;">
+                <td class="mono">ws_vip_bundle</td>
+                <td><strong>VIP Bundle ⭐</strong></td>
+                <td class="mono">$14.99</td>
+                <td><span class="tag">Bundles</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><span style="color:var(--success);font-size:12px;font-weight:600;">✓ Synced</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="openWsProductDrawer('ws_boost_7d')" style="cursor:pointer;">
+                <td class="mono">ws_boost_7d</td>
+                <td><strong>7-Day Boost</strong></td>
+                <td class="mono">$2.99</td>
+                <td><span class="tag">Boosts</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><span style="color:var(--warning);font-size:12px;font-weight:600;">⟳ Pending</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+              <tr onclick="openWsProductDrawer('ws_dungeon_key')" style="cursor:pointer;">
+                <td class="mono">ws_dungeon_key</td>
+                <td><strong>Dungeon Key Pack ⭐</strong></td>
+                <td class="mono">$7.99</td>
+                <td><span class="tag">Dungeons</span></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><span style="color:var(--success);font-size:12px;font-weight:600;">✓ Synced</span></td>
+                <td class="arrow-icon">→</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pag">
+            <span class="pag-meta">Showing 1–4 of 4 products</span>
+            <div class="pag-controls">
+              <button class="pag-btn" disabled>← Prev</button>
+              <span class="pag-info">Page 1 of 1</span>
+              <button class="pag-btn" disabled>Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -1669,6 +1790,56 @@
   <div class="drawer-foot">
     <button class="btn btn-ghost" onclick="closeSdkProductDrawer()">Cancel</button>
     <button class="btn btn-primary" id="sdk-drawer-cta">Add Product</button>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  WEBSTORE PRODUCT DRAWER                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="overlay" id="ws-product-overlay" onclick="closeWsProductDrawer()"></div>
+<div class="drawer" id="ws-product-drawer">
+  <div class="drawer-head">
+    <span class="drawer-title" id="ws-drawer-title">Add Webstore Product</span>
+    <button class="drawer-close" onclick="closeWsProductDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="dfield">
+      <label class="dfield-label">SKU</label>
+      <input class="dfield-input" type="text" id="ws-sku" placeholder="e.g. ws_pearl_500">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Name</label>
+      <input class="dfield-input" type="text" id="ws-name" placeholder="e.g. Pearl Pack 500">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Price (USD)</label>
+      <input class="dfield-input" type="text" id="ws-price" placeholder="e.g. 4.99">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Category</label>
+      <select class="sel" id="ws-category" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+        <option value="">Select category…</option>
+        <option>Pearls</option>
+        <option>Boosts</option>
+        <option>Dungeons</option>
+        <option>Bundles</option>
+      </select>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Description</label>
+      <textarea class="notes-area" id="ws-description" placeholder="Short description shown on the webstore…"></textarea>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Product Image URL</label>
+      <input class="dfield-input" type="text" id="ws-image" placeholder="https://…">
+    </div>
+    <div class="check-row">
+      <div class="checkmark" id="ws-featured-check" onclick="toggleWsFeatured()" style="background:transparent;border-color:var(--border);">&#8203;</div>
+      <span class="check-lbl">Feature on webstore homepage</span>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" onclick="closeWsProductDrawer()">Cancel</button>
+    <button class="btn btn-primary" id="ws-drawer-cta">Add Product</button>
   </div>
 </div>
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2401,6 +2572,27 @@
   function closeSdkProductDrawer() {
     document.getElementById('sdk-product-overlay').classList.remove('open');
     document.getElementById('sdk-product-drawer').classList.remove('open');
+  }
+
+  // ── WEBSTORE PRODUCT DRAWER ───────────────────────────────
+  let wsFeaturedOn = false;
+  function openWsProductDrawer(sku) {
+    const isEdit = !!sku;
+    document.getElementById('ws-drawer-title').textContent = isEdit ? 'Edit Webstore Product' : 'Add Webstore Product';
+    document.getElementById('ws-drawer-cta').textContent = isEdit ? 'Save Changes' : 'Add Product';
+    document.getElementById('ws-product-overlay').classList.add('open');
+    document.getElementById('ws-product-drawer').classList.add('open');
+  }
+  function closeWsProductDrawer() {
+    document.getElementById('ws-product-overlay').classList.remove('open');
+    document.getElementById('ws-product-drawer').classList.remove('open');
+  }
+  function toggleWsFeatured() {
+    wsFeaturedOn = !wsFeaturedOn;
+    const el = document.getElementById('ws-featured-check');
+    el.style.background = wsFeaturedOn ? 'var(--accent)' : 'transparent';
+    el.style.borderColor = wsFeaturedOn ? 'var(--accent)' : 'var(--border)';
+    el.textContent = wsFeaturedOn ? '✓' : '\u200b';
   }
 
   // ── SDK RULE DRAWER (stub) ────────────────────────────────
