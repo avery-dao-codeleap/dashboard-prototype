@@ -2173,18 +2173,24 @@
     const banner = document.getElementById('sb-banner');
     const ovLabel = document.getElementById('ov-env-label');
     const cfgLabel = document.getElementById('cfg-env-label');
+    const sdkLabel = document.getElementById('sdk-env-label');
+    const wsLabel = document.getElementById('ws-env-label');
     if (env === 'sandbox') {
       sbBtn.classList.add('active');
       prodBtn.classList.remove('active');
       banner.classList.add('visible');
       if (ovLabel) ovLabel.textContent = 'Sandbox';
       if (cfgLabel) cfgLabel.textContent = 'Sandbox';
+      if (sdkLabel) sdkLabel.textContent = 'Sandbox';
+      if (wsLabel) wsLabel.textContent = 'Sandbox';
     } else {
       prodBtn.classList.add('active', 'prod');
       sbBtn.classList.remove('active');
       banner.classList.remove('visible');
       if (ovLabel) ovLabel.textContent = 'Production';
       if (cfgLabel) cfgLabel.textContent = 'Production';
+      if (sdkLabel) sdkLabel.textContent = 'Production';
+      if (wsLabel) wsLabel.textContent = 'Production';
     }
   }
 
