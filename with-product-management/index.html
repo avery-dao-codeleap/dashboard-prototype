@@ -1743,6 +1743,93 @@
         </div>
       </div>
 
+      <!-- ─── WEBSTORE RULES ────────────────────────────────── -->
+      <div class="page" id="page-webstore-rules">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Webstore Rules</h1>
+            <p class="page-sub">Product visibility and payment routing rules</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openWsRuleDrawer()">+ Add Rule</button>
+          </div>
+        </div>
+
+        <!-- Underline tab bar -->
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+          <div id="ws-tab-show" onclick="switchWsTab('show')"
+            style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">
+            Show Product Rules
+          </div>
+          <div id="ws-tab-mor" onclick="switchWsTab('mor')"
+            style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">
+            MoR Routing Rules
+          </div>
+        </div>
+
+        <!-- Show Product Rules table -->
+        <div class="table-wrap" id="ws-rules-show" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+          <table>
+            <thead>
+              <tr><th>Rule Name</th><th>Condition</th><th>Products</th><th>Priority</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>VIP only bundle</strong></td>
+                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">is_vip == true</code></td>
+                <td><span class="tag">ws_vip_bundle</span></td>
+                <td style="color:var(--text-tertiary);">1</td>
+                <td><div style="display:flex;gap:6px;">
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><strong>High spender unlock</strong></td>
+                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">lifetime_spend &gt;= 50</code></td>
+                <td><span class="tag">ws_dungeon_key</span> <span class="tag">ws_boost_7d</span></td>
+                <td style="color:var(--text-tertiary);">2</td>
+                <td><div style="display:flex;gap:6px;">
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MoR Routing Rules table (hidden by default) -->
+        <div class="table-wrap" id="ws-rules-mor" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
+          <table>
+            <thead>
+              <tr><th>Rule Name</th><th>Condition</th><th>Provider</th><th>Priority</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>US Xsolla</strong></td>
+                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">country == US</code></td>
+                <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
+                <td style="color:var(--text-tertiary);">2</td>
+                <td><div style="display:flex;gap:6px;">
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><strong>Default</strong></td>
+                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">* (catch-all)</code></td>
+                <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
+                <td style="color:var(--text-tertiary);">99</td>
+                <td><div style="display:flex;gap:6px;">
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -2559,6 +2646,24 @@
     closeDrawer();
     // In real app: POST to API
     alert('User created and credentials email sent.');
+  }
+
+  // ── WEBSTORE RULES TABS ───────────────────────────────────
+  function switchWsTab(tab) {
+    const isShow = tab === 'show';
+    document.getElementById('ws-rules-show').style.display = isShow ? 'block' : 'none';
+    document.getElementById('ws-rules-mor').style.display = isShow ? 'none' : 'block';
+    const showEl = document.getElementById('ws-tab-show');
+    const morEl = document.getElementById('ws-tab-mor');
+    showEl.style.color = isShow ? 'var(--accent)' : 'var(--text-tertiary)';
+    showEl.style.borderBottom = isShow ? '2px solid var(--accent)' : 'none';
+    showEl.style.fontWeight = isShow ? '600' : 'normal';
+    morEl.style.color = isShow ? 'var(--text-tertiary)' : 'var(--accent)';
+    morEl.style.borderBottom = isShow ? 'none' : '2px solid var(--accent)';
+    morEl.style.fontWeight = isShow ? 'normal' : '600';
+  }
+  function openWsRuleDrawer() {
+    // stub — out of scope per spec
   }
 
   // ── SDK PRODUCT DRAWER ────────────────────────────────────
