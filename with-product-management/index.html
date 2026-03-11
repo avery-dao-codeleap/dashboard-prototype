@@ -1580,6 +1580,48 @@
         </div>
       </div>
 
+      <!-- ─── SDK RULES ────────────────────────────────────── -->
+      <div class="page" id="page-sdk-rules">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">SDK Rules</h1>
+            <p class="page-sub">Segmentation rules applied to SDK products</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openSdkRuleDrawer()">+ Add Rule</button>
+          </div>
+        </div>
+
+        <!-- Underline tab bar (single tab) -->
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+          <div style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:default;">Rules</div>
+        </div>
+
+        <div class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+          <table>
+            <thead>
+              <tr>
+                <th>Rule Name</th><th>Condition</th><th>Effect</th><th>Priority</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Low value guard</strong></td>
+                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">price &lt; $3.00</code></td>
+                <td><span class="badge" style="background:#fee2e2;color:var(--danger);border:1px solid #fecaca;">Disable Rook</span></td>
+                <td style="color:var(--text-tertiary);">1</td>
+                <td>
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                    <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -2359,6 +2401,11 @@
   function closeSdkProductDrawer() {
     document.getElementById('sdk-product-overlay').classList.remove('open');
     document.getElementById('sdk-product-drawer').classList.remove('open');
+  }
+
+  // ── SDK RULE DRAWER (stub) ────────────────────────────────
+  function openSdkRuleDrawer() {
+    // stub — out of scope per spec
   }
 
   // ── Modal ────────────────────────────────────────────────
