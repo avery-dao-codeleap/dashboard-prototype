@@ -2104,6 +2104,100 @@
   </div>
 </div>
 <!-- ═══════════════════════════════════════════════════════ -->
+<!--  WEBSTORE RULE DRAWER                                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="overlay" id="ws-rule-overlay" onclick="closeWsRuleDrawer()"></div>
+<div class="drawer" id="ws-rule-drawer">
+  <div class="drawer-head">
+    <span class="drawer-title" id="ws-rule-drawer-title">Add Rule</span>
+    <button class="drawer-close" onclick="closeWsRuleDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="dfield">
+      <label class="dfield-label">Rule Name <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" type="text" id="ws-rule-name" placeholder="e.g. VIP only bundle">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Condition <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-rule-condition" placeholder="e.g. is_vip == true">
+      <div class="dfield-hint">Use player attribute expressions. Wildcards (<code style="font-size:11px;">*</code>) match all users.</div>
+    </div>
+    <!-- Show Product fields -->
+    <div id="ws-rule-show-fields">
+      <div class="dfield">
+        <label class="dfield-label">Products <span style="color:var(--danger);">*</span></label>
+        <div style="display:flex;gap:8px;">
+          <input class="dfield-input" style="font-family:var(--mono);font-size:12px;flex:1;" type="text" id="ws-rule-product-input" placeholder="e.g. ws_vip_bundle">
+          <button class="btn btn-secondary" onclick="addWsRuleProductTag()" style="flex-shrink:0;">Add</button>
+        </div>
+        <div class="dfield-hint">Enter product SKUs that should be shown when this rule matches.</div>
+        <div class="reward-tag-row" id="ws-rule-product-tags"></div>
+      </div>
+    </div>
+    <!-- MoR Routing fields -->
+    <div id="ws-rule-mor-fields" style="display:none;">
+      <div class="dfield">
+        <label class="dfield-label">Provider <span style="color:var(--danger);">*</span></label>
+        <select class="sel" id="ws-rule-provider" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+          <option value="xsolla">Xsolla</option>
+          <option value="appcharge">AppCharge</option>
+        </select>
+      </div>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Priority <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" type="number" id="ws-rule-priority" placeholder="e.g. 1" min="1" style="width:120px;">
+      <div class="dfield-hint">Lower number = higher priority. Rules are evaluated in ascending order.</div>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" onclick="closeWsRuleDrawer()">Cancel</button>
+    <button class="btn btn-primary" onclick="closeWsRuleDrawer()">Add Rule</button>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  SDK RULE DRAWER                                         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="overlay" id="sdk-rule-overlay" onclick="closeSdkRuleDrawer()"></div>
+<div class="drawer" id="sdk-rule-drawer">
+  <div class="drawer-head">
+    <span class="drawer-title">Add SDK Rule</span>
+    <button class="drawer-close" onclick="closeSdkRuleDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="dfield">
+      <label class="dfield-label">Rule Name <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" type="text" id="sdk-rule-name" placeholder="e.g. Low value guard">
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Condition <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="sdk-rule-condition" placeholder="e.g. price &lt; $3.00">
+      <div class="dfield-hint">Evaluated against the current purchase context.</div>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Action <span style="color:var(--danger);">*</span></label>
+      <select class="sel" id="sdk-rule-action" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+        <option value="disable">Disable</option>
+        <option value="enable">Enable</option>
+      </select>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Target <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" type="text" id="sdk-rule-target" placeholder="e.g. Rook">
+      <div class="dfield-hint">The SDK feature or component this rule applies to.</div>
+    </div>
+    <div class="dfield">
+      <label class="dfield-label">Priority <span style="color:var(--danger);">*</span></label>
+      <input class="dfield-input" type="number" id="sdk-rule-priority" placeholder="e.g. 1" min="1" style="width:120px;">
+      <div class="dfield-hint">Lower number = higher priority. Rules are evaluated in ascending order.</div>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" onclick="closeSdkRuleDrawer()">Cancel</button>
+    <button class="btn btn-primary" onclick="closeSdkRuleDrawer()">Add Rule</button>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════ -->
 <!--  CREATE USER DRAWER                                      -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <div class="overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
@@ -2843,7 +2937,35 @@
     morEl.style.fontWeight = isShow ? 'normal' : '600';
   }
   function openWsRuleDrawer() {
-    // stub — out of scope per spec
+    const isMor = document.getElementById('ws-rules-mor').style.display !== 'none';
+    document.getElementById('ws-rule-show-fields').style.display = isMor ? 'none' : 'block';
+    document.getElementById('ws-rule-mor-fields').style.display = isMor ? 'block' : 'none';
+    document.getElementById('ws-rule-drawer-title').textContent = isMor ? 'Add MoR Routing Rule' : 'Add Show Product Rule';
+    document.getElementById('ws-rule-overlay').classList.add('open');
+    document.getElementById('ws-rule-drawer').classList.add('open');
+  }
+  function closeWsRuleDrawer() {
+    document.getElementById('ws-rule-overlay').classList.remove('open');
+    document.getElementById('ws-rule-drawer').classList.remove('open');
+    document.getElementById('ws-rule-name').value = '';
+    document.getElementById('ws-rule-condition').value = '';
+    document.getElementById('ws-rule-priority').value = '';
+    document.getElementById('ws-rule-product-input').value = '';
+    document.getElementById('ws-rule-product-tags').innerHTML = '';
+  }
+  function addWsRuleProductTag() {
+    const input = document.getElementById('ws-rule-product-input');
+    const val = input.value.trim();
+    if (!val) return;
+    const container = document.getElementById('ws-rule-product-tags');
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.style.cursor = 'pointer';
+    tag.title = 'Click to remove';
+    tag.textContent = val + ' ×';
+    tag.onclick = () => container.removeChild(tag);
+    container.appendChild(tag);
+    input.value = '';
   }
 
   // ── Toggle switch helper ─────────────────────────────────
@@ -2921,9 +3043,19 @@
     document.getElementById('ws-product-drawer').classList.remove('open');
   }
 
-  // ── SDK RULE DRAWER (stub) ────────────────────────────────
+  // ── SDK RULE DRAWER ───────────────────────────────────────
   function openSdkRuleDrawer() {
-    // stub — out of scope per spec
+    document.getElementById('sdk-rule-overlay').classList.add('open');
+    document.getElementById('sdk-rule-drawer').classList.add('open');
+  }
+  function closeSdkRuleDrawer() {
+    document.getElementById('sdk-rule-overlay').classList.remove('open');
+    document.getElementById('sdk-rule-drawer').classList.remove('open');
+    document.getElementById('sdk-rule-name').value = '';
+    document.getElementById('sdk-rule-condition').value = '';
+    document.getElementById('sdk-rule-target').value = '';
+    document.getElementById('sdk-rule-priority').value = '';
+    document.getElementById('sdk-rule-action').value = 'disable';
   }
 
   // ── Modal ────────────────────────────────────────────────
