@@ -5,14 +5,14 @@
             return cb ? cb.steps.find(s => s.id === stepId) : null;
         }
         function cbAddCallback() {
-            callbacks.push({ id: ++cbNextId, name: 'New Callback', steps: [{ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [] }] });
+            callbacks.push({ id: ++cbNextId, name: 'New Callback', steps: [{ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [], path: [] }] });
             cbRender();
         }
         function cbRemoveCallback(cbId) { callbacks = callbacks.filter(c => c.id !== cbId); cbRender(); }
         function cbUpdateCallbackName(cbId, v) { const cb = cbFindCallback(cbId); if (cb) cb.name = v; }
         function cbsAddStep(cbId) {
             const cb = cbFindCallback(cbId); if (!cb) return;
-            cb.steps.push({ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [] }); cbRender();
+            cb.steps.push({ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [], path: [] }); cbRender();
         }
         function cbsRemoveStep(cbId, stepId) {
             const cb = cbFindCallback(cbId); if (!cb) return;
@@ -31,6 +31,28 @@
         function cbsRemoveField(cbId, stepId, sec, fid) {
             const s = cbFindStepIn(cbId, stepId); if (!s) return;
             s[sec] = s[sec].filter(f => f.id !== fid); cbRender();
+        }
+        function cbsAddPathField(cbId, stepId) {
+            const s = cbFindStepIn(cbId, stepId); if (!s) return;
+            const newVal = CB_PREDEFINED[0].val;
+            if (!s.path) s.path = [];
+            s.path.push({ id: ++cbNextId, val: newVal });
+            s.url = s.url.replace(/\/+$/, '') + '/' + newVal;
+            cbRender();
+        }
+        function cbsRemovePathField(cbId, stepId, fid) {
+            const s = cbFindStepIn(cbId, stepId); if (!s) return;
+            const item = (s.path || []).find(f => f.id === fid);
+            if (item) s.url = s.url.replace('/' + item.val, '');
+            s.path = (s.path || []).filter(f => f.id !== fid);
+            cbRender();
+        }
+        function cbsSetPathVal(cbId, stepId, fid, newVal) {
+            const s = cbFindStepIn(cbId, stepId); if (!s) return;
+            const item = (s.path || []).find(f => f.id === fid); if (!item) return;
+            s.url = s.url.replace('/' + item.val, '/' + newVal);
+            item.val = newVal;
+            cbRender();
         }
         function cbsSetPred(cbId, stepId, sec, fid, pIdx, v) {
             const s = cbFindStepIn(cbId, stepId); if (!s) return;
@@ -211,8 +233,9 @@
         }
 
         function cbObjectBuilder(sid, sec, fid, pIdx, val) {
+            if (!val || val.mode !== 'object') val = cbDefaultSourceVal();
             const objDef = CB_SOURCE_OBJECTS.find(o => o.name === val.objectType) || CB_SOURCE_OBJECTS[0];
-            const rows = val.fields.map((f, i) => `
+            const rows = (val.fields || []).map((f, i) => `
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
         <input class="cb-key" type="text" placeholder="key" value="${f.key}"
           oninput="cbSetSourceFieldKey(${sid},'${sec}',${fid},${pIdx},${i},this.value)"
@@ -250,8 +273,8 @@
         style="flex:1;height:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;background:var(--surface);outline:none;">
     </div>`;
             }
-            if (pName === 'source') {
-                const val = (pVal && pVal.mode === 'object') ? pVal : cbDefaultSourceVal();
+            if (pName === 'source' || pName === 'dt') {
+                const val = (pVal && (pVal.mode === 'object' || pVal.mode === 'step_response')) ? pVal : cbDefaultSourceVal();
                 return `<div class="cb-fn-prow" style="align-items:flex-start;">
       <span class="cb-fn-pname">${pName}</span>
       <div style="flex:1;">${cbObjectBuilder(sid, sec, fid, pIdx, val)}</div>
@@ -338,12 +361,35 @@
     </div>`;
         }
 
+        function cbRenderPathSection(step, isCbs, cbId) {
+            const addFn = isCbs ? `cbsAddPathField(${cbId},${step.id})` : `cbAddPathField(${step.id})`;
+            const rows = (step.path || []).map(f => {
+                const removeFn = isCbs ? `cbsRemovePathField(${cbId},${step.id},${f.id})` : `cbRemovePathField(${step.id},${f.id})`;
+                const changeFn = isCbs ? `cbsSetPathVal(${cbId},${step.id},${f.id},this.value)` : `cbSetPathVal(${step.id},${f.id},this.value)`;
+                const opts = CB_PREDEFINED.map(p =>
+                    `<option value="${p.val}" ${f.val === p.val ? 'selected' : ''}>${p.label}</option>`
+                ).join('');
+                return `<div class="cb-kv" style="align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:var(--text-tertiary);flex-shrink:0;padding:0 4px 0 2px;">/</span>
+      <select style="flex:1;height:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;background:var(--surface);color:var(--accent);"
+        onchange="${changeFn}">${opts}</select>
+      <button class="btn-icon" onclick="${removeFn}" title="Remove" style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
+    </div>`;
+            }).join('');
+            return `<div class="cb-sec">
+  <div class="cb-sec-head">
+    <span class="cb-sec-label">Path Placeholders</span>
+    <button class="btn btn-ghost btn-sm" onclick="${addFn}">+ Add</button>
+  </div>
+  ${rows}
+</div>`;
+        }
+
         // cbRenderStep: renders the validation step (single step, uses cb* functions)
         function cbRenderStep(step) {
             return `
       <div class="cb-step">
         <div class="cb-step-head">
-          <input class="cb-name" type="text" value="${step.name}" oninput="cbUpdateName(${step.id},this.value)">
           <select class="cb-method" onchange="cbUpdateMethod(${step.id},this.value)">
             ${['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(m => `<option ${step.method === m ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
@@ -356,6 +402,7 @@
           </div>
           ${cbRenderSection(step, 'headers', 'Headers')}
           ${cbRenderSection(step, 'body', 'Body')}
+          ${cbRenderPathSection(step, false, null)}
         </div>
       </div>`;
         }
@@ -376,10 +423,23 @@
                     for (const m of _valExprStr(f.val).matchAll(re)) vars.add(m[1]);
                 }
             }
+            for (const f of (step.path || [])) {
+                for (const m of (f.val || '').matchAll(re)) vars.add(m[1]);
+            }
             return [...vars];
         }
 
         let _execCtx = null;
+
+        function _renderExecField(v, placeholder) {
+            return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <code style="font-size:12px;font-family:var(--mono);color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:var(--r-sm);width:180px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{${v}}}</code>
+                <input type="text" placeholder="${placeholder || 'test value…'}" data-var="${v}"
+                    style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);outline:none;"
+                    onfocus="this.style.borderColor='var(--accent)'"
+                    onblur="this.style.borderColor='var(--border)'">
+            </div>`;
+        }
 
         function openExecuteModal(stepId, cbId) {
             const step = (cbId != null) ? cbFindStepIn(cbId, stepId) : cbFindStep(stepId);
@@ -390,19 +450,19 @@
             document.getElementById('exec-modal-url').textContent = step.url || '';
             const varsEl = document.getElementById('exec-modal-vars');
             const emptyEl = document.getElementById('exec-modal-empty');
+            emptyEl.style.display = 'none';
+
+            const testUsersHtml = `
+                <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+                    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);margin-bottom:8px;">Test Users</div>
+                    ${_renderExecField('valid_test_user_id', 'e.g. user_sandbox_001')}
+                    ${_renderExecField('invalid_test_user_id', 'e.g. user_invalid_999')}
+                </div>`;
+
             if (vars.length === 0) {
-                varsEl.innerHTML = '';
-                emptyEl.style.display = 'block';
+                varsEl.innerHTML = testUsersHtml;
             } else {
-                emptyEl.style.display = 'none';
-                varsEl.innerHTML = vars.map(v => `
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                        <code style="font-size:12px;font-family:var(--mono);color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:var(--r-sm);width:180px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{${v}}}</code>
-                        <input type="text" placeholder="test value…" data-var="${v}"
-                            style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);outline:none;"
-                            onfocus="this.style.borderColor='var(--accent)'"
-                            onblur="this.style.borderColor='var(--border)'">
-                    </div>`).join('');
+                varsEl.innerHTML = testUsersHtml + vars.map(v => _renderExecField(v)).join('');
             }
             openModal('execute-modal');
         }
@@ -487,7 +547,7 @@
         style="flex:1;height:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;background:var(--surface);outline:none;">
     </div>`;
             }
-            if (pName === 'source') {
+            if (pName === 'source' || pName === 'dt') {
                 const val = (pVal && (pVal.mode === 'object' || pVal.mode === 'step_response')) ? pVal : cbDefaultSourceVal();
                 return `<div class="cb-fn-prow" style="align-items:flex-start;">
       <span class="cb-fn-pname">${pName}</span>
@@ -600,8 +660,6 @@
 
         function cbsRenderStep(cb, step, stepIdx) {
             const canRemove = cb.steps.length > 1;
-            const respId = `mock-resp-${step.id}`;
-            const chevId = `mock-chev-${step.id}`;
             return `
       <div class="cb-step" style="margin-bottom:8px;border-left:2px solid var(--border-subtle);padding-left:12px;">
         <div class="cb-step-head">
@@ -619,17 +677,7 @@
           </div>
           ${cbsRenderSection(cb, step, stepIdx, 'headers', 'Headers')}
           ${cbsRenderSection(cb, step, stepIdx, 'body', 'Body')}
-          ${step.mockResponse ? `
-          <div style="margin-top:10px;">
-            <button onclick="var p=document.getElementById('${respId}'),c=document.getElementById('${chevId}'),open=p.style.display!=='none';p.style.display=open?'none':'block';c.style.transform=open?'':'rotate(90deg)';"
-              style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;background:none;border:none;cursor:pointer;padding:0;">
-              <span id="${chevId}" style="font-size:9px;transition:transform 0.15s;">▶</span>
-              Response
-            </button>
-            <div id="${respId}" style="display:none;margin-top:6px;background:#f8fafc;border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;overflow:auto;max-height:220px;">
-              <pre style="margin:0;font-size:11px;font-family:var(--mono);color:#334155;line-height:1.6;">${JSON.stringify(step.mockResponse, null, 2)}</pre>
-            </div>
-          </div>` : ''}
+          ${cbRenderPathSection(step, true, cb.id)}
         </div>
       </div>`;
         }

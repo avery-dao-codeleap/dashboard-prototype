@@ -2,7 +2,8 @@
             id: 1, name: 'User Validation', method: 'POST',
             url: 'https://game.com/api/validate',
             headers: [{ id: 1, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
-            body: [{ id: 2, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } }]
+            body: [{ id: 2, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } }],
+            path: []
         };
         let callbacks = [
             {
@@ -15,6 +16,7 @@
                         { id: 4, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
                         { id: 5, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } },
                     ],
+                    path: [],
                     mockResponse: {
                         success: true,
                         transaction_id: "txn_9f3a2c1b4e",
@@ -48,6 +50,7 @@
                         { id: 7, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
                         { id: 8, key: 'reason', val: { mode: 'predefined', val: '{{refund_reason}}' } },
                     ],
+                    path: [],
                     mockResponse: {
                         success: true,
                         refund_id: "ref_7d4e1a9c2f",
@@ -88,6 +91,28 @@
         function cbRemoveField(sid, sec, fid) {
             const s = cbFindStep(sid); if (!s) return;
             s[sec] = s[sec].filter(f => f.id !== fid); cbRender();
+        }
+        function cbAddPathField(sid) {
+            const s = cbFindStep(sid); if (!s) return;
+            const newVal = CB_PREDEFINED[0].val;
+            if (!s.path) s.path = [];
+            s.path.push({ id: ++cbNextId, val: newVal });
+            s.url = s.url.replace(/\/+$/, '') + '/' + newVal;
+            cbRender();
+        }
+        function cbRemovePathField(sid, fid) {
+            const s = cbFindStep(sid); if (!s) return;
+            const item = (s.path || []).find(f => f.id === fid);
+            if (item) s.url = s.url.replace('/' + item.val, '');
+            s.path = (s.path || []).filter(f => f.id !== fid);
+            cbRender();
+        }
+        function cbSetPathVal(sid, fid, newVal) {
+            const s = cbFindStep(sid); if (!s) return;
+            const item = (s.path || []).find(f => f.id === fid); if (!item) return;
+            s.url = s.url.replace('/' + item.val, '/' + newVal);
+            item.val = newVal;
+            cbRender();
         }
 
         // ── Validation step: source object builder helpers ────────
