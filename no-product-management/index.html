@@ -281,12 +281,21 @@
 
                     <!-- Date range filter -->
                     <div class="an-filter-row">
-                        <button class="an-range-btn active">7D</button>
-                        <button class="an-range-btn">30D</button>
-                        <button class="an-range-btn">90D</button>
-                        <button class="an-range-btn">YTD</button>
-                        <button class="an-range-btn">12M</button>
-                        <button class="an-range-btn">Custom</button>
+                        <div class="an-select" id="an-range-select">
+                            <button class="an-select-trigger" onclick="toggleAnSelect('an-range-select')" type="button">
+                                <span class="an-select-value">Last 7 days</span>
+                                <svg class="an-select-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="an-select-content">
+                                <div class="an-select-item active" onclick="selectAnRange(this, 'Last 7 days')">Last 7 days</div>
+                                <div class="an-select-item" onclick="selectAnRange(this, 'Last 30 days')">Last 30 days</div>
+                                <div class="an-select-item" onclick="selectAnRange(this, 'Last 90 days')">Last 90 days</div>
+                                <div class="an-select-item" onclick="selectAnRange(this, 'Year to date')">Year to date</div>
+                                <div class="an-select-item" onclick="selectAnRange(this, 'Last 12 months')">Last 12 months</div>
+                                <div class="an-select-sep"></div>
+                                <div class="an-select-item" onclick="selectAnRange(this, 'Custom range')">Custom range</div>
+                            </div>
+                        </div>
                         <span class="an-filter-sep"></span>
                         <!-- <select class="sel" style="font-size:12px;">
                             <option>All Games</option>
@@ -1116,6 +1125,7 @@
 
                 <!-- ─── CONFIG ───────────────────────────────────────── -->
                 <div class="page" id="page-config">
+                    <!--
                     <div class="page-header">
                         <div>
                             <h1 class="page-title">Configuration</h1>
@@ -1126,7 +1136,7 @@
                         </div>
                     </div>
 
-                    <!-- General Information -->
+                    General Information
                     <div class="full-card" style="margin-bottom:20px;">
                         <div class="card-header">
                             <h2 class="card-title">General Information</h2>
@@ -1140,13 +1150,13 @@
                                 </div>
                             </div>
 
-                            <!-- Configuration Progress -->
+                            Configuration Progress
                             <div style="padding-top:20px;border-top:1px solid var(--border);">
                                 <h3
                                     style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">
                                     Configuration Progress</h3>
 
-                                <!-- Progress Bar -->
+                                Progress Bar
                                 <div style="margin-bottom:16px;">
                                     <div
                                         style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -1162,7 +1172,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Checklist -->
+                                Checklist
                                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                                     <div class="progress-item" data-field="validation-rule"
                                         onclick="scrollToField('validation-rule')"
@@ -1217,7 +1227,7 @@
                         </div>
                     </div>
 
-                    <!-- User Validation -->
+                    User Validation
                     <div class="full-card" style="margin-bottom:20px;">
                         <div class="card-header">
                             <h2 class="card-title">User Validation</h2>
@@ -1259,7 +1269,7 @@
                         </div>
                     </div>
 
-                    <!-- Callbacks -->
+                    Callbacks
                     <div class="full-card" style="margin-bottom:16px;">
                         <div class="card-header">
                             <span class="card-title">Callbacks</span>
@@ -1267,9 +1277,9 @@
                         </div>
                         <div class="card-body">
                             <div id="cb-steps"></div>
-                            <!-- <button class="btn btn-secondary btn-sm" onclick="cbAddCallback()"
+                            <button class="btn btn-secondary btn-sm" onclick="cbAddCallback()"
                                 style="margin-bottom:16px;">+
-                                Add Step</button> -->
+                                Add Step</button>
 
                             <div>
                                 <button class="btn btn-primary btn-sm">Save Changes</button>
@@ -1277,13 +1287,13 @@
                         </div>
                     </div>
 
-                    <!-- Provider tabs -->
+                    Provider tabs
                     <div class="tabs">
                         <button class="tab active" onclick="switchTab(this,'xsolla')">Xsolla</button>
 
                     </div>
 
-                    <!-- Export Configuration -->
+                    Export Configuration
                     <div
                         style="margin:20px 0;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
                         <button class="btn btn-primary" onclick="exportRookConfig()">Export RookConfig.json
@@ -1293,7 +1303,7 @@
                         </p>
                     </div>
 
-                    <!-- Xsolla tab content -->
+                    Xsolla tab content
                     <div id="tab-xsolla">
                         <div class="plat-card">
                             <div class="plat-body">
@@ -1323,7 +1333,7 @@
                         </div>
                     </div>
 
-                    <!-- AppCharge tab content (hidden) -->
+                    AppCharge tab content (hidden)
                     <div id="tab-appcharge" style="display:none;">
                         <div
                             style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
@@ -1334,6 +1344,10 @@
                                 to enable an additional payment provider for this game.</p>
                             <button class="btn btn-primary">Set up AppCharge</button>
                         </div>
+                    </div>
+                    -->
+                    <div style="display:flex;align-items:center;justify-content:center;height:300px;">
+                        <p style="font-size:15px;color:var(--text-primary);">We are working on it</p>
                     </div>
                 </div>
 
@@ -1465,156 +1479,10 @@
                             <p class="page-sub">Royal Revolt 2 · <span id="prod-env-label">Sandbox</span></p>
                         </div>
                     </div>
-
-                    <!-- Under construction notice -->
-                    <div
-                        style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);margin-bottom:20px;">
-                        <span style="font-size:20px;">🚧</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:600;color:#92400e;">Under active development</div>
-                            <div style="font-size:12px;color:#b45309;margin-top:2px;">Product management is being built
-                                out. Data shown below is read-only and for reference only.</div>
-                        </div>
-                    </div>
-
-                    <!-- Vitals -->
-                    <div class="vitals" style="margin-bottom:16px;">
-                        <div class="vital-card">
-                            <div class="vital-label">Total SKUs</div>
-                            <div class="vital-value">8</div>
-                            <div class="vital-delta delta-neutral">2 platforms</div>
-                        </div>
-                        <div class="vital-card">
-                            <div class="vital-label">Active</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-up">▲ 1 added last sync</div>
-                        </div>
-                        <div class="vital-card">
-                            <div class="vital-label">iOS SKUs</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-neutral">No change</div>
-                        </div>
-                        <div class="vital-card">
-                            <div class="vital-label">Android SKUs</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-neutral">No change</div>
-                        </div>
-                    </div>
-
-                    <!-- Provider sync status (read-only — syncs automatically) -->
-                    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
-                        <div
-                            style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
-                            <span style="color:var(--success);font-size:10px;">●</span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text-primary);">Xsolla</div>
-                                <div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sa-only"
-                            style="display:flex;align-items:center;gap:10px;background:var(--border-subtle);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
-                            <span style="color:var(--text-tertiary);font-size:10px;">○</span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text-secondary);">AppCharge</div>
-                                <div style="font-size:11px;color:var(--text-tertiary);">Not configured · <span
-                                        style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">Set up
-                                        in Config →</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product table -->
-                    <div class="table-wrap">
-                        <div class="table-head" style="flex-wrap:wrap;gap:10px;">
-                            <span class="table-head-title">Product Catalog</span>
-                            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
-                                <select class="sel">
-                                    <option>All platforms</option>
-                                    <option>iOS</option>
-                                    <option>Android</option>
-                                </select>
-                                <select class="sel">
-                                    <option>All statuses</option>
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                                <div class="search-wrap">
-                                    <span class="search-ico">🔍</span>
-                                    <input class="search-in" type="text" placeholder="Search SKU or name…">
-                                </div>
-                            </div>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>SKU</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Platforms</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="mono">gold_100</td>
-                                    <td><strong>Gold Pack 100</strong></td>
-                                    <td class="mono">$0.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">gold_500</td>
-                                    <td><strong>Gold Pack 500</strong></td>
-                                    <td class="mono">$4.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">gold_2000</td>
-                                    <td><strong>Gold Pack 2000</strong></td>
-                                    <td class="mono">$19.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">starter_bundle</td>
-                                    <td><strong>Starter Bundle</strong></td>
-                                    <td class="mono">$9.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">royal_shield_7d</td>
-                                    <td><strong>Royal Shield (7d)</strong></td>
-                                    <td class="mono">$2.99</td>
-                                    <td><span class="tag">iOS</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">season_pass_2025</td>
-                                    <td><strong>Season Pass 2025</strong></td>
-                                    <td class="mono">$24.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="pag">
-                            <span class="pag-meta">Showing 1–6 of 6 products</span>
-                            <div class="pag-controls">
-                                <button class="pag-btn" disabled>← Prev</button>
-                                <span class="pag-info">Page 1 of 1</span>
-                                <button class="pag-btn" disabled>Next →</button>
-                            </div>
-                        </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;color:var(--text-secondary);">
+                        <div style="font-size:48px;margin-bottom:16px;">🚧</div>
+                        <div style="font-size:18px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">Coming Soon</div>
+                        <div style="font-size:13px;color:var(--text-tertiary);">Product management is currently under development.</div>
                     </div>
                 </div>
 
@@ -1984,6 +1852,30 @@
     <script src="js/curl-builder.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/callbacks.js"></script>
+    <script>
+        function toggleAnSelect(id) {
+            const el = document.getElementById(id);
+            const isOpen = el.classList.contains('open');
+            // close all
+            document.querySelectorAll('.an-select.open').forEach(s => s.classList.remove('open'));
+            if (!isOpen) el.classList.add('open');
+        }
+
+        function selectAnRange(item, label) {
+            const content = item.closest('.an-select-content');
+            content.querySelectorAll('.an-select-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            item.closest('.an-select').querySelector('.an-select-value').textContent = label;
+            item.closest('.an-select').classList.remove('open');
+        }
+
+        // close on outside click
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.an-select')) {
+                document.querySelectorAll('.an-select.open').forEach(s => s.classList.remove('open'));
+            }
+        });
+    </script>
 </body>
 
 </html>
