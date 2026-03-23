@@ -108,7 +108,7 @@
 
         <!-- SANDBOX BANNER -->
         <div class="sb-banner visible" id="sb-banner">
-            ⚠ You are viewing <strong>Sandbox</strong> data — not real transactions
+            ⚠ You are viewing <strong>Sandbox</strong> data — not real orders
         </div>
 
         <div class="app-layout">
@@ -119,7 +119,7 @@
                         <span class="nav-icon">▦</span> Overview
                     </button>
                     <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
-                        <span class="nav-icon">↕</span> Transactions
+                        <span class="nav-icon">↕</span> Orders
                     </button>
                     <button class="nav-item" onclick="navigate('config')" id="nav-config">
                         <span class="nav-icon">⚙</span> Config
@@ -205,7 +205,7 @@
                     <!-- Recent transactions -->
                     <!-- <div class="table-wrap">
                         <div class="table-head">
-                            <span class="table-head-title">Recent Transactions</span>
+                            <span class="table-head-title">Recent Orders</span>
                         </div>
                         <table>
                             <thead>
@@ -274,8 +274,8 @@
                             </tbody>
                         </table>
                         <div class="tf">
-                            <span class="tf-meta">Last 5 transactions</span>
-                            <span class="tf-link" onclick="navigate('transactions')">View all transactions →</span>
+                            <span class="tf-meta">Last 5 orders</span>
+                            <span class="tf-link" onclick="navigate('transactions')">View all orders →</span>
                         </div>
                     </div> -->
 
@@ -785,6 +785,7 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Order ID</th>
+                                    <th>Transaction ID</th>
                                     <th>Game</th>
                                     <th>Product</th>
                                     <th>Player ID</th>
@@ -798,6 +799,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 14:31</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182736</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7291048</td>
                                     <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
                                     <td>Gem Pack 1200</td>
                                     <td style="font-family:var(--mono);font-size:11px;">USR-48291</td>
@@ -809,6 +811,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 14:28</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182735</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7289201</td>
                                     <td><span class="an-game-dot" style="background:#818cf8;"></span>Smurf Village</td>
                                     <td>Starter Bundle</td>
                                     <td style="font-family:var(--mono);font-size:11px;">USR-71049</td>
@@ -820,6 +823,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 14:22</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182734</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7281034</td>
                                     <td><span class="an-game-dot" style="background:#10b981;"></span>EMHQ</td>
                                     <td>Premium Season Pass</td>
                                     <td style="font-family:var(--mono);font-size:11px;">USR-33812</td>
@@ -831,6 +835,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 14:18</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182733</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7271188</td>
                                     <td><span class="an-game-dot" style="background:#f59e0b;"></span>War of Nations</td>
                                     <td>Gold 5000</td>
                                     <td style="font-family:var(--mono);font-size:11px;">USR-90124</td>
@@ -842,6 +847,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 14:09</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182732</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7268920</td>
                                     <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
                                     <td>Whale Bundle $99</td>
                                     <td style="font-family:var(--mono);font-size:11px;">USR-11203</td>
@@ -853,6 +859,7 @@
                                 <tr>
                                     <td style="color:var(--text-secondary);">2025-03-22 13:55</td>
                                     <td style="font-family:var(--mono);font-size:11px;">ORD-9182731</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7251093</td>
                                     <td><span class="an-game-dot" style="background:#e11d48;"></span>Kitchen Scramble
                                     </td>
                                     <td>Energy Refill x10</td>
@@ -873,7 +880,7 @@
                 <div class="page" id="page-transactions">
                     <div class="page-header">
                         <div>
-                            <h1 class="page-title">Transactions</h1>
+                            <h1 class="page-title">Orders</h1>
                             <p class="page-sub">Royal Revolt 2 · Sandbox</p>
                         </div>
                         <div class="page-actions">
@@ -908,6 +915,8 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Order ID</th>
+                                    <th>Transaction ID</th>
                                     <th>Invoice ID</th>
                                     <th>User ID</th>
                                     <th>Product</th>
@@ -920,6 +929,8 @@
                             </thead>
                             <tbody>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00821</td>
+                                    <td class="mono">TXN-9f3a2c1b</td>
                                     <td class="mono">INV-00821</td>
                                     <td class="mono">user_9821</td>
                                     <td>Gold Pack 500</td>
@@ -930,6 +941,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00820</td>
+                                    <td class="mono">TXN-4e8b1c3d</td>
                                     <td class="mono">INV-00820</td>
                                     <td class="mono">user_4401</td>
                                     <td>Starter Bundle</td>
@@ -940,6 +953,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00819</td>
+                                    <td class="mono">TXN-7a2f9e4c</td>
                                     <td class="mono">INV-00819</td>
                                     <td class="mono">user_3390</td>
                                     <td>Gold Pack 500</td>
@@ -950,6 +965,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00818</td>
+                                    <td class="mono">TXN-2d5c8b1a</td>
                                     <td class="mono">INV-00818</td>
                                     <td class="mono">user_7712</td>
                                     <td>Premium Pass</td>
@@ -960,6 +977,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00817</td>
+                                    <td class="mono">TXN-6f1e3d9b</td>
                                     <td class="mono">INV-00817</td>
                                     <td class="mono">user_2201</td>
                                     <td>Gold Pack 500</td>
@@ -970,6 +989,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00816</td>
+                                    <td class="mono">TXN-8c4a7e2f</td>
                                     <td class="mono">INV-00816</td>
                                     <td class="mono">user_8843</td>
                                     <td>Starter Bundle</td>
@@ -980,6 +1001,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00815</td>
+                                    <td class="mono">TXN-3b6d1f8e</td>
                                     <td class="mono">INV-00815</td>
                                     <td class="mono">user_1102</td>
                                     <td>Premium Pass</td>
@@ -990,6 +1013,8 @@
                                     <td class="arrow-icon">→</td>
                                 </tr>
                                 <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">ORD-00814</td>
+                                    <td class="mono">TXN-5e9c2a7d</td>
                                     <td class="mono">INV-00814</td>
                                     <td class="mono">user_5530</td>
                                     <td>Gold Pack 500</td>
@@ -1014,7 +1039,7 @@
 
                 <!-- ─── TRANSACTION DETAIL ────────────────────────────── -->
                 <div class="page" id="page-txn-detail">
-                    <button class="back-btn" onclick="navigate('transactions')">← Back to Transactions</button>
+                    <button class="back-btn" onclick="navigate('transactions')">← Back to Orders</button>
 
                     <div class="page-header">
                         <div class="flex items-center gap-8">
@@ -1036,7 +1061,7 @@
 
                     <div class="detail-grid">
                         <div class="full-card">
-                            <div class="card-header"><span class="card-title">Transaction Details</span></div>
+                            <div class="card-header"><span class="card-title">Order Details</span></div>
                             <div class="card-body">
                                 <div class="detail-row"><span class="dk">Invoice ID</span><span
                                         class="dv mono">INV-00821</span></div>
@@ -1198,50 +1223,37 @@
                             <h2 class="card-title">User Validation</h2>
                         </div>
                         <div class="card-body">
-                            <!-- User Validation step -->
                             <div id="user-validation-step"></div>
-                        </div>
-                    </div>
 
-                    <!-- Validation Rules -->
-                    <div class="full-card" style="margin-bottom:20px;">
-                        <div class="card-header">
-                            <h2 class="card-title">Validation Rules</h2>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size:13px;color:#64748b;margin-bottom:12px;">
-                                The rule must be written in JMESPath syntax. <a href="https://jmespath.org/"
-                                    target="_blank" rel="noopener" style="color:var(--accent);">https://jmespath.org/
-                                    ↗</a>
-                            </p>
-
-                            <div class="ep-row">
-                                <span class="ep-label">Validation Rule (JMESPath)</span>
-                                <input id="validation-rule" class="ep-input" type="text"
-                                    value="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
-                                    placeholder="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
-                                    style="font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;">
-                            </div>
-
-                            <!-- Test User IDs -->
-                            <div
-                                style="margin-top:16px;margin-bottom:4px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
-                                <div
-                                    style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">
-                                    Test User IDs</div>
-                                <div class="ep-row" style="margin-bottom:8px;">
-                                    <span class="ep-label" style="width:180px;">Valid Test User ID</span>
-                                    <input id="valid-test-user-id" class="ep-input" type="text" value="user_sandbox_001"
-                                        placeholder="A user ID that should pass validation">
+                            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+                                <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Validation Rule</div>
+                                <p style="font-size:13px;color:#64748b;margin-bottom:12px;">
+                                    The rule must be written in JMESPath syntax. <a href="https://jmespath.org/"
+                                        target="_blank" rel="noopener" style="color:var(--accent);">https://jmespath.org/ ↗</a>
+                                </p>
+                                <div class="ep-row">
+                                    <span class="ep-label">Validation Rule (JMESPath)</span>
+                                    <input id="validation-rule" class="ep-input" type="text"
+                                        value="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                                        placeholder="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                                        style="font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;">
                                 </div>
-                                <div class="ep-row" style="margin-bottom:0;">
-                                    <span class="ep-label" style="width:180px;">Invalid Test User ID</span>
-                                    <input id="invalid-test-user-id" class="ep-input" type="text" value=""
-                                        placeholder="A user ID that should fail validation">
+                                <div style="margin-top:16px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
+                                    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Test User IDs</div>
+                                    <div class="ep-row" style="margin-bottom:8px;">
+                                        <span class="ep-label" style="width:180px;">Valid Test User ID</span>
+                                        <input id="valid-test-user-id" class="ep-input" type="text" value="user_sandbox_001"
+                                            placeholder="A user ID that should pass validation">
+                                    </div>
+                                    <div class="ep-row" style="margin-bottom:0;">
+                                        <span class="ep-label" style="width:180px;">Invalid Test User ID</span>
+                                        <input id="invalid-test-user-id" class="ep-input" type="text" value=""
+                                            placeholder="A user ID that should fail validation">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div style="margin-top:12px;">
+                            <div style="margin-top:16px;">
                                 <button class="btn btn-primary btn-sm">Save Changes</button>
                             </div>
                         </div>
@@ -1647,7 +1659,7 @@
                         <div class="sup-search-row">
                             <select class="sup-search-type">
                                 <option>Order ID</option>
-                                <option>Transaction ID</option>
+                                <option>Order ID</option>
                                 <option>Game User ID</option>
                                 <option>Platform User ID</option>
                                 <option>Webstore User ID</option>
@@ -1729,7 +1741,7 @@
                                             <th>Order ID</th>
                                             <th>Product</th>
                                             <th>Amount</th>
-                                            <th>Transaction ID</th>
+                                            <th>Order ID</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -1899,7 +1911,7 @@
     <div class="modal-ov" id="csv-modal">
         <div class="modal">
             <div class="modal-head">
-                <span class="modal-title">Export Transactions</span>
+                <span class="modal-title">Export Orders</span>
                 <button class="drawer-close" onclick="closeModal('csv-modal')">✕</button>
             </div>
             <div class="modal-body">
