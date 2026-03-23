@@ -1,17 +1,17 @@
         // ── CURL Builder ─────────────────────────────────────────
 
         const CB_PREDEFINED = [
-            { label: 'user_id', val: '{{user_id}}' },
-            { label: 'invoice_id', val: '{{invoice_id}}' },
-            { label: 'product_sku', val: '{{product_sku}}' },
-            { label: 'platform', val: '{{platform}}' },
-            { label: 'environment', val: '{{environment}}' },
-            { label: 'amount', val: '{{amount}}' },
-            { label: 'currency', val: '{{currency}}' },
-            { label: 'app_id', val: '{{app_id}}' },
-            { label: 'valid_test_user_id', val: '{{valid_test_user_id}}' },
-            { label: 'invalid_test_user_id', val: '{{invalid_test_user_id}}' },
-            { label: 'refund_reason', val: '{{refund_reason}}' },
+            { label: '{{user_id}}', val: '{{user_id}}' },
+            { label: '{{invoice_id}}', val: '{{invoice_id}}' },
+            { label: '{{product_sku}}', val: '{{product_sku}}' },
+            { label: '{{platform}}', val: '{{platform}}' },
+            { label: '{{environment}}', val: '{{environment}}' },
+            { label: '{{amount}}', val: '{{amount}}' },
+            { label: '{{currency}}', val: '{{currency}}' },
+            { label: '{{app_id}}', val: '{{app_id}}' },
+            { label: '{{valid_test_user_id}}', val: '{{valid_test_user_id}}' },
+            { label: '{{invalid_test_user_id}}', val: '{{invalid_test_user_id}}' },
+            { label: '{{refund_reason}}', val: '{{refund_reason}}' },
         ];
 
         const CB_FUNCTIONS = [

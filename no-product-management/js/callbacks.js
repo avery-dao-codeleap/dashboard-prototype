@@ -206,7 +206,6 @@
                 return `<div class="cb-pval-opt ${sel}" onclick="cbSetPred(${sid},'${sec}',${fid},${pIdx},'${p.val}')">
         <div class="cb-pval-radio"></div>
         <span class="cb-pval-name">${p.label}</span>
-        <span class="cb-pval-code">${p.val}</span>
       </div>`;
             }).join('');
         }
@@ -348,7 +347,7 @@
           <select class="cb-method" onchange="cbUpdateMethod(${step.id},this.value)">
             ${['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(m => `<option ${step.method === m ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
-          <button class="btn btn-primary btn-sm" onclick="cbExecuteStep(${step.id},this)" style="margin-left:auto;flex-shrink:0;">Execute</button>
+          <button class="btn btn-primary btn-sm" onclick="openExecuteModal(${step.id},null)" style="margin-left:auto;flex-shrink:0;">Execute</button>
         </div>
         <div class="cb-step-body">
           <div class="cb-url-row">
@@ -361,26 +360,65 @@
       </div>`;
         }
 
-        function cbExecuteStep(stepId, btn) {
-            btn.disabled = true;
-            btn.textContent = 'Running…';
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = 'Execute';
-                const panel = document.getElementById('mock-resp-' + stepId);
-                if (panel) { panel.style.display = 'block'; const chev = document.getElementById('mock-chev-' + stepId); if (chev) chev.style.transform = 'rotate(90deg)'; }
-            }, 800);
+        function _valExprStr(v) {
+            if (!v) return '';
+            if (v.mode === 'predefined' || v.mode === 'custom') return v.val || '';
+            return '';
         }
 
-        function cbsExecuteStep(cbId, stepId, btn) {
+        function _extractStepVars(step) {
+            const vars = new Set();
+            const re = /\{\{(\w+)\}\}/g;
+            for (const m of (step.url || '').matchAll(re)) vars.add(m[1]);
+            for (const sec of ['headers', 'body']) {
+                for (const f of (step[sec] || [])) {
+                    for (const m of (f.key || '').matchAll(re)) vars.add(m[1]);
+                    for (const m of _valExprStr(f.val).matchAll(re)) vars.add(m[1]);
+                }
+            }
+            return [...vars];
+        }
+
+        let _execCtx = null;
+
+        function openExecuteModal(stepId, cbId) {
+            const step = (cbId != null) ? cbFindStepIn(cbId, stepId) : cbFindStep(stepId);
+            if (!step) return;
+            _execCtx = { stepId, cbId: cbId != null ? cbId : null };
+            const vars = _extractStepVars(step);
+            document.getElementById('exec-modal-title').textContent = step.name || step.url || 'Execute Step';
+            document.getElementById('exec-modal-url').textContent = step.url || '';
+            const varsEl = document.getElementById('exec-modal-vars');
+            const emptyEl = document.getElementById('exec-modal-empty');
+            if (vars.length === 0) {
+                varsEl.innerHTML = '';
+                emptyEl.style.display = 'block';
+            } else {
+                emptyEl.style.display = 'none';
+                varsEl.innerHTML = vars.map(v => `
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <code style="font-size:12px;font-family:var(--mono);color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:var(--r-sm);width:180px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{${v}}}</code>
+                        <input type="text" placeholder="test value…" data-var="${v}"
+                            style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);outline:none;"
+                            onfocus="this.style.borderColor='var(--accent)'"
+                            onblur="this.style.borderColor='var(--border)'">
+                    </div>`).join('');
+            }
+            openModal('execute-modal');
+        }
+
+        function runExecuteModal() {
+            const btn = document.getElementById('exec-modal-run');
             btn.disabled = true;
             btn.textContent = 'Running…';
             setTimeout(() => {
                 btn.disabled = false;
-                btn.textContent = 'Execute';
-                const panel = document.getElementById('mock-resp-' + stepId);
-                if (panel) { panel.style.display = 'block'; const chev = document.getElementById('mock-chev-' + stepId); if (chev) chev.style.transform = 'rotate(90deg)'; }
-            }, 800);
+                btn.textContent = 'Run';
+                closeModal('execute-modal');
+                if (!_execCtx) return;
+                const panel = document.getElementById('mock-resp-' + _execCtx.stepId);
+                if (panel) { panel.style.display = 'block'; const chev = document.getElementById('mock-chev-' + _execCtx.stepId); if (chev) chev.style.transform = 'rotate(90deg)'; }
+            }, 900);
         }
 
         // ── Callback render functions (cbs* uses cbId + stepId) ──────
@@ -390,7 +428,6 @@
                 return `<div class="cb-pval-opt ${sel}" onclick="cbsSetPred(${cbId},${stepId},'${sec}',${fid},${pIdx != null ? pIdx : 'null'},'${p.val}')">
         <div class="cb-pval-radio"></div>
         <span class="cb-pval-name">${p.label}</span>
-        <span class="cb-pval-code">${p.val}</span>
       </div>`;
             }).join('');
         }
@@ -572,7 +609,7 @@
           <select class="cb-method" onchange="cbsUpdateMethod(${cb.id},${step.id},this.value)">
             ${['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(m => `<option ${step.method === m ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
-          <button class="btn btn-primary btn-sm" onclick="cbsExecuteStep(${cb.id},${step.id},this)" style="margin-left:auto;flex-shrink:0;">Execute</button>
+          <button class="btn btn-primary btn-sm" onclick="openExecuteModal(${step.id},${cb.id})" style="margin-left:auto;flex-shrink:0;">Execute</button>
           ${canRemove ? `<button class="btn-icon" onclick="cbsRemoveStep(${cb.id},${step.id})" title="Remove step" style="font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>` : ''}
         </div>
         <div class="cb-step-body">
