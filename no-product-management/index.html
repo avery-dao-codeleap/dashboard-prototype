@@ -200,79 +200,10 @@
                     </div> -->
 
                     <!-- Charts row -->
-                    <div class="charts-row">
-                        <div class="chart-card">
-                            <div class="chart-head">
-                                <span class="chart-title">Revenue over time</span>
-                                <div class="chart-legend">
-                                    <div class="leg-item">
-                                        <div class="leg-dot" style="background:#4f46e5"></div>Revenue
-                                    </div>
-                                    <div class="leg-item">
-                                        <div class="leg-dot" style="background:#f43f5e"></div>Refunds
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="chart-body">
-                                <svg viewBox="0 0 560 150" preserveAspectRatio="none" style="height:150px;">
-                                    <defs>
-                                        <linearGradient id="rev-grad" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.12" />
-                                            <stop offset="100%" stop-color="#4f46e5" stop-opacity="0" />
-                                        </linearGradient>
-                                    </defs>
-                                    <!-- Revenue area fill -->
-                                    <path
-                                        d="M0,110 C40,105 80,98 120,88 C160,78 200,72 240,60 C280,48 320,42 360,35 C400,28 440,22 480,16 C510,12 540,8 560,5 L560,150 L0,150 Z"
-                                        fill="url(#rev-grad)" />
-                                    <!-- Revenue line -->
-                                    <path
-                                        d="M0,110 C40,105 80,98 120,88 C160,78 200,72 240,60 C280,48 320,42 360,35 C400,28 440,22 480,16 C510,12 540,8 560,5"
-                                        fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" />
-                                    <!-- Refunds line -->
-                                    <path
-                                        d="M0,140 C40,139 80,138 120,136 C160,134 200,133 240,131 C280,130 320,129 360,130 C400,131 440,132 480,133 C510,134 540,135 560,136"
-                                        fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-dasharray="3,2" />
-                                    <!-- X axis labels -->
-                                    <text x="0" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Aug</text>
-                                    <text x="80" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Sep</text>
-                                    <text x="160" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Oct</text>
-                                    <text x="240" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Nov</text>
-                                    <text x="320" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Dec</text>
-                                    <text x="400" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Jan</text>
-                                    <text x="490" y="148" font-size="10" fill="#94a3b8"
-                                        font-family="Plus Jakarta Sans">Feb</text>
-                                </svg>
-                            </div>
-                        </div>
 
-                        <div class="quick-stats">
-                            <div class="qs-title">Quick stats</div>
-                            <div class="qs-item"><span class="qs-label">Transactions</span><span
-                                    class="qs-val">3,241</span></div>
-                            <div class="qs-item"><span class="qs-label">Unique buyers</span><span
-                                    class="qs-val">892</span></div>
-                            <div class="qs-item"><span class="qs-label">Avg order</span><span
-                                    class="qs-val">$4.80</span></div>
-                            <div class="qs-item"><span class="qs-label">Refund rate</span><span
-                                    class="qs-val">0.4%</span></div>
-                            <div class="qs-divider"></div>
-                            <div class="qs-item"><span class="qs-label">Fees est.</span><span
-                                    class="qs-val">$12,480</span></div>
-                            <div class="qs-item"><span class="qs-label">Fees saved</span><span class="qs-val"
-                                    style="color:var(--success);">$2,840</span></div>
-                        </div>
-                    </div>
 
                     <!-- Recent transactions -->
-                    <div class="table-wrap">
+                    <!-- <div class="table-wrap">
                         <div class="table-head">
                             <span class="table-head-title">Recent Transactions</span>
                         </div>
@@ -346,7 +277,7 @@
                             <span class="tf-meta">Last 5 transactions</span>
                             <span class="tf-link" onclick="navigate('transactions')">View all transactions →</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Date range filter -->
                     <div class="an-filter-row">
@@ -357,14 +288,14 @@
                         <button class="an-range-btn">12M</button>
                         <button class="an-range-btn">Custom</button>
                         <span class="an-filter-sep"></span>
-                        <select class="sel" style="font-size:12px;">
+                        <!-- <select class="sel" style="font-size:12px;">
                             <option>All Games</option>
                             <option>Royal Revolt 2 (Android)</option>
                             <option>Smurf Village (iOS)</option>
                             <option>EMHQ (Android)</option>
                             <option>War of Nations (iOS)</option>
                             <option>Kitchen Scramble (iOS)</option>
-                        </select>
+                        </select> -->
                     </div>
 
                     <!-- KPI cards -->
@@ -2005,14 +1936,19 @@
             <div class="modal-head">
                 <div>
                     <span class="modal-title" id="exec-modal-title">Execute Step</span>
-                    <div id="exec-modal-url" style="font-size:11px;font-family:var(--mono);color:var(--text-tertiary);margin-top:2px;"></div>
+                    <div id="exec-modal-url"
+                        style="font-size:11px;font-family:var(--mono);color:var(--text-tertiary);margin-top:2px;"></div>
                 </div>
                 <button class="drawer-close" onclick="closeModal('execute-modal')">✕</button>
             </div>
             <div class="modal-body">
-                <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">Provide test values for each template variable used in this step.</p>
+                <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">Provide test values for each
+                    template variable used in this step.</p>
                 <div id="exec-modal-vars"></div>
-                <div id="exec-modal-empty" style="display:none;text-align:center;padding:20px 0;color:var(--text-tertiary);font-size:13px;">No <code style="font-family:var(--mono);">{{variables}}</code> found in this step.</div>
+                <div id="exec-modal-empty"
+                    style="display:none;text-align:center;padding:20px 0;color:var(--text-tertiary);font-size:13px;">No
+                    <code style="font-family:var(--mono);">{{variables}}</code> found in this step.
+                </div>
             </div>
             <div class="modal-foot">
                 <button class="btn btn-ghost" onclick="closeModal('execute-modal')">Cancel</button>
