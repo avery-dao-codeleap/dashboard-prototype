@@ -10,2366 +10,18 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --surface-hover: #f8fafc;
-            --border: #e2e8f0;
-            --border-subtle: #f1f5f9;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-tertiary: #94a3b8;
-            --accent: #4f46e5;
-            --accent-hover: #4338ca;
-            --accent-light: #eef2ff;
-            --success: #16a34a;
-            --success-light: #dcfce7;
-            --success-border: #bbf7d0;
-            --warning: #d97706;
-            --warning-light: #fffbeb;
-            --warning-border: #fde68a;
-            --danger: #e11d48;
-            --danger-light: #fff1f2;
-            --danger-border: #fecdd3;
-            --sidebar-width: 220px;
-            --topbar-height: 56px;
-            --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
-            --mono: 'IBM Plex Mono', 'Courier New', monospace;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
-            --r: 8px;
-            --r-sm: 6px;
-            --r-lg: 12px;
-        }
-
-        html,
-        body {
-            height: 100%;
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text-primary);
-            font-size: 14px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ── LOGIN ────────────────────────────────────────────── */
-        #login-screen {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg);
-            position: relative;
-        }
-
-        #login-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(ellipse 55% 45% at 15% 15%, rgba(79, 70, 229, 0.07) 0%, transparent 65%),
-                radial-gradient(ellipse 45% 55% at 85% 85%, rgba(129, 140, 248, 0.05) 0%, transparent 65%);
-        }
-
-        .login-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r-lg);
-            padding: 40px;
-            width: 400px;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 32px;
-        }
-
-        .logo-mark {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .logo-text {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .login-heading {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.4px;
-            margin-bottom: 5px;
-        }
-
-        .login-sub {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-
-        .field {
-            margin-bottom: 16px;
-        }
-
-        .field-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-        }
-
-        .field-wrap {
-            position: relative;
-        }
-
-        .field-input {
-            width: 100%;
-            height: 40px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 12px;
-            font-family: var(--font);
-            font-size: 14px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            transition: border-color .15s, box-shadow .15s;
-        }
-
-        .field-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
-        }
-
-        .field-input.pr {
-            padding-right: 48px;
-        }
-
-        .field-action {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-tertiary);
-            font-size: 12px;
-            font-weight: 600;
-            font-family: var(--font);
-            padding: 2px 4px;
-            border-radius: 4px;
-            transition: color .12s;
-        }
-
-        .field-action:hover {
-            color: var(--accent);
-        }
-
-        .login-forgot {
-            text-align: center;
-            margin-top: 14px;
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-
-        /* ── BUTTONS ─────────────────────────────────────────── */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            height: 36px;
-            padding: 0 14px;
-            border-radius: var(--r-sm);
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all .15s;
-            border: 1px solid transparent;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-        }
-
-        .btn-secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border-color: var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg);
-            border-color: #cbd5e1;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-secondary);
-            border-color: transparent;
-        }
-
-        .btn-ghost:hover {
-            background: var(--bg);
-            color: var(--text-primary);
-        }
-
-        .btn-icon {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            padding: 4px 8px;
-            height: auto;
-            min-width: auto;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all .15s;
-        }
-
-        .btn-icon:hover {
-            background: var(--bg);
-            color: var(--text-primary);
-        }
-
-        .btn-full {
-            width: 100%;
-        }
-
-        .btn-sm {
-            height: 30px;
-            padding: 0 10px;
-            font-size: 12px;
-        }
-
-        .btn-lg {
-            height: 40px;
-            padding: 0 18px;
-            font-size: 14px;
-        }
-
-        /* ── APP SHELL ───────────────────────────────────────── */
-        #app-shell {
-            display: none;
-            height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
-        }
-
-        #app-shell.visible {
-            display: flex;
-        }
-
-        /* TOP BAR */
-        .topbar {
-            height: var(--topbar-height);
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 0;
-            flex-shrink: 0;
-            z-index: 100;
-        }
-
-        .topbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            padding-right: 20px;
-            border-right: 1px solid var(--border);
-            margin-right: 16px;
-        }
-
-        .tb-logo-mark {
-            width: 26px;
-            height: 26px;
-            background: var(--accent);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .tb-logo-text {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.2px;
-        }
-
-        .topbar-mid {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
-
-        /* Game switcher */
-        .game-sw {
-            position: relative;
-        }
-
-        .game-sw-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            height: 32px;
-            padding: 0 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: all .15s;
-        }
-
-        .game-sw-btn:hover {
-            background: white;
-            border-color: #cbd5e1;
-        }
-
-        .g-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--accent);
-            flex-shrink: 0;
-        }
-
-        .chev {
-            color: var(--text-tertiary);
-            font-size: 10px;
-            margin-left: 2px;
-        }
-
-        .dropdown {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow-lg);
-            min-width: 210px;
-            z-index: 1000;
-            overflow: hidden;
-            display: none;
-        }
-
-        .dropdown.open {
-            display: block;
-        }
-
-        .dd-header {
-            padding: 8px 12px 6px;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: .07em;
-        }
-
-        .dd-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            transition: background .1s;
-        }
-
-        .dd-item:hover {
-            background: var(--bg);
-        }
-
-        .dd-item.active {
-            background: var(--accent-light);
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .dd-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 4px 0;
-        }
-
-        /* Env toggle */
-        .env-toggle {
-            display: flex;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 3px;
-            gap: 2px;
-        }
-
-        .env-btn {
-            height: 26px;
-            padding: 0 12px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-family: var(--font);
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            background: transparent;
-            transition: all .15s;
-        }
-
-        .env-btn.active {
-            background: var(--surface);
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .env-btn.active.prod {
-            color: var(--accent);
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-left: auto;
-        }
-
-        .user-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            height: 32px;
-            padding: 0 10px;
-            border: 1px solid transparent;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            background: transparent;
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            transition: all .15s;
-        }
-
-        .user-btn:hover {
-            background: var(--bg);
-            border-color: var(--border);
-        }
-
-        .user-av {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: var(--accent-light);
-            color: var(--accent);
-            font-size: 10px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Sandbox banner */
-        .sb-banner {
-            background: var(--warning-light);
-            border-bottom: 1px solid var(--warning-border);
-            padding: 7px 20px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--warning);
-            display: none;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .sb-banner.visible {
-            display: flex;
-        }
-
-        /* Layout */
-        .app-layout {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .sb-section {
-            padding: 12px 10px 4px;
-        }
-
-        .sb-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            padding: 0 8px;
-            margin-bottom: 3px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            height: 34px;
-            padding: 0 8px;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: all .12s;
-            position: relative;
-            user-select: none;
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            font-family: var(--font);
-        }
-
-        .nav-item:hover {
-            background: var(--bg);
-            color: var(--text-primary);
-        }
-
-        .nav-item.active {
-            background: var(--accent-light);
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 5px;
-            bottom: 5px;
-            width: 3px;
-            background: var(--accent);
-            border-radius: 0 3px 3px 0;
-        }
-
-        .nav-icon {
-            font-size: 15px;
-            width: 18px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .nav-badge {
-            margin-left: auto;
-            font-size: 10px;
-            font-weight: 600;
-            background: #f1f5f9;
-            color: var(--text-tertiary);
-            padding: 2px 6px;
-            border-radius: 20px;
-        }
-
-        .nav-item.disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
-        .nav-item.disabled:hover {
-            background: transparent;
-            color: var(--text-secondary);
-        }
-
-        .sb-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 8px 10px;
-        }
-
-        .sb-bottom {
-            margin-top: auto;
-            padding: 10px;
-        }
-
-        /* MAIN */
-        .main {
-            flex: 1;
-            overflow-y: auto;
-            background: var(--bg);
-        }
-
-        .page {
-            display: none;
-            padding: 32px;
-            max-width: 1100px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .page-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 28px;
-        }
-
-        .page-title {
-            font-size: 21px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.4px;
-        }
-
-        .page-sub {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 3px;
-        }
-
-        .page-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* CARDS */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-        }
-
-        .card-header {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .card-body {
-            padding: 18px;
-        }
-
-        /* ── OVERVIEW ─────────────────────────────────────────── */
-        .vitals {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .vital-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            padding: 18px 20px;
-            box-shadow: var(--shadow);
-            transition: transform .15s, box-shadow .15s;
-            cursor: default;
-        }
-
-        .vital-card:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .vital-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            margin-bottom: 10px;
-        }
-
-        .vital-value {
-            font-family: var(--mono);
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-            line-height: 1;
-        }
-
-        .vital-delta {
-            font-size: 11px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .delta-up {
-            color: var(--success);
-        }
-
-        .delta-down {
-            color: var(--danger);
-        }
-
-        .delta-neutral {
-            color: var(--text-tertiary);
-        }
-
-        .charts-row {
-            display: grid;
-            grid-template-columns: 1fr 260px;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .chart-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .chart-head {
-            padding: 14px 18px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chart-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .chart-legend {
-            display: flex;
-            gap: 14px;
-        }
-
-        .leg-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .leg-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .chart-body {
-            padding: 0 18px 16px;
-        }
-
-        .chart-body svg {
-            width: 100%;
-            height: 150px;
-        }
-
-        .quick-stats {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            padding: 18px;
-        }
-
-        .qs-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 14px;
-        }
-
-        .qs-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .qs-item:last-child {
-            border-bottom: none;
-        }
-
-        .qs-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .qs-val {
-            font-family: var(--mono);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .qs-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 8px 0;
-        }
-
-        /* TABLE */
-        .table-wrap {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .table-head {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .table-head-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 9px 16px;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-        }
-
-        td {
-            padding: 12px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            vertical-align: middle;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr {
-            transition: background .1s;
-            cursor: pointer;
-        }
-
-        tbody tr:hover {
-            background: #fafbff;
-        }
-
-        .tf {
-            padding: 12px 18px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tf-link {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .tf-link:hover {
-            color: var(--accent-hover);
-        }
-
-        .tf-meta {
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-
-        /* BADGES */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .badge::before {
-            content: '';
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: currentColor;
-            flex-shrink: 0;
-        }
-
-        .badge-paid {
-            background: var(--success-light);
-            color: var(--success);
-            border: 1px solid var(--success-border);
-        }
-
-        .badge-refunded {
-            background: var(--danger-light);
-            color: var(--danger);
-            border: 1px solid var(--danger-border);
-        }
-
-        .badge-cancelled {
-            background: #f1f5f9;
-            color: #94a3b8;
-            border: 1px solid var(--border);
-        }
-
-        .badge-pending {
-            background: var(--warning-light);
-            color: var(--warning);
-            border: 1px solid var(--warning-border);
-        }
-
-        .badge-approved {
-            background: var(--success-light);
-            color: var(--success);
-            border: 1px solid var(--success-border);
-        }
-
-        .badge-active {
-            background: var(--success-light);
-            color: var(--success);
-            border: 1px solid var(--success-border);
-        }
-
-        .badge-invited {
-            background: #f0f9ff;
-            color: #0369a1;
-            border: 1px solid #bae6fd;
-        }
-
-        /* FILTERS */
-        .filters {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .sel {
-            height: 32px;
-            padding: 0 28px 0 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            background: var(--surface);
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 9px center;
-        }
-
-        .sel:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .search-wrap {
-            position: relative;
-        }
-
-        .search-in {
-            width: 220px;
-            height: 32px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 12px 0 32px;
-            font-family: var(--font);
-            font-size: 13px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            transition: border-color .15s;
-        }
-
-        .search-in:focus {
-            border-color: var(--accent);
-        }
-
-        .search-ico {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-tertiary);
-            font-size: 13px;
-            pointer-events: none;
-        }
-
-        /* PAGINATION */
-        .pag {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .pag-meta {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .pag-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pag-btn {
-            height: 30px;
-            padding: 0 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            background: var(--surface);
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all .12s;
-        }
-
-        .pag-btn:hover:not(:disabled) {
-            border-color: #cbd5e1;
-            color: var(--text-primary);
-        }
-
-        .pag-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pag-info {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            padding: 0 4px;
-        }
-
-        /* ── TRANSACTION DETAIL ──────────────────────────────── */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: color .15s;
-            border: none;
-            background: none;
-            padding: 0;
-            font-family: var(--font);
-        }
-
-        .back-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 14px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 13px;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .dk {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .dv {
-            font-weight: 500;
-            color: var(--text-primary);
-            text-align: right;
-        }
-
-        .dv.mono {
-            font-family: var(--mono);
-            font-size: 12px;
-        }
-
-        /* Timeline */
-        .timeline-item {
-            display: flex;
-            gap: 12px;
-            padding: 9px 0;
-            position: relative;
-        }
-
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 26px;
-            bottom: -4px;
-            width: 1px;
-            background: var(--border);
-        }
-
-        .tl-dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            background: var(--surface);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .tl-dot.filled {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .tl-dot.success {
-            background: var(--success);
-            border-color: var(--success);
-        }
-
-        .tl-content {
-            flex: 1;
-        }
-
-        .tl-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .tl-meta {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 1px;
-        }
-
-        .tl-ok {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--success);
-        }
-
-        /* ── CONFIG ──────────────────────────────────────────── */
-        .tabs {
-            display: flex;
-            gap: 2px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 3px;
-            width: fit-content;
-            margin-bottom: 18px;
-        }
-
-        .tab {
-            height: 28px;
-            padding: 0 14px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            background: transparent;
-            transition: all .12s;
-        }
-
-        .tab.active {
-            background: var(--surface);
-            color: var(--text-primary);
-            font-weight: 600;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .tab.add-tab {
-            color: var(--accent);
-        }
-
-        .plat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .plat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .plat-head {
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            padding: 11px 16px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .plat-body {
-            padding: 14px 16px;
-        }
-
-        .cf {
-            margin-bottom: 14px;
-        }
-
-        .cf:last-of-type {
-            margin-bottom: 0;
-        }
-
-        .cf-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            margin-bottom: 5px;
-        }
-
-        .cf-wrap {
-            position: relative;
-        }
-
-        .cf-input {
-            width: 100%;
-            height: 34px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 11px;
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            transition: border-color .15s;
-        }
-
-        .cf-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .cf-input.ro {
-            background: var(--bg);
-            color: var(--text-secondary);
-            cursor: default;
-        }
-
-        .cf-input.masked {
-            letter-spacing: .15em;
-            color: var(--text-tertiary);
-        }
-
-        .cf-input.pr {
-            padding-right: 48px;
-        }
-
-        .cf-action {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 700;
-            font-family: var(--font);
-            padding: 3px 6px;
-            border-radius: 4px;
-            transition: all .12s;
-        }
-
-        .cf-action:hover {
-            background: var(--accent-light);
-        }
-
-        .cf-copy {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-tertiary);
-            font-size: 13px;
-            padding: 3px;
-            border-radius: 4px;
-            transition: all .12s;
-        }
-
-        .cf-copy:hover {
-            background: var(--bg);
-            color: var(--text-secondary);
-        }
-
-        .plat-foot {
-            padding: 10px 16px;
-            border-top: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        /* Progress items */
-        .progress-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .progress-item:hover {
-            background: var(--bg);
-        }
-
-        .progress-item.completed {
-            color: var(--success);
-        }
-
-        .progress-item .progress-icon {
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .progress-item.completed .progress-icon {
-            color: var(--success);
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: .07em;
-            margin-bottom: 10px;
-        }
-
-        .ep-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .ep-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            width: 230px;
-            flex-shrink: 0;
-        }
-
-        .ep-input {
-            flex: 1;
-            height: 34px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 11px;
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            transition: border-color .15s;
-        }
-
-        .ep-input:focus {
-            border-color: var(--accent);
-        }
-
-        .test-result {
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: none;
-        }
-
-        .test-result.ok {
-            background: var(--success-light);
-            color: var(--success);
-            display: inline-block;
-        }
-
-        .test-result.err {
-            background: var(--danger-light);
-            color: var(--danger);
-            display: inline-block;
-        }
-
-        .status-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .status-head {
-            padding: 13px 18px;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-body {
-            padding: 18px;
-        }
-
-        .sub-box {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 13px 14px;
-            margin-bottom: 14px;
-        }
-
-        .sub-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-
-        .sub-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .sub-key {
-            font-weight: 600;
-            color: var(--text-primary);
-            width: 110px;
-            flex-shrink: 0;
-        }
-
-        .sub-val {
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .sdk-sent {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--accent-light);
-            border: 1px solid #c7d2fe;
-            border-radius: var(--r-sm);
-            padding: 10px 14px;
-            margin-bottom: 14px;
-            font-size: 13px;
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .notes-area {
-            width: 100%;
-            min-height: 72px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 10px 12px;
-            font-family: var(--font);
-            font-size: 13px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            resize: vertical;
-            transition: border-color .15s;
-            margin-bottom: 14px;
-        }
-
-        .notes-area:focus {
-            border-color: var(--accent);
-        }
-
-        /* ── USERS ───────────────────────────────────────────── */
-        .users-wrap {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        /* ── DRAWER ──────────────────────────────────────────── */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.35);
-            z-index: 500;
-            display: none;
-            backdrop-filter: blur(2px);
-        }
-
-        .overlay.open {
-            display: block;
-        }
-
-        .drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 420px;
-            background: var(--surface);
-            border-left: 1px solid var(--border);
-            z-index: 501;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(100%);
-            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: -6px 0 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .drawer.open {
-            transform: translateX(0);
-        }
-
-        .drawer-head {
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-
-        .drawer-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .drawer-close {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--r-sm);
-            border: 1px solid var(--border);
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: var(--text-tertiary);
-            transition: all .12s;
-        }
-
-        .drawer-close:hover {
-            background: var(--bg);
-            color: var(--text-primary);
-        }
-
-        .drawer-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .drawer-foot {
-            padding: 14px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            flex-shrink: 0;
-        }
-
-        .dfield {
-            margin-bottom: 16px;
-        }
-
-        .dfield-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            margin-bottom: 6px;
-        }
-
-        .dfield-input {
-            width: 100%;
-            height: 38px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 12px;
-            font-family: var(--font);
-            font-size: 13px;
-            color: var(--text-primary);
-            background: var(--surface);
-            outline: none;
-            transition: border-color .15s, box-shadow .15s;
-        }
-
-        .dfield-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .dfield-hint {
-            font-size: 11px;
-            color: var(--text-tertiary);
-            margin-top: 4px;
-        }
-
-        .autogen-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .autogen-btn {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: var(--font);
-            padding: 0;
-        }
-
-        .autogen-btn:hover {
-            color: var(--accent-hover);
-        }
-
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .radio-opt {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            transition: all .12s;
-        }
-
-        .radio-opt:hover {
-            border-color: #cbd5e1;
-            background: var(--bg);
-        }
-
-        .radio-opt.sel {
-            border-color: var(--accent);
-            background: var(--accent-light);
-        }
-
-        .radio-dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            flex-shrink: 0;
-            transition: all .12s;
-        }
-
-        .radio-opt.sel .radio-dot {
-            border-color: var(--accent);
-            background: var(--accent);
-            box-shadow: inset 0 0 0 3px var(--surface);
-        }
-
-        .radio-lbl {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .check-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg);
-            border-radius: var(--r-sm);
-            border: 1px solid var(--border);
-        }
-
-        .checkmark {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            border: 2px solid var(--accent);
-            background: var(--accent);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 10px;
-        }
-
-        .check-lbl {
-            font-size: 13px;
-            color: var(--text-primary);
-        }
-
-        /* ── MODAL ───────────────────────────────────────────── */
-        .modal-ov {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.35);
-            z-index: 600;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(2px);
-        }
-
-        .modal-ov.open {
-            display: flex;
-        }
-
-        .modal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r-lg);
-            width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
-            overflow: hidden;
-        }
-
-        .modal-head {
-            padding: 20px 20px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .modal-body {
-            padding: 0 20px 8px;
-        }
-
-        .modal-foot {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-
-        /* MISC */
-        .mono {
-            font-family: var(--mono);
-            font-size: 12px;
-        }
-
-        .text-sec {
-            color: var(--text-secondary);
-        }
-
-        .text-tert {
-            color: var(--text-tertiary);
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-8 {
-            gap: 8px;
-        }
-
-        .mt-8 {
-            margin-top: 8px;
-        }
-
-        .mt-12 {
-            margin-top: 12px;
-        }
-
-        .mt-16 {
-            margin-top: 16px;
-        }
-
-        .mt-20 {
-            margin-top: 20px;
-        }
-
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-
-        .mb-12 {
-            margin-bottom: 12px;
-        }
-
-        .mb-16 {
-            margin-bottom: 16px;
-        }
-
-        .mb-20 {
-            margin-bottom: 20px;
-        }
-
-        .full-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            box-shadow: var(--shadow);
-            margin-bottom: 14px;
-            overflow: hidden;
-        }
-
-        .arrow-icon {
-            color: var(--text-tertiary);
-        }
-
-        tbody tr:hover .arrow-icon {
-            color: var(--accent);
-        }
-
-        .tag {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            background: #f1f5f9;
-            color: var(--text-secondary);
-            padding: 2px 8px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        /* ── CURL BUILDER ─────────────────────────────────────── */
-        .cb-step {
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            margin-bottom: 12px;
-            background: var(--surface);
-        }
-
-        .cb-step-head {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            border-radius: var(--r) var(--r) 0 0;
-        }
-
-        .cb-name {
-            flex: 1;
-            height: 28px;
-            border: 1px solid transparent;
-            border-radius: var(--r-sm);
-            padding: 0 8px;
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 600;
-            background: transparent;
-            outline: none;
-            color: var(--text-primary);
-            min-width: 0;
-        }
-
-        .cb-name:hover,
-        .cb-name:focus {
-            border-color: var(--border);
-            background: var(--surface);
-        }
-
-        .cb-method {
-            height: 28px;
-            padding: 0 8px;
-            border: 1px solid #c7d2fe;
-            border-radius: var(--r-sm);
-            font-family: var(--font);
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--accent);
-            background: var(--accent-light);
-            cursor: pointer;
-            outline: none;
-        }
-
-        .cb-step-body {
-            padding: 14px;
-        }
-
-        .cb-url-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .cb-url {
-            flex: 1;
-            height: 30px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 10px;
-            font-family: var(--mono);
-            font-size: 12px;
-            background: var(--surface);
-            outline: none;
-            color: var(--text-primary);
-        }
-
-        .cb-url:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
-        }
-
-        .cb-sec {
-            margin-bottom: 12px;
-        }
-
-        .cb-sec-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .cb-sec-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .07em;
-            color: var(--text-tertiary);
-        }
-
-        .cb-kv {
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-            margin-bottom: 5px;
-        }
-
-        .cb-key {
-            width: 130px;
-            flex-shrink: 0;
-            height: 30px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 8px;
-            font-family: var(--mono);
-            font-size: 12px;
-            background: var(--surface);
-            outline: none;
-            color: var(--text-primary);
-        }
-
-        .cb-key:focus {
-            border-color: var(--accent);
-        }
-
-        .cb-val-wrap {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .cb-val-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            width: 100%;
-            height: 30px;
-            padding: 0 8px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            background: var(--surface);
-            font-family: var(--font);
-            font-size: 12px;
-            cursor: pointer;
-            text-align: left;
-            transition: all .12s;
-            overflow: hidden;
-        }
-
-        .cb-val-btn:hover {
-            border-color: #cbd5e1;
-            background: var(--bg);
-        }
-
-        .cb-val-btn.active {
-            border-color: var(--accent);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            background: var(--accent-light);
-        }
-
-        .cb-chip {
-            display: inline-flex;
-            align-items: center;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 1px 7px;
-            border-radius: 4px;
-            font-family: var(--mono);
-            white-space: nowrap;
-        }
-
-        .cb-chip-pred {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .cb-chip-cust {
-            background: var(--bg);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-
-        .cb-chip-fn {
-            background: #f5f3ff;
-            color: #7c3aed;
-            border: 1px solid #ddd6fe;
-        }
-
-        .cb-picker {
-            display: none;
-            border: 1px solid var(--accent);
-            border-top: none;
-            border-radius: 0 0 var(--r-sm) var(--r-sm);
-            background: var(--surface);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.12);
-        }
-
-        .cb-picker.open {
-            display: block;
-        }
-
-        .cb-ptabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .cb-ptab {
-            flex: 1;
-            height: 28px;
-            border: none;
-            font-family: var(--font);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: transparent;
-            cursor: pointer;
-            transition: all .12s;
-        }
-
-        .cb-ptab.active {
-            color: var(--accent);
-            background: var(--accent-light);
-        }
-
-        .cb-pbody {
-            padding: 8px;
-        }
-
-        .cb-pval-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            max-height: 180px;
-            overflow-y: auto;
-        }
-
-        .cb-pval-opt {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background .1s;
-        }
-
-        .cb-pval-opt:hover {
-            background: var(--bg);
-        }
-
-        .cb-pval-opt.sel {
-            background: var(--accent-light);
-        }
-
-        .cb-pval-radio {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            flex-shrink: 0;
-            transition: all .12s;
-        }
-
-        .cb-pval-opt.sel .cb-pval-radio {
-            border-color: var(--accent);
-            background: var(--accent);
-            box-shadow: inset 0 0 0 2px var(--surface);
-        }
-
-        .cb-pval-name {
-            font-size: 12px;
-            color: var(--text-primary);
-            flex: 1;
-        }
-
-        .cb-pval-code {
-            font-size: 10px;
-            font-family: var(--mono);
-            color: var(--text-tertiary);
-        }
-
-        .cb-pcustom {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 6px;
-            border-top: 1px solid var(--border-subtle);
-            margin-top: 4px;
-        }
-
-        .cb-pcustom-in {
-            flex: 1;
-            height: 26px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            padding: 0 8px;
-            font-family: var(--mono);
-            font-size: 11px;
-            outline: none;
-            color: var(--text-primary);
-        }
-
-        .cb-pcustom-in:focus {
-            border-color: var(--accent);
-        }
-
-        .cb-fn-sel {
-            width: 100%;
-            height: 28px;
-            padding: 0 8px;
-            border: 1px solid var(--border);
-            border-radius: var(--r-sm);
-            font-family: var(--font);
-            font-size: 12px;
-            background: var(--surface);
-            outline: none;
-            margin-bottom: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
-
-        .cb-fn-sel:focus {
-            border-color: var(--accent);
-        }
-
-        .cb-fn-params {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .cb-fn-prow {
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-        }
-
-        .cb-fn-pname {
-            font-size: 11px;
-            font-weight: 700;
-            font-family: var(--mono);
-            color: var(--text-secondary);
-            width: 50px;
-            flex-shrink: 0;
-            padding-top: 8px;
-        }
-
-        /* Game Admin role-gating */
-        #app-shell[data-role="gameadmin"] .sa-only {
-            display: none !important;
-        }
-
-        #app-shell[data-role="gameadmin"] #game-sw-btn {
-            display: none;
-        }
-
-        #app-shell[data-role="gameadmin"] .plat-input {
-            background: var(--border-subtle);
-            color: var(--text-secondary);
-            pointer-events: none;
-            cursor: default;
-        }
-
-        /* Static game label (visible only for game admin) */
-        #game-label-static {
-            display: none;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        #app-shell[data-role="gameadmin"] #game-label-static {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/shell.css">
+    <link rel="stylesheet" href="css/overview.css">
+    <link rel="stylesheet" href="css/transaction.css">
+    <link rel="stylesheet" href="css/config.css">
+    <link rel="stylesheet" href="css/users.css">
+    <link rel="stylesheet" href="css/drawer.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/curl-builder.css">
+    <link rel="stylesheet" href="css/analytics.css">
 </head>
 
 <body>
@@ -2481,6 +133,9 @@
                     <button class="nav-item" onclick="navigate('users')" id="nav-users">
                         <span class="nav-icon">◉</span> Users
                     </button>
+                    <!-- <button class="nav-item" onclick="navigate('support')" id="nav-support">
+                        <span class="nav-icon">◑</span> Support
+                    </button> -->
                     <button class="nav-item disabled">
                         <span class="nav-icon">☰</span> Audit Log
                         <span class="nav-badge">Soon</span>
@@ -2502,7 +157,7 @@
 
                 <!-- ─── OVERVIEW ─────────────────────────────────────── -->
                 <div class="page active" id="page-overview">
-                    <div class="page-header">
+                    <!-- <div class="page-header">
                         <div>
                             <h1 class="page-title">Overview</h1>
                             <p class="page-sub">Royal Revolt 2 · <span id="ov-env-label">Sandbox</span></p>
@@ -2515,11 +170,13 @@
                                 <option>Custom range</option>
                             </select>
                             <button class="btn btn-secondary">Export</button>
+                            <button class="btn btn-secondary">⤓ Export .CSV</button>
+                            <button class="btn btn-secondary">⤓ Export .XLS</button>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Vitals -->
-                    <div class="vitals">
+                    <!-- <div class="vitals">
                         <div class="vital-card">
                             <div class="vital-label">Revenue</div>
                             <div class="vital-value">$284,120</div>
@@ -2540,7 +197,7 @@
                             <div class="vital-value">$271,340</div>
                             <div class="vital-delta delta-up">▲ +11% MoM</div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Charts row -->
                     <div class="charts-row">
@@ -2689,6 +346,595 @@
                             <span class="tf-meta">Last 5 transactions</span>
                             <span class="tf-link" onclick="navigate('transactions')">View all transactions →</span>
                         </div>
+                    </div>
+
+                    <!-- Date range filter -->
+                    <div class="an-filter-row">
+                        <button class="an-range-btn active">7D</button>
+                        <button class="an-range-btn">30D</button>
+                        <button class="an-range-btn">90D</button>
+                        <button class="an-range-btn">YTD</button>
+                        <button class="an-range-btn">12M</button>
+                        <button class="an-range-btn">Custom</button>
+                        <span class="an-filter-sep"></span>
+                        <select class="sel" style="font-size:12px;">
+                            <option>All Games</option>
+                            <option>Royal Revolt 2 (Android)</option>
+                            <option>Smurf Village (iOS)</option>
+                            <option>EMHQ (Android)</option>
+                            <option>War of Nations (iOS)</option>
+                            <option>Kitchen Scramble (iOS)</option>
+                        </select>
+                    </div>
+
+                    <!-- KPI cards -->
+                    <div class="an-kpi-grid">
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Gross Revenue</div>
+                            <div class="an-kpi-value">$2,847,320</div>
+                            <div class="an-kpi-badge up">↑ 12.4%</div>
+                            <div class="an-kpi-sub">vs. previous period</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Net Revenue</div>
+                            <div class="an-kpi-value">$2,419,422</div>
+                            <div class="an-kpi-badge up">↑ 11.8%</div>
+                            <div class="an-kpi-sub">after platform fees</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Total Savings (Rook)</div>
+                            <div class="an-kpi-value">$427,898</div>
+                            <div class="an-kpi-badge up">↑ 15.0%</div>
+                            <div class="an-kpi-sub">vs. Apple/Android native</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Refunds</div>
+                            <div class="an-kpi-value">$38,241</div>
+                            <div class="an-kpi-badge down">↑ 2.1%</div>
+                            <div class="an-kpi-sub">1.3% refund rate</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Orders</div>
+                            <div class="an-kpi-value">94,182</div>
+                            <div class="an-kpi-badge up">↑ 8.7%</div>
+                            <div class="an-kpi-sub">across all titles</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">ARPU</div>
+                            <div class="an-kpi-value">$4.82</div>
+                            <div class="an-kpi-badge up">↑ 5.3%</div>
+                            <div class="an-kpi-sub">all active players</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">ARPPU</div>
+                            <div class="an-kpi-value">$38.14</div>
+                            <div class="an-kpi-badge up">↑ 9.1%</div>
+                            <div class="an-kpi-sub">paying players only</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">% Return Spenders</div>
+                            <div class="an-kpi-value">68.4%</div>
+                            <div class="an-kpi-badge up">↑ 3.2%</div>
+                            <div class="an-kpi-sub">repeat purchasers</div>
+                        </div>
+                    </div>
+
+                    <!-- Stacked revenue chart (full width) -->
+                    <div class="an-charts-row" style="grid-template-columns:1fr; margin-bottom:16px;">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Portfolio Revenue — Stacked by Game</div>
+                            <div class="an-chart-sub">Gross revenue contribution per title · Last 30 days</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 900 220" width="100%" style="display:block;">
+                                    <!-- Grid lines -->
+                                    <line x1="60" y1="10" x2="60" y2="195" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="60" y1="195" x2="890" y2="195" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="60" y1="155" x2="890" y2="155" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="115" x2="890" y2="115" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="75" x2="890" y2="75" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="35" x2="890" y2="35" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <!-- Y labels -->
+                                    <text x="55" y="198" text-anchor="end" font-size="9" fill="#94a3b8">$0</text>
+                                    <text x="55" y="158" text-anchor="end" font-size="9" fill="#94a3b8">$50k</text>
+                                    <text x="55" y="118" text-anchor="end" font-size="9" fill="#94a3b8">$100k</text>
+                                    <text x="55" y="78" text-anchor="end" font-size="9" fill="#94a3b8">$150k</text>
+                                    <text x="55" y="38" text-anchor="end" font-size="9" fill="#94a3b8">$200k</text>
+                                    <!-- Stacked bars for 12 weeks -->
+                                    <!-- Week 1 -->
+                                    <rect x="70" y="135" width="55" height="60" fill="#4f46e5" rx="2" />
+                                    <rect x="70" y="105" width="55" height="30" fill="#818cf8" rx="2" />
+                                    <rect x="70" y="82" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="70" y="65" width="55" height="17" fill="#f59e0b" rx="2" />
+                                    <rect x="70" y="55" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 2 -->
+                                    <rect x="138" y="128" width="55" height="67" fill="#4f46e5" rx="2" />
+                                    <rect x="138" y="97" width="55" height="31" fill="#818cf8" rx="2" />
+                                    <rect x="138" y="74" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="138" y="58" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="138" y="48" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 3 -->
+                                    <rect x="206" y="130" width="55" height="65" fill="#4f46e5" rx="2" />
+                                    <rect x="206" y="99" width="55" height="31" fill="#818cf8" rx="2" />
+                                    <rect x="206" y="76" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="206" y="60" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="206" y="50" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 4 -->
+                                    <rect x="274" y="118" width="55" height="77" fill="#4f46e5" rx="2" />
+                                    <rect x="274" y="85" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="274" y="62" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="274" y="45" width="55" height="17" fill="#f59e0b" rx="2" />
+                                    <rect x="274" y="35" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 5 -->
+                                    <rect x="342" y="122" width="55" height="73" fill="#4f46e5" rx="2" />
+                                    <rect x="342" y="90" width="55" height="32" fill="#818cf8" rx="2" />
+                                    <rect x="342" y="67" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="342" y="51" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="342" y="41" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 6 -->
+                                    <rect x="410" y="115" width="55" height="80" fill="#4f46e5" rx="2" />
+                                    <rect x="410" y="82" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="410" y="59" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="410" y="43" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="410" y="33" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 7 -->
+                                    <rect x="478" y="108" width="55" height="87" fill="#4f46e5" rx="2" />
+                                    <rect x="478" y="74" width="55" height="34" fill="#818cf8" rx="2" />
+                                    <rect x="478" y="51" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="478" y="35" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="478" y="25" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 8 -->
+                                    <rect x="546" y="112" width="55" height="83" fill="#4f46e5" rx="2" />
+                                    <rect x="546" y="79" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="546" y="56" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="546" y="40" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="546" y="30" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 9 -->
+                                    <rect x="614" y="105" width="55" height="90" fill="#4f46e5" rx="2" />
+                                    <rect x="614" y="70" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="614" y="47" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="614" y="31" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="614" y="21" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 10 -->
+                                    <rect x="682" y="100" width="55" height="95" fill="#4f46e5" rx="2" />
+                                    <rect x="682" y="65" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="682" y="42" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="682" y="26" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="682" y="16" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 11 -->
+                                    <rect x="750" y="96" width="55" height="99" fill="#4f46e5" rx="2" />
+                                    <rect x="750" y="61" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="750" y="38" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="750" y="22" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="750" y="12" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 12 -->
+                                    <rect x="818" y="90" width="55" height="105" fill="#4f46e5" rx="2" />
+                                    <rect x="818" y="54" width="55" height="36" fill="#818cf8" rx="2" />
+                                    <rect x="818" y="31" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="818" y="15" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="818" y="10" width="55" height="5" fill="#e11d48" rx="2" />
+                                    <!-- X labels -->
+                                    <text x="97" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W1</text>
+                                    <text x="165" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W2</text>
+                                    <text x="233" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W3</text>
+                                    <text x="301" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W4</text>
+                                    <text x="369" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W5</text>
+                                    <text x="437" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W6</text>
+                                    <text x="505" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W7</text>
+                                    <text x="573" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W8</text>
+                                    <text x="641" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W9</text>
+                                    <text x="709" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W10</text>
+                                    <text x="777" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W11</text>
+                                    <text x="845" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W12</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;"></div> Royal Revolt 2
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#818cf8;"></div> Smurf Village
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;"></div> EMHQ
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#f59e0b;"></div> War of Nations
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#e11d48;"></div> Kitchen Scramble
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ARPU/ARPPU line chart + Revenue by game bar -->
+                    <div class="an-charts-row cols-2">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">ARPU &amp; ARPPU Over Time</div>
+                            <div class="an-chart-sub">Average revenue per user vs. per paying user · 30D</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 420 180" width="100%" style="display:block;">
+                                    <!-- Grid -->
+                                    <line x1="40" y1="10" x2="40" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="40" y1="155" x2="415" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="40" y1="120" x2="415" y2="120" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <line x1="40" y1="85" x2="415" y2="85" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <line x1="40" y1="50" x2="415" y2="50" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <!-- Y labels -->
+                                    <text x="35" y="158" text-anchor="end" font-size="8" fill="#94a3b8">$0</text>
+                                    <text x="35" y="123" text-anchor="end" font-size="8" fill="#94a3b8">$15</text>
+                                    <text x="35" y="88" text-anchor="end" font-size="8" fill="#94a3b8">$30</text>
+                                    <text x="35" y="53" text-anchor="end" font-size="8" fill="#94a3b8">$45</text>
+                                    <!-- ARPPU line (higher values) -->
+                                    <polyline
+                                        points="45,118 75,112 105,115 135,105 165,98 195,102 225,94 255,90 285,88 315,82 345,78 375,74 405,70"
+                                        fill="none" stroke="#4f46e5" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- ARPU line (lower values) -->
+                                    <polyline
+                                        points="45,142 75,139 105,140 135,136 165,132 195,134 225,130 255,127 285,126 315,122 345,119 375,116 405,113"
+                                        fill="none" stroke="#10b981" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- Dots ARPPU -->
+                                    <circle cx="405" cy="70" r="3" fill="#4f46e5" />
+                                    <!-- Dots ARPU -->
+                                    <circle cx="405" cy="113" r="3" fill="#10b981" />
+                                    <!-- X labels -->
+                                    <text x="45" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">1</text>
+                                    <text x="135" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">8</text>
+                                    <text x="225" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">15</text>
+                                    <text x="315" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">22</text>
+                                    <text x="405" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">30</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;border-radius:50%;"></div>
+                                    ARPPU $38.14
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;border-radius:50%;"></div> ARPU
+                                    $4.82
+                                </div>
+                            </div>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Revenue by Title</div>
+                            <div class="an-chart-sub">Gross revenue share · Current period</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 380 180" width="100%" style="display:block;">
+                                    <line x1="130" y1="10" x2="130" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="130" y1="155" x2="375" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <!-- Royal Revolt 2 -->
+                                    <rect x="130" y="18" width="180" height="22" fill="#4f46e5" rx="3" />
+                                    <text x="125" y="33" text-anchor="end" font-size="9" fill="#64748b">Royal Revolt
+                                        2</text>
+                                    <text x="316" y="33" font-size="9" fill="#4f46e5" font-weight="600">$1.12M</text>
+                                    <!-- Smurf Village -->
+                                    <rect x="130" y="48" width="120" height="22" fill="#818cf8" rx="3" />
+                                    <text x="125" y="63" text-anchor="end" font-size="9" fill="#64748b">Smurf
+                                        Village</text>
+                                    <text x="256" y="63" font-size="9" fill="#818cf8" font-weight="600">$748k</text>
+                                    <!-- EMHQ -->
+                                    <rect x="130" y="78" width="85" height="22" fill="#10b981" rx="3" />
+                                    <text x="125" y="93" text-anchor="end" font-size="9" fill="#64748b">EMHQ</text>
+                                    <text x="221" y="93" font-size="9" fill="#10b981" font-weight="600">$531k</text>
+                                    <!-- War of Nations -->
+                                    <rect x="130" y="108" width="60" height="22" fill="#f59e0b" rx="3" />
+                                    <text x="125" y="123" text-anchor="end" font-size="9" fill="#64748b">War of
+                                        Nations</text>
+                                    <text x="196" y="123" font-size="9" fill="#f59e0b" font-weight="600">$374k</text>
+                                    <!-- Kitchen Scramble -->
+                                    <rect x="130" y="138" width="30" height="14" fill="#e11d48" rx="3" />
+                                    <text x="125" y="149" text-anchor="end" font-size="9" fill="#64748b">Kitchen
+                                        Scramble</text>
+                                    <text x="166" y="149" font-size="9" fill="#e11d48" font-weight="600">$93k</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player segmentation + Whales + LTV -->
+                    <div class="an-charts-row cols-3">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Player Geography</div>
+                            <div class="an-chart-sub">Revenue by top markets</div>
+                            <ul class="an-seg-list" style="margin-top:4px;">
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">United States</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:78%;background:#4f46e5;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$1.23M</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Germany</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:42%;background:#818cf8;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$416k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">United Kingdom</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:35%;background:#10b981;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$312k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">France</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:22%;background:#f59e0b;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$198k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Canada</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:18%;background:#e11d48;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$164k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Other</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:55%;background:#cbd5e1;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$534k</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Whale Spenders</div>
+                            <div class="an-chart-sub">Players spending &gt; $100 threshold</div>
+                            <div style="margin-top:8px;">
+                                <div
+                                    style="font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">
+                                    2,847</div>
+                                <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:16px;">3.0% of
+                                    paying players</div>
+                                <div style="display:flex;flex-direction:column;gap:8px;">
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$100–$500</span><span>1,924</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:68%;height:100%;background:#4f46e5;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$500–$1,000</span><span>621</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:22%;height:100%;background:#818cf8;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$1,000+</span><span>302</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:11%;height:100%;background:#e11d48;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+                                    <div style="font-size:11px;color:var(--text-tertiary);">Total whale revenue</div>
+                                    <div style="font-size:18px;font-weight:700;color:var(--text-primary);">$1,408,220
+                                    </div>
+                                    <div style="font-size:11px;color:var(--text-tertiary);">49.5% of gross revenue</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Lifetime Value (LTV)</div>
+                            <div class="an-chart-sub">Average LTV by cohort</div>
+                            <div style="margin-top:8px;">
+                                <svg viewBox="0 0 160 130" width="100%" style="display:block;">
+                                    <!-- Simple LTV bar chart by cohort month -->
+                                    <line x1="20" y1="10" x2="20" y2="110" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="20" y1="110" x2="155" y2="110" stroke="#e2e8f0" stroke-width="1" />
+                                    <rect x="25" y="80" width="16" height="30" fill="#4f46e5" rx="2" />
+                                    <rect x="47" y="68" width="16" height="42" fill="#4f46e5" rx="2" />
+                                    <rect x="69" y="55" width="16" height="55" fill="#4f46e5" rx="2" />
+                                    <rect x="91" y="42" width="16" height="68" fill="#4f46e5" rx="2" />
+                                    <rect x="113" y="28" width="16" height="82" fill="#4f46e5" rx="2" />
+                                    <rect x="135" y="18" width="16" height="92" fill="#818cf8" rx="2" />
+                                    <text x="33" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M1</text>
+                                    <text x="55" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M3</text>
+                                    <text x="77" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M6</text>
+                                    <text x="99" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M9</text>
+                                    <text x="121" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M12</text>
+                                    <text x="143" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M18</text>
+                                </svg>
+                                <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+                                    <div style="display:flex;justify-content:space-between;font-size:11px;">
+                                        <span style="color:var(--text-tertiary);">Avg LTV (12M)</span>
+                                        <span style="font-weight:700;">$142.80</span>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;font-size:11px;">
+                                        <span style="color:var(--text-tertiary);">Avg LTV (18M)</span>
+                                        <span style="font-weight:700;">$198.40</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly revenue line chart -->
+                    <div class="an-charts-row" style="grid-template-columns:1fr;margin-bottom:16px;">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Monthly Gross vs Net Revenue</div>
+                            <div class="an-chart-sub">12-month trailing · All games</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 900 160" width="100%" style="display:block;">
+                                    <line x1="50" y1="10" x2="50" y2="130" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="50" y1="130" x2="890" y2="130" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="50" y1="100" x2="890" y2="100" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="50" y1="70" x2="890" y2="70" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="50" y1="40" x2="890" y2="40" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <text x="45" y="133" text-anchor="end" font-size="8" fill="#94a3b8">$0</text>
+                                    <text x="45" y="103" text-anchor="end" font-size="8" fill="#94a3b8">$150k</text>
+                                    <text x="45" y="73" text-anchor="end" font-size="8" fill="#94a3b8">$300k</text>
+                                    <text x="45" y="43" text-anchor="end" font-size="8" fill="#94a3b8">$450k</text>
+                                    <!-- Gross revenue area fill -->
+                                    <polygon
+                                        points="55,115 125,110 195,105 265,98 335,92 405,88 475,82 545,79 615,74 685,68 755,62 825,55 895,48 895,130 55,130"
+                                        fill="rgba(79,70,229,0.08)" />
+                                    <!-- Gross revenue line -->
+                                    <polyline
+                                        points="55,115 125,110 195,105 265,98 335,92 405,88 475,82 545,79 615,74 685,68 755,62 825,55 895,48"
+                                        fill="none" stroke="#4f46e5" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- Net revenue area fill -->
+                                    <polygon
+                                        points="55,122 125,117 195,112 265,106 335,100 405,96 475,91 545,88 615,83 685,77 755,72 825,65 895,58 895,130 55,130"
+                                        fill="rgba(16,185,129,0.08)" />
+                                    <!-- Net revenue line -->
+                                    <polyline
+                                        points="55,122 125,117 195,112 265,106 335,100 405,96 475,91 545,88 615,83 685,77 755,72 825,65 895,58"
+                                        fill="none" stroke="#10b981" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- X labels -->
+                                    <text x="55" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Mar</text>
+                                    <text x="125" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Apr</text>
+                                    <text x="195" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">May</text>
+                                    <text x="265" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jun</text>
+                                    <text x="335" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jul</text>
+                                    <text x="405" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Aug</text>
+                                    <text x="475" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Sep</text>
+                                    <text x="545" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Oct</text>
+                                    <text x="615" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Nov</text>
+                                    <text x="685" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Dec</text>
+                                    <text x="755" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jan</text>
+                                    <text x="825" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Feb</text>
+                                    <text x="895" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Mar</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;border-radius:50%;"></div>
+                                    Gross Revenue
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;border-radius:50%;"></div> Net
+                                    Revenue
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders table -->
+                    <div class="an-table-card">
+                        <div class="an-table-head">
+                            <span class="an-table-head-title">Orders</span>
+                            <span class="an-table-head-count">94,182</span>
+                            <input class="an-search" type="text" placeholder="Search orders…">
+                            <button class="btn btn-secondary btn-sm">Filters</button>
+                        </div>
+                        <table class="an-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Order ID</th>
+                                    <th>Game</th>
+                                    <th>Product</th>
+                                    <th>Player ID</th>
+                                    <th>Country</th>
+                                    <th>Gross</th>
+                                    <th>Net</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:31</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182736</td>
+                                    <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
+                                    <td>Gem Pack 1200</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-48291</td>
+                                    <td>🇺🇸 US</td>
+                                    <td style="font-weight:600;">$9.99</td>
+                                    <td style="color:var(--success);">$8.49</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:28</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182735</td>
+                                    <td><span class="an-game-dot" style="background:#818cf8;"></span>Smurf Village</td>
+                                    <td>Starter Bundle</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-71049</td>
+                                    <td>🇩🇪 DE</td>
+                                    <td style="font-weight:600;">$4.99</td>
+                                    <td style="color:var(--success);">$4.24</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:22</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182734</td>
+                                    <td><span class="an-game-dot" style="background:#10b981;"></span>EMHQ</td>
+                                    <td>Premium Season Pass</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-33812</td>
+                                    <td>🇬🇧 GB</td>
+                                    <td style="font-weight:600;">$24.99</td>
+                                    <td style="color:var(--success);">$21.24</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:18</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182733</td>
+                                    <td><span class="an-game-dot" style="background:#f59e0b;"></span>War of Nations</td>
+                                    <td>Gold 5000</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-90124</td>
+                                    <td>🇫🇷 FR</td>
+                                    <td style="font-weight:600;">$19.99</td>
+                                    <td style="color:var(--warning);">Refunded</td>
+                                    <td><span class="badge badge-warning">Refunded</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:09</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182732</td>
+                                    <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
+                                    <td>Whale Bundle $99</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-11203</td>
+                                    <td>🇨🇦 CA</td>
+                                    <td style="font-weight:600;">$99.99</td>
+                                    <td style="color:var(--success);">$84.99</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 13:55</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182731</td>
+                                    <td><span class="an-game-dot" style="background:#e11d48;"></span>Kitchen Scramble
+                                    </td>
+                                    <td>Energy Refill x10</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-58847</td>
+                                    <td>🇦🇺 AU</td>
+                                    <td style="font-weight:600;">$2.99</td>
+                                    <td style="color:var(--text-tertiary);">Pending</td>
+                                    <td><span class="badge badge-warning"
+                                            style="background:var(--warning-light);color:var(--warning);">Pending</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -3015,6 +1261,17 @@
                         </div>
                     </div>
 
+                    <!-- User Validation -->
+                    <div class="full-card" style="margin-bottom:20px;">
+                        <div class="card-header">
+                            <h2 class="card-title">User Validation</h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- User Validation step -->
+                            <div id="user-validation-step"></div>
+                        </div>
+                    </div>
+
                     <!-- Validation Rules -->
                     <div class="full-card" style="margin-bottom:20px;">
                         <div class="card-header">
@@ -3034,9 +1291,6 @@
                                     placeholder="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
                                     style="font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;">
                             </div>
-
-                            <!-- User Validation step -->
-                            <div id="user-validation-step" style="margin-top:16px;"></div>
 
                             <!-- Test User IDs -->
                             <div
@@ -3083,7 +1337,7 @@
                     <!-- Provider tabs -->
                     <div class="tabs">
                         <button class="tab active" onclick="switchTab(this,'xsolla')">Xsolla</button>
-                        <button class="tab add-tab sa-only">+ Add Provider</button>
+
                     </div>
 
                     <!-- Export Configuration -->
@@ -3120,17 +1374,9 @@
                                         <button class="cf-action" onclick="toggleField('plat-key',this)">Show</button>
                                     </div>
                                 </div>
-                                <div class="cf">
-                                    <div class="cf-label">Webhook URL (read-only)</div>
-                                    <div class="cf-wrap">
-                                        <input class="cf-input ro" type="text" value="https://rook.io/wh/rr2-sb"
-                                            readonly>
-                                        <button class="cf-copy" onclick="copyText('https://rook.io/wh/rr2-sb',this)"
-                                            title="Copy">⎘</button>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+                            <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button>
+                            </div>
                         </div>
                     </div>
 
@@ -3429,6 +1675,223 @@
                     </div>
                 </div>
 
+
+                <!-- ═══════════════════════════════════════════════════════ -->
+                <!--  SUPPORT                                                -->
+                <!-- ═══════════════════════════════════════════════════════ -->
+                <div class="page" id="page-support">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Support</h1>
+                            <p class="page-sub">Customer &amp; Community Support</p>
+                        </div>
+                    </div>
+
+                    <div class="sup-design-banner">⚠ Design preview — this section is scoped for a future implementation
+                        phase and is not part of the current MVP build.</div>
+
+                    <!-- KPI cards -->
+                    <div class="sup-kpi-grid">
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Open Tickets</div>
+                            <div class="sup-kpi-value">248</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Resolved (7D)</div>
+                            <div class="sup-kpi-value">1,402</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Avg Resolution</div>
+                            <div class="sup-kpi-value">3.2h</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Refunds Issued</div>
+                            <div class="sup-kpi-value">$12,480</div>
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="sup-search-card">
+                        <div class="sup-search-title">Player Lookup</div>
+                        <div class="sup-search-row">
+                            <select class="sup-search-type">
+                                <option>Order ID</option>
+                                <option>Transaction ID</option>
+                                <option>Game User ID</option>
+                                <option>Platform User ID</option>
+                                <option>Webstore User ID</option>
+                                <option>Email Address</option>
+                            </select>
+                            <input class="sup-search-input" type="text" placeholder="Search…" value="USR-48291">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+
+                    <!-- Player detail + orders -->
+                    <div class="sup-content-row">
+                        <!-- Player card -->
+                        <div>
+                            <div class="sup-player-card">
+                                <div class="sup-player-avatar">MK</div>
+                                <div class="sup-player-name">Marcus Kim</div>
+                                <div class="sup-player-id">USR-48291 · Royal Revolt 2</div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Email</span>
+                                    <span class="sup-player-val">marcus.k@email.com</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Platform</span>
+                                    <span class="sup-player-val">Android</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Country</span>
+                                    <span class="sup-player-val">🇺🇸 United States</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Joined</span>
+                                    <span class="sup-player-val">Jan 14, 2023</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Tenure</span>
+                                    <span class="sup-player-val">26 months</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Total Spend</span>
+                                    <span class="sup-player-val" style="color:var(--accent);">$847.20</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">LTV</span>
+                                    <span class="sup-player-val">$847.20</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Orders</span>
+                                    <span class="sup-player-val">34 orders</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Last Purchase</span>
+                                    <span class="sup-player-val">2 days ago</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Status</span>
+                                    <span class="sup-player-val"><span class="badge badge-success">Active</span></span>
+                                </div>
+                                <div class="sup-action-row">
+                                    <button class="btn btn-secondary btn-sm">Issue Refund</button>
+                                    <button class="btn btn-ghost btn-sm" style="color:var(--danger);">Flag
+                                        Account</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order / transaction history -->
+                        <div>
+                            <div class="an-table-card">
+                                <div class="an-table-head">
+                                    <span class="an-table-head-title">Order History</span>
+                                    <span class="an-table-head-count">34</span>
+                                    <input class="an-search" type="text" placeholder="Filter orders…">
+                                </div>
+                                <table class="an-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Order ID</th>
+                                            <th>Product</th>
+                                            <th>Amount</th>
+                                            <th>Transaction ID</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-22 14:31
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9182736</td>
+                                            <td>Gem Pack 1200</td>
+                                            <td style="font-weight:600;">$9.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7291048</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-19 09:14
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9174201</td>
+                                            <td>Gem Pack 2500</td>
+                                            <td style="font-weight:600;">$19.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7289912</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-15 17:02
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9162847</td>
+                                            <td>Whale Bundle $99</td>
+                                            <td style="font-weight:600;">$99.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7281034</td>
+                                            <td><span class="sup-status refunded">↩ Refunded</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-10 11:48
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9148392</td>
+                                            <td>Premium Season Pass</td>
+                                            <td style="font-weight:600;">$24.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7271188</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-08 08:33
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9141029</td>
+                                            <td>Gem Pack 500</td>
+                                            <td style="font-weight:600;">$4.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--danger);">
+                                                TXN-7268847</td>
+                                            <td><span class="sup-status failed">✕ Failed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-02-28 20:11
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9118204</td>
+                                            <td>Battle Pass Monthly</td>
+                                            <td style="font-weight:600;">$14.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7251093</td>
+                                            <td><span class="sup-status chargedback">⚡ Charged-back</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Failure reason example -->
+                            <div
+                                style="background:var(--danger-light);border:1px solid var(--danger-border);border-radius:var(--r-sm);padding:12px 16px;margin-top:8px;font-size:12px;">
+                                <strong style="color:var(--danger);">Failed Order — TXN-7268847</strong><br>
+                                <span style="color:var(--text-secondary);margin-top:4px;display:block;">Reason: Payment
+                                    declined by issuing bank. Error code: CARD_DECLINED_INSUFFICIENT_FUNDS. Player was
+                                    not charged.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -3535,1297 +1998,44 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  EXECUTE MODAL                                          -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-ov" id="execute-modal">
+        <div class="modal" style="width:500px;max-width:95vw;">
+            <div class="modal-head">
+                <div>
+                    <span class="modal-title" id="exec-modal-title">Execute Step</span>
+                    <div id="exec-modal-url" style="font-size:11px;font-family:var(--mono);color:var(--text-tertiary);margin-top:2px;"></div>
+                </div>
+                <button class="drawer-close" onclick="closeModal('execute-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">Provide test values for each template variable used in this step.</p>
+                <div id="exec-modal-vars"></div>
+                <div id="exec-modal-empty" style="display:none;text-align:center;padding:20px 0;color:var(--text-tertiary);font-size:13px;">No <code style="font-family:var(--mono);">{{variables}}</code> found in this step.</div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-ghost" onclick="closeModal('execute-modal')">Cancel</button>
+                <button class="btn btn-primary" id="exec-modal-run" onclick="runExecuteModal()">Run</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
     <!--  SCRIPT                                                 -->
     <!-- ═══════════════════════════════════════════════════════ -->
-    <script>
-        let currentRole = 'superadmin';
-        let currentGameName = 'Royal Revolt 2 (Android)';
-
-        const GAMES = [
-            { name: 'Royal Revolt 2', color: '#4f46e5', platforms: ['Android'] },
-            { name: 'Smurf Village', color: '#10b981', platforms: ['iOS', 'Android'] },
-            { name: 'EMHQ', color: '#f59e0b', platforms: ['iOS', 'Android'] },
-            { name: 'War of Nations', color: '#e11d48', platforms: ['iOS', 'Android'] },
-            { name: 'Kitchen Scramble', color: '#8b5cf6', platforms: ['iOS', 'Android'] },
-        ];
-
-        function renderGameDD() {
-            const list = document.getElementById('game-dd-list');
-            if (!list) return;
-            list.innerHTML = GAMES.flatMap(g =>
-                g.platforms.map(p => {
-                    const label = `${g.name} (${p})`;
-                    const isActive = label === currentGameName ? ' active' : '';
-                    return `<div class="dd-item${isActive}" onclick="selectGame('${label}')">
-                        <span class="g-dot" style="background:${g.color}"></span> ${label}
-                    </div>`;
-                })
-            ).join('');
-        }
-
-        // ── Auth ────────────────────────────────────────────────
-        function doLogin() {
-            const u = document.getElementById('login-user').value;
-            const p = document.getElementById('login-pass').value;
-            if (!u || !p) { alert('Please enter username and password.'); return; }
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('app-shell').classList.add('visible');
-
-            const ul = u.toLowerCase();
-            if (ul.includes('nils')) {
-                document.getElementById('user-av').textContent = 'NF';
-                document.getElementById('user-name').textContent = 'Nils Freitag';
-                currentRole = 'superadmin';
-            } else if (ul === 'rr2' || ul === 'royalrevolt' || ul === 'rr2team') {
-                currentRole = 'gameadmin';
-                currentGameName = 'Royal Revolt 2 (Android)';
-                document.getElementById('user-av').textContent = 'RR';
-                document.getElementById('user-name').textContent = 'Royal Revolt 2 Team';
-            } else if (ul === 'smurf') {
-                currentRole = 'gameadmin';
-                currentGameName = 'Smurf Village (iOS)';
-                document.getElementById('user-av').textContent = 'SV';
-                document.getElementById('user-name').textContent = 'Smurf Village Team';
-            } else if (ul === 'emhq') {
-                currentRole = 'gameadmin';
-                currentGameName = 'EMHQ (iOS)';
-                document.getElementById('user-av').textContent = 'EM';
-                document.getElementById('user-name').textContent = 'EMHQ Team';
-            } else if (ul === 'warofnations' || ul === 'wow') {
-                currentRole = 'gameadmin';
-                currentGameName = 'War of Nations (iOS)';
-                document.getElementById('user-av').textContent = 'WN';
-                document.getElementById('user-name').textContent = 'War of Nations Team';
-            } else if (ul === 'kitchen') {
-                currentRole = 'gameadmin';
-                currentGameName = 'Kitchen Scramble (iOS)';
-                document.getElementById('user-av').textContent = 'KS';
-                document.getElementById('user-name').textContent = 'Kitchen Scramble Team';
-            } else {
-                currentRole = 'superadmin';
-            }
-
-            applyRoleUI();
-        }
-
-        function applyRoleUI() {
-            const shell = document.getElementById('app-shell');
-            shell.dataset.role = currentRole;
-            document.getElementById('game-label').textContent = currentGameName;
-            const staticLabel = document.getElementById('game-label-static');
-            if (currentRole === 'gameadmin') {
-                staticLabel.textContent = currentGameName;
-            } else {
-                staticLabel.textContent = '';
-            }
-            renderGameDD();
-        }
-
-
-        function openProductDrawer() {
-            // placeholder — drawer coming in next iteration
-        }
-
-        function doLogout() {
-            currentRole = 'superadmin';
-            applyRoleUI();
-            document.getElementById('app-shell').classList.remove('visible');
-            document.getElementById('login-screen').style.display = 'flex';
-            document.getElementById('login-user').value = '';
-            document.getElementById('login-pass').value = '';
-            document.getElementById('user-av').textContent = 'AD';
-            document.getElementById('user-name').textContent = 'Avery Dao';
-        }
-
-        function togglePass() {
-            const f = document.getElementById('login-pass');
-            const btn = f.nextElementSibling;
-            if (f.type === 'password') { f.type = 'text'; btn.textContent = 'Hide'; }
-            else { f.type = 'password'; btn.textContent = 'Show'; }
-        }
-
-        // ── Navigation ──────────────────────────────────────────
-        function navigate(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-            const pageEl = document.getElementById('page-' + page);
-            if (pageEl) pageEl.classList.add('active');
-
-            const navEl = document.getElementById('nav-' + page);
-            if (navEl) navEl.classList.add('active');
-
-            closeGameDD();
-        }
-
-        // ── Game switcher ────────────────────────────────────────
-        function toggleGameDD() {
-            document.getElementById('game-dd').classList.toggle('open');
-        }
-
-        function closeGameDD() {
-            document.getElementById('game-dd').classList.remove('open');
-        }
-
-        function selectGame(name) {
-            currentGameName = name;
-            document.getElementById('game-label').textContent = name;
-            renderGameDD();
-            closeGameDD();
-        }
-
-        document.addEventListener('click', function (e) {
-            if (!document.getElementById('game-sw').contains(e.target)) closeGameDD();
-        });
-
-        // ── Environment ──────────────────────────────────────────
-        function setEnv(env) {
-            const sbBtn = document.getElementById('env-sandbox');
-            const prodBtn = document.getElementById('env-prod');
-            const banner = document.getElementById('sb-banner');
-            const ovLabel = document.getElementById('ov-env-label');
-            const cfgLabel = document.getElementById('cfg-env-label');
-            const prodLabel = document.getElementById('prod-env-label');
-
-            if (env === 'sandbox') {
-                sbBtn.classList.add('active');
-                prodBtn.classList.remove('active');
-                banner.classList.add('visible');
-                if (ovLabel) ovLabel.textContent = 'Sandbox';
-                if (cfgLabel) cfgLabel.textContent = 'Sandbox';
-                if (prodLabel) prodLabel.textContent = 'Sandbox';
-            } else {
-                prodBtn.classList.add('active', 'prod');
-                sbBtn.classList.remove('active');
-                banner.classList.remove('visible');
-                if (ovLabel) ovLabel.textContent = 'Production';
-                if (cfgLabel) cfgLabel.textContent = 'Production';
-                if (prodLabel) prodLabel.textContent = 'Production';
-            }
-        }
-
-        // ── Config tabs ──────────────────────────────────────────
-        function switchTab(btn, tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('tab-xsolla').style.display = tab === 'xsolla' ? 'block' : 'none';
-            document.getElementById('tab-appcharge').style.display = tab === 'appcharge' ? 'block' : 'none';
-        }
-
-        // ── Field helpers ────────────────────────────────────────
-        function toggleField(id, btn) {
-            const f = document.getElementById(id);
-            if (f.type === 'password') { f.type = 'text'; f.classList.remove('masked'); btn.textContent = 'Hide'; }
-            else { f.type = 'password'; f.classList.add('masked'); btn.textContent = 'Show'; }
-        }
-
-        function copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const orig = btn.textContent;
-                btn.textContent = '✓';
-                btn.style.color = 'var(--success)';
-                setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
-            });
-        }
-
-
-        function tryItOut(btn) {
-            const row = btn.closest('.ep-row');
-            const curlInput = row.querySelector('.ep-input') || document.getElementById('ep-validation-curl');
-            const curlCommand = curlInput.value;
-            const responsePanel = document.getElementById('curl-response');
-            const statusEl = document.getElementById('curl-status');
-            const bodyEl = document.getElementById('curl-body');
-            const validationRuleInput = document.getElementById('validation-rule');
-
-            btn.textContent = 'Executing…';
-            btn.disabled = true;
-
-            // Simulate cURL execution (in real implementation, this would call backend)
-            setTimeout(() => {
-                const mockResponse = {
-                    status: 200,
-                    body: {
-                        "user-properties": {
-                            "country": "US",
-                            "age": 20,
-                            "user_id": "user_sandbox_001"
-                        },
-                        "valid": true
-                    }
-                };
-
-                // Show response panel
-                responsePanel.style.display = 'block';
-
-                // Show response code
-                if (mockResponse.status === 200) {
-                    statusEl.innerHTML = `<span class="test-result ok">✓ ${mockResponse.status} OK</span>`;
-                } else {
-                    statusEl.innerHTML = `<span class="test-result err">✗ ${mockResponse.status}</span>`;
-                }
-
-                // Apply validation rule if it exists
-                const validationRule = validationRuleInput.value.trim();
-                if (validationRule && mockResponse.status === 200) {
-                    try {
-                        const validationResult = evaluateJMESPath(validationRule, mockResponse.body);
-                        if (validationResult === true) {
-                            statusEl.innerHTML += `<span class="test-result ok" style="margin-left:12px;">✓ Rule validated: true</span>`;
-                        } else if (validationResult === false) {
-                            statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Rule validated: false</span>`;
-                        } else {
-                            statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Rule returned non-boolean: ${validationResult}</span>`;
-                        }
-                    } catch (error) {
-                        statusEl.innerHTML += `<span class="test-result err" style="margin-left:12px;">✗ Invalid JMESPath syntax: ${error.message}</span>`;
-                    }
-                }
-
-                // Update body with syntax highlighting
-                bodyEl.textContent = JSON.stringify(mockResponse.body, null, 2);
-
-                btn.textContent = 'Try it out';
-                btn.disabled = false;
-            }, 1000);
-        }
-
-        // Simple JMESPath evaluator (basic implementation for demo)
-        // In production, use a proper JMESPath library
-        function evaluateJMESPath(expression, data) {
-            // This is a simplified evaluator for demo purposes
-            // Replace with actual JMESPath library in production
-
-            // Handle backtick-quoted literals (like `18`, `US`) and property access (like `user-properties`)
-            let evalExpression = expression.replace(/`([^`]+)`/g, (match, content) => {
-                // If it's a number, return as-is
-                if (!isNaN(content)) {
-                    return content;
-                }
-                // If it looks like a property name (contains -, or special chars), treat as data access
-                return `data["${content}"]`;
-            });
-
-            // Handle property access with dots after data references
-            evalExpression = evalExpression.replace(/data\["([^"]+)"\]\.(\w+)/g, 'data["$1"]?.["$2"]');
-
-            // Replace comparison operators
-            evalExpression = evalExpression
-                .replace(/=="([^"]+)"/g, '==="$1"')  // String comparison
-                .replace(/=='([^']+)'/g, "==='$1'")  // String comparison
-                .replace(/>=/g, '>=')
-                .replace(/<=/g, '<=')
-                .replace(/!=/g, '!==')
-                .replace(/&&/g, '&&')
-                .replace(/\|\|/g, '||');
-
-            // For the example rule: `user-properties`.country == 'US' && `user-properties`.age >= `18`
-            // Should become: data["user-properties"]?.["country"] === "US" && data["user-properties"]?.["age"] >= 18
-
-            // Safer eval using Function constructor
-            try {
-                const func = new Function('data', `return ${evalExpression}`);
-                return func(data);
-            } catch (e) {
-                throw new Error(e.message);
-            }
-        }
-
-        function copyResponseBody() {
-            const bodyEl = document.getElementById('curl-body');
-            navigator.clipboard.writeText(bodyEl.textContent).then(() => {
-                // Show brief confirmation
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✓';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 1000);
-            });
-        }
-
-        function testEndpoint(btn) {
-            btn.textContent = 'Testing…';
-            btn.disabled = true;
-            setTimeout(() => {
-                btn.textContent = 'Test';
-                btn.disabled = false;
-                // Show result next to button
-                const row = btn.closest('.ep-row');
-                const result = row.querySelector('.test-result');
-                if (result) {
-                    result.className = 'test-result ok';
-                    result.textContent = '✓ 200 OK';
-                }
-            }, 800);
-        }
-
-        // ── Endpoint field show/hide ─────────────────────────────
-        function toggleEpField(id, btn) {
-            const f = document.getElementById(id);
-            if (f.type === 'password') { f.type = 'text'; btn.textContent = 'Hide'; }
-            else { f.type = 'password'; btn.textContent = 'Show'; }
-        }
-
-        // ── Transaction timeline ─────────────────────────────────
-        function tlItem(dotClass, title, meta, badge) {
-            return `<div class="timeline-item">
-      <div class="tl-dot ${dotClass}"></div>
-      <div class="tl-content">
-        <div class="flex items-center gap-8"><span class="tl-title">${title}</span>${badge ? `<span class="${badge.cls}">${badge.text}</span>` : ''}</div>
-        <div class="tl-meta">${meta}</div>
-      </div>
-    </div>`;
-        }
-
-        function renderTimeline(status) {
-            const el = document.getElementById('txn-timeline');
-            if (!el) return;
-            let html = '';
-            if (status === 'paid') {
-                html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', { cls: 'tl-ok', text: '✓ 200 OK' });
-                html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
-            } else if (status === 'refunded') {
-                html += tlItem('filled', 'Game server notified (refund)', 'Jun 15, 2025 · 14:10 UTC', { cls: 'tl-ok', text: '✓ 200 OK' });
-                html += tlItem('', 'Refunded', 'Jun 15, 2025 · 14:10 UTC', null);
-                html += tlItem('filled', 'Game server notified', 'Jun 14, 2025 · 09:32 UTC', { cls: 'tl-ok', text: '✓ 200 OK' });
-                html += tlItem('success', 'Paid', 'Jun 14, 2025 · 09:32 UTC', null);
-            } else if (status === 'cancelled') {
-                html += tlItem('', 'Cancelled', 'Jun 14, 2025 · 09:33 UTC', null);
-            }
-            el.innerHTML = html;
-        }
-
-        function setTxnStatus(status) {
-            const badge = document.getElementById('txn-status-badge');
-            badge.className = 'badge badge-' + status;
-            badge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-            renderTimeline(status);
-        }
-
-        // ── Configuration Progress ──────────────────────────────
-        function updateConfigProgress() {
-            const checks = {
-                'validation-rule': () => {
-                    const val = document.getElementById('validation-rule')?.value || '';
-                    return val.trim().length > 0 && val !== '`user-properties`.country == \'US\' && `user-properties`.age >= `18`';
-                },
-                'user-validation-curl': () => {
-                    const val = document.getElementById('ep-validation-curl')?.value || '';
-                    return val.trim().length > 0 && !val.includes('game.com/api/validate');
-                },
-                'valid-test-user-id': () => {
-                    const val = document.getElementById('valid-test-user-id')?.value || '';
-                    return val.trim().length > 0 && val !== 'user_sandbox_001';
-                },
-                'invalid-test-user-id': () => {
-                    const val = document.getElementById('invalid-test-user-id')?.value || '';
-                    return val.trim().length > 0;
-                },
-                'purchase-callback': () => {
-                    const val = document.getElementById('ep-purchase-curl')?.value || '';
-                    return val.trim().length > 0 && !val.includes('game.com/api/purchase');
-                },
-                'refund-callback': () => {
-                    const val = document.getElementById('ep-refund-curl')?.value || '';
-                    return val.trim().length > 0 && !val.includes('game.com/api/refund');
-                },
-                'ios-credentials': () => {
-                    const iosCard = document.querySelector('.plat-card');
-                    if (!iosCard) return false;
-                    const inputs = iosCard.querySelectorAll('.cf-input');
-                    return inputs.length >= 3 &&
-                        inputs[0]?.value?.trim().length > 0 &&
-                        inputs[1]?.value?.trim().length > 0 &&
-                        inputs[2]?.value?.trim().length > 0;
-                },
-                'android-credentials': () => {
-                    const cards = document.querySelectorAll('.plat-card');
-                    if (cards.length < 2) return false;
-                    const androidCard = cards[1];
-                    const inputs = androidCard.querySelectorAll('.cf-input');
-                    return inputs.length >= 3 &&
-                        inputs[0]?.value?.trim().length > 0 &&
-                        inputs[1]?.value?.trim().length > 0 &&
-                        inputs[2]?.value?.trim().length > 0;
-                }
-            };
-
-            let completed = 0;
-            const total = Object.keys(checks).length;
-
-            Object.keys(checks).forEach(field => {
-                const item = document.querySelector(`.progress-item[data-field="${field}"]`);
-                if (!item) return;
-
-                const isCompleted = checks[field]();
-                const icon = item.querySelector('.progress-icon');
-
-                if (isCompleted) {
-                    item.classList.add('completed');
-                    icon.textContent = '✓';
-                    completed++;
-                } else {
-                    item.classList.remove('completed');
-                    icon.textContent = '○';
-                }
-            });
-
-            // Update progress bar
-            const percent = Math.round((completed / total) * 100);
-            document.getElementById('progress-bar').style.width = `${percent}%`;
-            document.getElementById('progress-text').textContent = `${completed}/${total} completed`;
-            document.getElementById('progress-percent').textContent = `${percent}%`;
-        }
-
-        function scrollToField(fieldId) {
-            let targetElement;
-
-            switch (fieldId) {
-                case 'validation-rule':
-                    targetElement = document.getElementById('validation-rule');
-                    break;
-                case 'user-validation-curl':
-                    targetElement = document.getElementById('ep-validation-curl');
-                    break;
-                case 'valid-test-user-id':
-                    targetElement = document.getElementById('valid-test-user-id');
-                    break;
-                case 'invalid-test-user-id':
-                    targetElement = document.getElementById('invalid-test-user-id');
-                    break;
-                case 'purchase-callback':
-                    targetElement = document.getElementById('ep-purchase-curl');
-                    break;
-                case 'refund-callback':
-                    targetElement = document.getElementById('ep-refund-curl');
-                    break;
-                case 'ios-credentials':
-                    targetElement = document.querySelector('.plat-card');
-                    break;
-                case 'android-credentials': {
-                    const cards = document.querySelectorAll('.plat-card');
-                    targetElement = cards.length > 1 ? cards[1] : null;
-                    break;
-                }
-            }
-
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetElement.focus();
-            }
-        }
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderGameDD();
-            renderTimeline('paid');
-            cbRender();
-            updateConfigProgress();
-
-            // Add event listeners to all inputs to update progress in real-time
-            document.querySelectorAll('input, textarea').forEach(input => {
-                input.addEventListener('input', updateConfigProgress);
-                input.addEventListener('change', updateConfigProgress);
-            });
-        });
-
-        function exportRookConfig() {
-            // Base configuration shared across all files
-            const baseConfig = {
-                game: "Pixel Odyssey",
-                appId: 12,
-                validationRule: document.getElementById('validation-rule')?.value || "",
-                endpoints: {
-                    userValidationCurl: document.querySelector('input[value*="curl"]')?.value || "",
-                    purchaseCallback: document.querySelectorAll('.ep-input')[1]?.value || "",
-                    refundCallback: document.querySelectorAll('.ep-input')[2]?.value || "",
-                    testUserId: document.querySelectorAll('.ep-input')[3]?.value || ""
-                },
-                exportedAt: new Date().toISOString()
-            };
-
-            // Platform and environment specific configurations
-            const configs = [
-                {
-                    filename: 'ios-sandbox-RookConfig.json',
-                    platform: 'iOS',
-                    environment: 'Sandbox',
-                    config: {
-                        ...baseConfig,
-                        platform: 'iOS',
-                        environment: 'Sandbox',
-                        provider: {
-                            name: 'Xsolla',
-                            loginProjectId: 'login-royalrevolt2-ios-sb',
-                            merchantId: 'merchant_rr2_ios_123',
-                            xsollaProjectId: 'xsolla-royalrevolt2-ios-sb',
-                            webhookUrl: 'https://rook.io/wh/ios/rr2-sb'
-                        }
-                    }
-                },
-                {
-                    filename: 'ios-production-RookConfig.json',
-                    platform: 'iOS',
-                    environment: 'Production',
-                    config: {
-                        ...baseConfig,
-                        platform: 'iOS',
-                        environment: 'Production',
-                        provider: {
-                            name: 'Xsolla',
-                            loginProjectId: 'login-royalrevolt2-ios-prod',
-                            merchantId: 'merchant_rr2_ios_prod',
-                            xsollaProjectId: 'xsolla-royalrevolt2-ios-prod',
-                            webhookUrl: 'https://rook.io/wh/ios/rr2-prod'
-                        }
-                    }
-                },
-                {
-                    filename: 'android-sandbox-RookConfig.json',
-                    platform: 'Android',
-                    environment: 'Sandbox',
-                    config: {
-                        ...baseConfig,
-                        platform: 'Android',
-                        environment: 'Sandbox',
-                        provider: {
-                            name: 'Xsolla',
-                            loginProjectId: 'login-royalrevolt2-android-sb',
-                            merchantId: 'merchant_rr2_android_456',
-                            xsollaProjectId: 'xsolla-royalrevolt2-android-sb',
-                            webhookUrl: 'https://rook.io/wh/android/rr2-sb'
-                        }
-                    }
-                },
-                {
-                    filename: 'android-production-RookConfig.json',
-                    platform: 'Android',
-                    environment: 'Production',
-                    config: {
-                        ...baseConfig,
-                        platform: 'Android',
-                        environment: 'Production',
-                        provider: {
-                            name: 'Xsolla',
-                            loginProjectId: 'login-royalrevolt2-android-prod',
-                            merchantId: 'merchant_rr2_android_prod',
-                            xsollaProjectId: 'xsolla-royalrevolt2-android-prod',
-                            webhookUrl: 'https://rook.io/wh/android/rr2-prod'
-                        }
-                    }
-                }
-            ];
-
-            // Download each config file with a slight delay between downloads
-            configs.forEach((item, index) => {
-                setTimeout(() => {
-                    const json = JSON.stringify(item.config, null, 2);
-                    const blob = new Blob([json], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = item.filename;
-                    a.click();
-
-                    // Clean up
-                    URL.revokeObjectURL(url);
-                }, index * 200); // 200ms delay between each download
-            });
-        }
-
-        // ── Drawer ───────────────────────────────────────────────
-        function openDrawer() {
-            document.getElementById('drawer-overlay').classList.add('open');
-            document.getElementById('create-drawer').classList.add('open');
-        }
-
-        function closeDrawer() {
-            document.getElementById('drawer-overlay').classList.remove('open');
-            document.getElementById('create-drawer').classList.remove('open');
-        }
-
-        function selectRole(el, role) {
-            document.querySelectorAll('.radio-opt').forEach(r => r.classList.remove('sel'));
-            el.classList.add('sel');
-            const gameField = document.getElementById('game-assign-field');
-            gameField.style.display = role === 'gameadmin' ? 'block' : 'none';
-        }
-
-        function generatePass() {
-            const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefghjkmnpqrstwxyz23456789!@#';
-            const pass = Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-            document.getElementById('temp-pass').value = pass;
-        }
-
-        function createUser() {
-            closeDrawer();
-            // In real app: POST to API
-            alert('User created and credentials email sent.');
-        }
-
-        // ── Modal ────────────────────────────────────────────────
-        function openModal(id) {
-            document.getElementById(id).classList.add('open');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
-
-        // Close modal on overlay click
-        document.querySelectorAll('.modal-ov').forEach(ov => {
-            ov.addEventListener('click', function (e) {
-                if (e.target === ov) ov.classList.remove('open');
-            });
-        });
-
-        // ── CURL Builder ─────────────────────────────────────────
-
-        const CB_PREDEFINED = [
-            { label: 'user_id', val: '{{user_id}}' },
-            { label: 'invoice_id', val: '{{invoice_id}}' },
-            { label: 'product_sku', val: '{{product_sku}}' },
-            { label: 'platform', val: '{{platform}}' },
-            { label: 'environment', val: '{{environment}}' },
-            { label: 'amount', val: '{{amount}}' },
-            { label: 'currency', val: '{{currency}}' },
-            { label: 'app_id', val: '{{app_id}}' },
-            { label: 'valid_test_user_id', val: '{{valid_test_user_id}}' },
-            { label: 'invalid_test_user_id', val: '{{invalid_test_user_id}}' },
-            { label: 'refund_reason', val: '{{refund_reason}}' },
-        ];
-
-        const CB_FUNCTIONS = [
-            { name: 'jmespath_query', label: 'JMESPath Query', params: ['query', 'source'] },
-            { name: 'jq_query', label: 'jq Query', params: ['expression', 'source'] },
-        ];
-
-        const CB_SOURCE_OBJECTS = [
-            { name: 'orders', label: 'Orders', fields: ['id', 'user_id', 'invoice_id', 'amount', 'currency', 'status', 'created_at'] },
-        ];
-
-        function cbDefaultVal() { return { mode: 'predefined', val: '{{user_id}}' }; }
-        function cbDefaultSourceVal() {
-            return { mode: 'object', objectType: CB_SOURCE_OBJECTS[0].name, fields: [] };
-        }
-
-        function cbDefaultFnParams(fnName) {
-            const fn = CB_FUNCTIONS.find(f => f.name === fnName);
-            return (fn ? fn.params : []).map(pName => {
-                if (pName === 'source') return cbDefaultSourceVal();
-                if (pName === 'expression' || pName === 'query') return { mode: 'custom', val: '' };
-                return cbDefaultVal();
-            });
-        }
-
-        let validationStep = {
-            id: 1, name: 'User Validation', method: 'POST',
-            url: 'https://game.com/api/validate',
-            headers: [{ id: 1, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
-            body: [{ id: 2, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } }]
-        };
-        let callbacks = [
-            {
-                id: 2, name: 'Purchase Callback',
-                steps: [{
-                    id: 20, method: 'POST',
-                    url: 'https://game.com/api/purchase',
-                    headers: [{ id: 3, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
-                    body: [
-                        { id: 4, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
-                        { id: 5, key: 'user_id', val: { mode: 'predefined', val: '{{user_id}}' } },
-                    ]
-                }]
-            },
-            {
-                id: 3, name: 'Refund Callback',
-                steps: [{
-                    id: 21, method: 'POST',
-                    url: 'https://game.com/api/refund',
-                    headers: [{ id: 6, key: 'Content-Type', val: { mode: 'custom', val: 'application/json' } }],
-                    body: [
-                        { id: 7, key: 'invoice_id', val: { mode: 'predefined', val: '{{invoice_id}}' } },
-                        { id: 8, key: 'reason', val: { mode: 'predefined', val: '{{refund_reason}}' } },
-                    ]
-                }]
-            },
-        ];
-        let cbNextId = 30;
-
-        // ── Validation step helpers (single step in Validation Rules) ──
-        function cbFindStep(id) { return validationStep.id === id ? validationStep : null; }
-        function cbUpdateName(id, v) { const s = cbFindStep(id); if (s) s.name = v; }
-        function cbUpdateMethod(id, v) { const s = cbFindStep(id); if (s) s.method = v; }
-        function cbUpdateUrl(id, v) { const s = cbFindStep(id); if (s) s.url = v; }
-        function cbUpdateKey(sid, sec, fid, v) {
-            const s = cbFindStep(sid); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (f) f.key = v;
-        }
-        function cbAddField(sid, sec) {
-            const s = cbFindStep(sid); if (!s) return;
-            s[sec].push({ id: ++cbNextId, key: '', val: cbDefaultVal() }); cbRender();
-        }
-        function cbRemoveField(sid, sec, fid) {
-            const s = cbFindStep(sid); if (!s) return;
-            s[sec] = s[sec].filter(f => f.id !== fid); cbRender();
-        }
-
-        // ── Validation step: source object builder helpers ────────
-        function _cbGetSourceParam(sid, sec, fid, pIdx) {
-            const s = cbFindStep(sid); if (!s) return null;
-            const f = s[sec].find(f => f.id === fid); if (!f) return null;
-            if (f.val.mode !== 'function') return null;
-            return f.val.params[pIdx] || null;
-        }
-        function cbSetSourceObjectType(sid, sec, fid, pIdx, objectType) {
-            const s = cbFindStep(sid); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f || f.val.mode !== 'function') return;
-            const p = f.val.params[pIdx];
-            if (p && p.mode === 'object') p.objectType = objectType;
-            else f.val.params[pIdx] = { mode: 'object', objectType, fields: [] };
-            cbRender();
-        }
-        function cbAddSourceField(sid, sec, fid, pIdx) {
-            const p = _cbGetSourceParam(sid, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            p.fields.push({ id: ++cbNextId, key: '', field: '' }); cbRender();
-        }
-        function cbRemoveSourceField(sid, sec, fid, pIdx, fieldIdx) {
-            const p = _cbGetSourceParam(sid, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            p.fields.splice(fieldIdx, 1); cbRender();
-        }
-        function cbSetSourceFieldKey(sid, sec, fid, pIdx, fieldIdx, key) {
-            const p = _cbGetSourceParam(sid, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            if (p.fields[fieldIdx]) p.fields[fieldIdx].key = key;
-        }
-        function cbSetSourceFieldVal(sid, sec, fid, pIdx, fieldIdx, field) {
-            const p = _cbGetSourceParam(sid, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            if (p.fields[fieldIdx]) p.fields[fieldIdx].field = field;
-        }
-
-        // ── Callback management ──────────────────────────────────
-        function cbFindCallback(cbId) { return callbacks.find(c => c.id === cbId); }
-        function cbFindStepIn(cbId, stepId) {
-            const cb = cbFindCallback(cbId);
-            return cb ? cb.steps.find(s => s.id === stepId) : null;
-        }
-        function cbAddCallback() {
-            callbacks.push({ id: ++cbNextId, name: 'New Callback', steps: [{ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [] }] });
-            cbRender();
-        }
-        function cbRemoveCallback(cbId) { callbacks = callbacks.filter(c => c.id !== cbId); cbRender(); }
-        function cbUpdateCallbackName(cbId, v) { const cb = cbFindCallback(cbId); if (cb) cb.name = v; }
-        function cbsAddStep(cbId) {
-            const cb = cbFindCallback(cbId); if (!cb) return;
-            cb.steps.push({ id: ++cbNextId, method: 'POST', url: '', headers: [], body: [] }); cbRender();
-        }
-        function cbsRemoveStep(cbId, stepId) {
-            const cb = cbFindCallback(cbId); if (!cb) return;
-            cb.steps = cb.steps.filter(s => s.id !== stepId); cbRender();
-        }
-        function cbsUpdateMethod(cbId, stepId, v) { const s = cbFindStepIn(cbId, stepId); if (s) s.method = v; }
-        function cbsUpdateUrl(cbId, stepId, v) { const s = cbFindStepIn(cbId, stepId); if (s) s.url = v; }
-        function cbsUpdateKey(cbId, stepId, sec, fid, v) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (f) f.key = v;
-        }
-        function cbsAddField(cbId, stepId, sec) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            s[sec].push({ id: ++cbNextId, key: '', val: cbDefaultVal() }); cbRender();
-        }
-        function cbsRemoveField(cbId, stepId, sec, fid) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            s[sec] = s[sec].filter(f => f.id !== fid); cbRender();
-        }
-        function cbsSetPred(cbId, stepId, sec, fid, pIdx, v) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            if (pIdx != null) { if (f.val.mode === 'function') f.val.params[pIdx] = { mode: 'predefined', val: v }; }
-            else { f.val = { mode: 'predefined', val: v }; }
-            cbRender();
-        }
-        function cbsSetCustom(cbId, stepId, sec, fid, pIdx, v) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            if (pIdx != null) { if (f.val.mode === 'function') f.val.params[pIdx] = { mode: 'custom', val: v }; }
-            else { if (f.val.mode !== 'function') f.val = { mode: 'custom', val: v }; }
-        }
-        function cbsSetFn(cbId, stepId, sec, fid, fnName) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            f.val = { mode: 'function', fn: fnName, params: cbDefaultFnParams(fnName) };
-            cbRender();
-        }
-
-        // ── Callback step: source object builder helpers ──────────
-        function _cbsGetSourceParam(cbId, stepId, sec, fid, pIdx) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return null;
-            const f = s[sec].find(f => f.id === fid); if (!f) return null;
-            if (f.val.mode !== 'function') return null;
-            return f.val.params[pIdx] || null;
-        }
-        function cbsSetSourceObjectType(cbId, stepId, sec, fid, pIdx, objectType) {
-            const s = cbFindStepIn(cbId, stepId); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f || f.val.mode !== 'function') return;
-            const p = f.val.params[pIdx];
-            if (p && p.mode === 'object') p.objectType = objectType;
-            else f.val.params[pIdx] = { mode: 'object', objectType, fields: [] };
-            cbRender();
-        }
-        function cbsAddSourceField(cbId, stepId, sec, fid, pIdx) {
-            const p = _cbsGetSourceParam(cbId, stepId, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            p.fields.push({ id: ++cbNextId, key: '', field: '' }); cbRender();
-        }
-        function cbsRemoveSourceField(cbId, stepId, sec, fid, pIdx, fieldIdx) {
-            const p = _cbsGetSourceParam(cbId, stepId, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            p.fields.splice(fieldIdx, 1); cbRender();
-        }
-        function cbsSetSourceFieldKey(cbId, stepId, sec, fid, pIdx, fieldIdx, key) {
-            const p = _cbsGetSourceParam(cbId, stepId, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            if (p.fields[fieldIdx]) p.fields[fieldIdx].key = key;
-        }
-        function cbsSetSourceFieldVal(cbId, stepId, sec, fid, pIdx, fieldIdx, field) {
-            const p = _cbsGetSourceParam(cbId, stepId, sec, fid, pIdx); if (!p || p.mode !== 'object') return;
-            if (p.fields[fieldIdx]) p.fields[fieldIdx].field = field;
-        }
-
-        function cbTogglePicker(pid) {
-            const picker = document.getElementById(pid);
-            if (!picker) return;
-            const isOpen = picker.classList.contains('open');
-            // Close all others
-            document.querySelectorAll('.cb-picker.open').forEach(p => {
-                p.classList.remove('open');
-                const b = p.previousElementSibling;
-                if (b && b.classList.contains('cb-val-btn')) b.classList.remove('active');
-            });
-            if (!isOpen) {
-                picker.classList.add('open');
-                const b = picker.previousElementSibling;
-                if (b && b.classList.contains('cb-val-btn')) b.classList.add('active');
-            }
-        }
-
-        function cbPickTab(pid, tab) {
-            const picker = document.getElementById(pid);
-            if (!picker) return;
-            picker.querySelectorAll('.cb-ptab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-            picker.querySelector('.cb-pbody-value').style.display = tab === 'value' ? 'block' : 'none';
-            const fnPane = picker.querySelector('.cb-pbody-fn');
-            if (fnPane) fnPane.style.display = tab === 'fn' ? 'block' : 'none';
-        }
-
-        function cbSetPred(sid, sec, fid, pIdx, v) {
-            const s = cbFindStep(sid); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            if (pIdx != null) { if (f.val.mode === 'function') f.val.params[pIdx] = { mode: 'predefined', val: v }; }
-            else { f.val = { mode: 'predefined', val: v }; }
-            cbRender();
-        }
-        function cbSetCustom(sid, sec, fid, pIdx, v) {
-            const s = cbFindStep(sid); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            if (pIdx != null) { if (f.val.mode === 'function') f.val.params[pIdx] = { mode: 'custom', val: v }; }
-            else { if (f.val.mode !== 'function') f.val = { mode: 'custom', val: v }; }
-            // no re-render (preserve focus)
-        }
-        function cbSetFn(sid, sec, fid, fnName) {
-            const s = cbFindStep(sid); if (!s) return;
-            const f = s[sec].find(f => f.id === fid); if (!f) return;
-            f.val = { mode: 'function', fn: fnName, params: cbDefaultFnParams(fnName) };
-            cbRender();
-        }
-
-        function cbChip(valExpr) {
-            if (!valExpr) return '';
-            if (valExpr.mode === 'predefined') {
-                const p = CB_PREDEFINED.find(p => p.val === valExpr.val);
-                return `<span class="cb-chip cb-chip-pred">${p ? p.label : valExpr.val}</span>`;
-            }
-            if (valExpr.mode === 'custom') {
-                return `<span class="cb-chip cb-chip-cust">${valExpr.val || 'custom…'}</span>`;
-            }
-            if (valExpr.mode === 'function') {
-                const fn = CB_FUNCTIONS.find(f => f.name === valExpr.fn);
-                return `<span class="cb-chip cb-chip-fn">${fn ? fn.label : valExpr.fn}(…)</span>`;
-            }
-            return '';
-        }
-
-        function cbPredList(sid, sec, fid, pIdx, curVal) {
-            return CB_PREDEFINED.map(p => {
-                const sel = curVal && curVal.mode === 'predefined' && curVal.val === p.val ? 'sel' : '';
-                return `<div class="cb-pval-opt ${sel}" onclick="cbSetPred(${sid},'${sec}',${fid},${pIdx},'${p.val}')">
-        <div class="cb-pval-radio"></div>
-        <span class="cb-pval-name">${p.label}</span>
-        <span class="cb-pval-code">${p.val}</span>
-      </div>`;
-            }).join('');
-        }
-
-        function cbObjectBuilder(sid, sec, fid, pIdx, val) {
-            const objDef = CB_SOURCE_OBJECTS.find(o => o.name === val.objectType) || CB_SOURCE_OBJECTS[0];
-            const rows = val.fields.map((f, i) => `
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <input class="cb-key" type="text" placeholder="key" value="${f.key}"
-          oninput="cbSetSourceFieldKey(${sid},'${sec}',${fid},${pIdx},${i},this.value)"
-          style="width:90px;flex-shrink:0;">
-        <span style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;">:</span>
-        <select style="flex:1;font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);background:var(--surface);"
-          onchange="cbSetSourceFieldVal(${sid},'${sec}',${fid},${pIdx},${i},this.value)">
-          <option value="">-- field --</option>
-          ${objDef.fields.map(field => `<option value="${field}" ${f.field === field ? 'selected' : ''}>${field}</option>`).join('')}
-        </select>
-        <button class="btn-icon" onclick="cbRemoveSourceField(${sid},'${sec}',${fid},${pIdx},${i})"
-          style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
-      </div>`).join('');
-            return `<div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-        <span style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;">From</span>
-        <select style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);background:var(--surface);"
-          onchange="cbSetSourceObjectType(${sid},'${sec}',${fid},${pIdx},this.value)">
-          ${CB_SOURCE_OBJECTS.map(o => `<option value="${o.name}" ${val.objectType === o.name ? 'selected' : ''}>${o.label}</option>`).join('')}
-        </select>
-      </div>
-      ${rows}
-      <button class="btn btn-ghost btn-sm" onclick="cbAddSourceField(${sid},'${sec}',${fid},${pIdx})"
-        style="margin-top:4px;">+ Add Field</button>
-    </div>`;
-        }
-
-        function cbParamPicker(sid, sec, fid, pIdx, pName, pVal) {
-            if (pName === 'expression' || pName === 'query') {
-                const strVal = (pVal && pVal.mode === 'custom') ? pVal.val : '';
-                return `<div class="cb-fn-prow">
-      <span class="cb-fn-pname">${pName}</span>
-      <input type="text" placeholder="${pName}…" value="${strVal}"
-        oninput="cbSetCustom(${sid},'${sec}',${fid},${pIdx},null,this.value)"
-        style="flex:1;height:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;background:var(--surface);outline:none;">
-    </div>`;
-            }
-            if (pName === 'source') {
-                const val = (pVal && pVal.mode === 'object') ? pVal : cbDefaultSourceVal();
-                return `<div class="cb-fn-prow" style="align-items:flex-start;">
-      <span class="cb-fn-pname">${pName}</span>
-      <div style="flex:1;">${cbObjectBuilder(sid, sec, fid, pIdx, val)}</div>
-    </div>`;
-            }
-            const pid = `cbp-${sid}-${sec}-${fid}-p${pIdx}`;
-            const isCust = pVal && pVal.mode === 'custom';
-            return `<div class="cb-fn-prow">
-      <span class="cb-fn-pname">${pName}</span>
-      <div class="cb-val-wrap" style="flex:1;">
-        <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(pVal)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
-        <div class="cb-picker" id="${pid}">
-          <div class="cb-ptabs">
-            <button class="cb-ptab active" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
-          </div>
-          <div class="cb-pbody">
-            <div class="cb-pbody-value">
-              <div class="cb-pval-list">${cbPredList(sid, sec, fid, pIdx, pVal)}</div>
-              <div class="cb-pcustom">
-                <div class="cb-pval-radio ${isCust ? 'sel' : ''}"></div>
-                <input class="cb-pcustom-in" type="text" placeholder="Custom…" value="${isCust ? pVal.val : ''}"
-                  oninput="cbSetCustom(${sid},'${sec}',${fid},${pIdx},this.value)"
-                  onfocus="cbSetCustom(${sid},'${sec}',${fid},${pIdx},this.value)">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-        }
-
-        function cbValPicker(sid, sec, fid, valExpr) {
-            const pid = `cbp-${sid}-${sec}-${fid}`;
-            const isFn = valExpr.mode === 'function';
-            const isCust = valExpr.mode === 'custom';
-            const curFnDef = isFn ? CB_FUNCTIONS.find(f => f.name === valExpr.fn) : CB_FUNCTIONS[0];
-            const fnOpts = CB_FUNCTIONS.map(f =>
-                `<option value="${f.name}" ${isFn && valExpr.fn === f.name ? 'selected' : ''}>${f.label}</option>`
-            ).join('');
-            const fnParams = isFn && curFnDef
-                ? curFnDef.params.map((pn, i) => cbParamPicker(sid, sec, fid, i, pn, valExpr.params[i] || cbDefaultVal())).join('')
-                : '';
-
-            return `<div class="cb-val-wrap">
-      <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(valExpr)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
-      <div class="cb-picker" id="${pid}">
-        <div class="cb-ptabs">
-          <button class="cb-ptab ${!isFn ? 'active' : ''}" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
-          <button class="cb-ptab ${isFn ? 'active' : ''}" data-tab="fn" onclick="cbPickTab('${pid}','fn')">Function</button>
-        </div>
-        <div class="cb-pbody">
-          <div class="cb-pbody-value" style="display:${!isFn ? 'block' : 'none'}">
-            <div class="cb-pval-list">${cbPredList(sid, sec, fid, null, valExpr)}</div>
-            <div class="cb-pcustom">
-              <div class="cb-pval-radio ${isCust ? 'sel' : ''}"></div>
-              <input class="cb-pcustom-in" type="text" placeholder="Custom value…" value="${isCust ? valExpr.val : ''}"
-                oninput="cbSetCustom(${sid},'${sec}',${fid},null,this.value)"
-                onfocus="cbSetCustom(${sid},'${sec}',${fid},null,this.value)">
-            </div>
-          </div>
-          <div class="cb-pbody-fn" style="display:${isFn ? 'block' : 'none'}">
-            <select class="cb-fn-sel" onchange="cbSetFn(${sid},'${sec}',${fid},this.value)">${fnOpts}</select>
-            <div class="cb-fn-params">${fnParams}</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-        }
-
-        function cbRenderSection(step, sec, label) {
-            const rows = step[sec].map(f => `
-      <div class="cb-kv">
-        <input class="cb-key" type="text" placeholder="key" value="${f.key}"
-          oninput="cbUpdateKey(${step.id},'${sec}',${f.id},this.value)">
-        ${cbValPicker(step.id, sec, f.id, f.val)}
-        <button class="btn-icon" onclick="cbRemoveField(${step.id},'${sec}',${f.id})" title="Remove" style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
-      </div>`).join('');
-            return `<div class="cb-sec">
-      <div class="cb-sec-head">
-        <span class="cb-sec-label">${label}</span>
-        <button class="btn btn-ghost btn-sm" onclick="cbAddField(${step.id},'${sec}')">+ Add</button>
-      </div>
-      ${rows}
-    </div>`;
-        }
-
-        // cbRenderStep: renders the validation step (single step, uses cb* functions)
-        function cbRenderStep(step) {
-            return `
-      <div class="cb-step">
-        <div class="cb-step-head">
-          <input class="cb-name" type="text" value="${step.name}" oninput="cbUpdateName(${step.id},this.value)">
-          <select class="cb-method" onchange="cbUpdateMethod(${step.id},this.value)">
-            ${['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(m => `<option ${step.method === m ? 'selected' : ''}>${m}</option>`).join('')}
-          </select>
-        </div>
-        <div class="cb-step-body">
-          <div class="cb-url-row">
-            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);flex-shrink:0;">URL</span>
-            <input class="cb-url" type="text" placeholder="https://…" value="${step.url}" oninput="cbUpdateUrl(${step.id},this.value)">
-          </div>
-          ${cbRenderSection(step, 'headers', 'Headers')}
-          ${cbRenderSection(step, 'body', 'Body')}
-        </div>
-      </div>`;
-        }
-
-        // ── Callback render functions (cbs* uses cbId + stepId) ──────
-        function cbsPredList(cbId, stepId, sec, fid, pIdx, curVal) {
-            return CB_PREDEFINED.map(p => {
-                const sel = curVal && curVal.mode === 'predefined' && curVal.val === p.val ? 'sel' : '';
-                return `<div class="cb-pval-opt ${sel}" onclick="cbsSetPred(${cbId},${stepId},'${sec}',${fid},${pIdx != null ? pIdx : 'null'},'${p.val}')">
-        <div class="cb-pval-radio"></div>
-        <span class="cb-pval-name">${p.label}</span>
-        <span class="cb-pval-code">${p.val}</span>
-      </div>`;
-            }).join('');
-        }
-
-        function cbsObjectBuilder(cbId, stepId, sec, fid, pIdx, val) {
-            const objDef = CB_SOURCE_OBJECTS.find(o => o.name === val.objectType) || CB_SOURCE_OBJECTS[0];
-            const rows = val.fields.map((f, i) => `
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <input class="cb-key" type="text" placeholder="key" value="${f.key}"
-          oninput="cbsSetSourceFieldKey(${cbId},${stepId},'${sec}',${fid},${pIdx},${i},this.value)"
-          style="width:90px;flex-shrink:0;">
-        <span style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;">:</span>
-        <select style="flex:1;font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);background:var(--surface);"
-          onchange="cbsSetSourceFieldVal(${cbId},${stepId},'${sec}',${fid},${pIdx},${i},this.value)">
-          <option value="">-- field --</option>
-          ${objDef.fields.map(field => `<option value="${field}" ${f.field === field ? 'selected' : ''}>${field}</option>`).join('')}
-        </select>
-        <button class="btn-icon" onclick="cbsRemoveSourceField(${cbId},${stepId},'${sec}',${fid},${pIdx},${i})"
-          style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
-      </div>`).join('');
-            return `<div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-        <span style="font-size:11px;color:var(--text-tertiary);flex-shrink:0;">From</span>
-        <select style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);background:var(--surface);"
-          onchange="cbsSetSourceObjectType(${cbId},${stepId},'${sec}',${fid},${pIdx},this.value)">
-          ${CB_SOURCE_OBJECTS.map(o => `<option value="${o.name}" ${val.objectType === o.name ? 'selected' : ''}>${o.label}</option>`).join('')}
-        </select>
-      </div>
-      ${rows}
-      <button class="btn btn-ghost btn-sm" onclick="cbsAddSourceField(${cbId},${stepId},'${sec}',${fid},${pIdx})"
-        style="margin-top:4px;">+ Add Field</button>
-    </div>`;
-        }
-
-        function cbsParamPicker(cbId, stepId, sec, fid, pIdx, pName, pVal) {
-            if (pName === 'expression' || pName === 'query') {
-                const strVal = (pVal && pVal.mode === 'custom') ? pVal.val : '';
-                return `<div class="cb-fn-prow">
-      <span class="cb-fn-pname">${pName}</span>
-      <input type="text" placeholder="${pName}…" value="${strVal}"
-        oninput="cbsSetCustom(${cbId},${stepId},'${sec}',${fid},${pIdx},null,this.value)"
-        style="flex:1;height:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--mono);font-size:12px;background:var(--surface);outline:none;">
-    </div>`;
-            }
-            if (pName === 'source') {
-                const val = (pVal && pVal.mode === 'object') ? pVal : cbDefaultSourceVal();
-                return `<div class="cb-fn-prow" style="align-items:flex-start;">
-      <span class="cb-fn-pname">${pName}</span>
-      <div style="flex:1;">${cbsObjectBuilder(cbId, stepId, sec, fid, pIdx, val)}</div>
-    </div>`;
-            }
-            const pid = `cbsp-${cbId}-${stepId}-${sec}-${fid}-p${pIdx}`;
-            const isCust = pVal && pVal.mode === 'custom';
-            return `<div class="cb-fn-prow">
-      <span class="cb-fn-pname">${pName}</span>
-      <div class="cb-val-wrap" style="flex:1;">
-        <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(pVal)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
-        <div class="cb-picker" id="${pid}">
-          <div class="cb-ptabs">
-            <button class="cb-ptab active" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
-          </div>
-          <div class="cb-pbody">
-            <div class="cb-pbody-value">
-              <div class="cb-pval-list">${cbsPredList(cbId, stepId, sec, fid, pIdx, pVal)}</div>
-              <div class="cb-pcustom">
-                <div class="cb-pval-radio ${isCust ? 'sel' : ''}"></div>
-                <input class="cb-pcustom-in" type="text" placeholder="Custom…" value="${isCust ? pVal.val : ''}"
-                  oninput="cbsSetCustom(${cbId},${stepId},'${sec}',${fid},${pIdx},this.value)"
-                  onfocus="cbsSetCustom(${cbId},${stepId},'${sec}',${fid},${pIdx},this.value)">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-        }
-
-        function cbsValPicker(cbId, stepId, sec, fid, valExpr) {
-            const pid = `cbsp-${cbId}-${stepId}-${sec}-${fid}`;
-            const isFn = valExpr.mode === 'function';
-            const isCust = valExpr.mode === 'custom';
-            const curFnDef = isFn ? CB_FUNCTIONS.find(f => f.name === valExpr.fn) : CB_FUNCTIONS[0];
-            const fnOpts = CB_FUNCTIONS.map(f =>
-                `<option value="${f.name}" ${isFn && valExpr.fn === f.name ? 'selected' : ''}>${f.label}</option>`
-            ).join('');
-            const fnParams = isFn && curFnDef
-                ? curFnDef.params.map((pn, i) => cbsParamPicker(cbId, stepId, sec, fid, i, pn, valExpr.params[i] || cbDefaultVal())).join('')
-                : '';
-            return `<div class="cb-val-wrap">
-      <button class="cb-val-btn" onclick="cbTogglePicker('${pid}')">${cbChip(valExpr)}<span style="margin-left:auto;font-size:10px;color:var(--text-tertiary);">▾</span></button>
-      <div class="cb-picker" id="${pid}">
-        <div class="cb-ptabs">
-          <button class="cb-ptab ${!isFn ? 'active' : ''}" data-tab="value" onclick="cbPickTab('${pid}','value')">Value</button>
-          <button class="cb-ptab ${isFn ? 'active' : ''}" data-tab="fn" onclick="cbPickTab('${pid}','fn')">Function</button>
-        </div>
-        <div class="cb-pbody">
-          <div class="cb-pbody-value" style="display:${!isFn ? 'block' : 'none'}">
-            <div class="cb-pval-list">${cbsPredList(cbId, stepId, sec, fid, null, valExpr)}</div>
-            <div class="cb-pcustom">
-              <div class="cb-pval-radio ${isCust ? 'sel' : ''}"></div>
-              <input class="cb-pcustom-in" type="text" placeholder="Custom value…" value="${isCust ? valExpr.val : ''}"
-                oninput="cbsSetCustom(${cbId},${stepId},'${sec}',${fid},null,this.value)"
-                onfocus="cbsSetCustom(${cbId},${stepId},'${sec}',${fid},null,this.value)">
-            </div>
-          </div>
-          <div class="cb-pbody-fn" style="display:${isFn ? 'block' : 'none'}">
-            <select class="cb-fn-sel" onchange="cbsSetFn(${cbId},${stepId},'${sec}',${fid},this.value)">${fnOpts}</select>
-            <div class="cb-fn-params">${fnParams}</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-        }
-
-        function cbsRenderSection(cb, step, sec, label) {
-            const rows = step[sec].map(f => `
-      <div class="cb-kv">
-        <input class="cb-key" type="text" placeholder="key" value="${f.key}"
-          oninput="cbsUpdateKey(${cb.id},${step.id},'${sec}',${f.id},this.value)">
-        ${cbsValPicker(cb.id, step.id, sec, f.id, f.val)}
-        <button class="btn-icon" onclick="cbsRemoveField(${cb.id},${step.id},'${sec}',${f.id})" title="Remove" style="flex-shrink:0;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
-      </div>`).join('');
-            return `<div class="cb-sec">
-      <div class="cb-sec-head">
-        <span class="cb-sec-label">${label}</span>
-        <button class="btn btn-ghost btn-sm" onclick="cbsAddField(${cb.id},${step.id},'${sec}')">+ Add</button>
-      </div>
-      ${rows}
-    </div>`;
-        }
-
-        function cbsRenderStep(cb, step, stepIdx) {
-            const canRemove = cb.steps.length > 1;
-            return `
-      <div class="cb-step" style="margin-bottom:8px;border-left:2px solid var(--border-subtle);padding-left:12px;">
-        <div class="cb-step-head">
-          <span style="font-size:11px;font-weight:700;color:var(--text-tertiary);flex-shrink:0;">Step ${stepIdx + 1}</span>
-          <select class="cb-method" onchange="cbsUpdateMethod(${cb.id},${step.id},this.value)">
-            ${['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(m => `<option ${step.method === m ? 'selected' : ''}>${m}</option>`).join('')}
-          </select>
-          ${canRemove ? `<button class="btn-icon" onclick="cbsRemoveStep(${cb.id},${step.id})" title="Remove step" style="margin-left:auto;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>` : ''}
-        </div>
-        <div class="cb-step-body">
-          <div class="cb-url-row">
-            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);flex-shrink:0;">URL</span>
-            <input class="cb-url" type="text" placeholder="https://…" value="${step.url}" oninput="cbsUpdateUrl(${cb.id},${step.id},this.value)">
-          </div>
-          ${cbsRenderSection(cb, step, 'headers', 'Headers')}
-          ${cbsRenderSection(cb, step, 'body', 'Body')}
-        </div>
-      </div>`;
-        }
-
-        function cbRenderCallback(cb) {
-            return `
-      <div class="cb-step" style="margin-bottom:16px;">
-        <div class="cb-step-head">
-          <input class="cb-name" type="text" value="${cb.name}" oninput="cbUpdateCallbackName(${cb.id},this.value)">
-          <button class="btn-icon" onclick="cbRemoveCallback(${cb.id})" title="Remove callback" style="margin-left:auto;font-size:15px;color:var(--text-tertiary);padding:0 4px;">×</button>
-        </div>
-        <div class="cb-step-body">
-          ${cb.steps.map((step, i) => cbsRenderStep(cb, step, i)).join('')}
-          <button class="btn btn-ghost btn-sm" onclick="cbsAddStep(${cb.id})" style="margin-top:8px;">+ Add Step</button>
-        </div>
-      </div>`;
-        }
-
-        function cbRender() {
-            // Remember open pickers before re-render
-            const open = new Set([...document.querySelectorAll('.cb-picker.open')].map(p => p.id));
-
-            // Render validation step inside Validation Rules section
-            const vContainer = document.getElementById('user-validation-step');
-            if (vContainer) {
-                vContainer.innerHTML = cbRenderStep(validationStep);
-            }
-
-            // Render callbacks inside Callbacks section
-            const container = document.getElementById('cb-steps');
-            if (container) {
-                container.innerHTML = callbacks.map(cb => cbRenderCallback(cb)).join('');
-            }
-
-            // Re-open pickers that were open before re-render
-            open.forEach(id => {
-                const p = document.getElementById(id);
-                if (p) {
-                    p.classList.add('open');
-                    const b = p.previousElementSibling;
-                    if (b && b.classList.contains('cb-val-btn')) b.classList.add('active');
-                }
-            });
-        }
-
-        // Close pickers on outside click
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.cb-val-wrap')) {
-                document.querySelectorAll('.cb-picker.open').forEach(p => {
-                    p.classList.remove('open');
-                    const b = p.previousElementSibling;
-                    if (b && b.classList.contains('cb-val-btn')) b.classList.remove('active');
-                });
-            }
-        });
-    </script>
+    <script src="js/state.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/field-helpers.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/drawer.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/curl-builder.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/callbacks.js"></script>
 </body>
 
 </html>
