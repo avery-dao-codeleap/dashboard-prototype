@@ -645,6 +645,56 @@
             color: var(--text-secondary);
         }
 
+        /* Products nav group */
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--r-sm);
+            user-select: none;
+        }
+        .nav-group-header:hover { background: var(--bg); color: var(--text-primary); }
+        .nav-group-header .nav-icon { margin-right: 6px; }
+        .nav-group-arrow { font-size: 10px; color: var(--text-tertiary); transition: transform 0.15s; }
+        .nav-group.open .nav-group-arrow { transform: rotate(90deg); }
+        .nav-group-body { display: none; padding-bottom: 4px; }
+        .nav-group.open .nav-group-body { display: block; }
+        .nav-group-label {
+            padding: 6px 10px 2px 28px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+        .nav-sub-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 6px 10px 6px 32px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: none;
+            background: transparent;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: background 0.1s, color 0.1s;
+            font-family: var(--font);
+        }
+        .nav-sub-item:hover { background: var(--bg); color: var(--text-primary); }
+        .nav-sub-item.active {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+            box-shadow: inset 3px 0 0 var(--accent);
+        }
+
         .sb-divider {
             height: 1px;
             background: var(--border);
@@ -2480,15 +2530,31 @@
                     <button class="nav-item active" onclick="navigate('overview')" id="nav-overview">
                         <span class="nav-icon">▦</span> Overview
                     </button>
+                    <button class="nav-item sa-only" onclick="navigate('all-games')" id="nav-all-games">
+                        <span class="nav-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </span> All Games
+                    </button>
                     <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
                         <span class="nav-icon">↕</span> Transactions
                     </button>
                     <button class="nav-item" onclick="navigate('config')" id="nav-config">
                         <span class="nav-icon">⚙</span> Config
                     </button>
-                    <button class="nav-item" onclick="navigate('products')" id="nav-products">
-                        <span class="nav-icon">⊞</span> Products
-                    </button>
+                    <div class="nav-group" id="nav-group-products">
+                        <div class="nav-group-header" onclick="toggleProductsGroup()">
+                            <span><span class="nav-icon">⊞</span> Products</span>
+                            <span class="nav-group-arrow">▶</span>
+                        </div>
+                        <div class="nav-group-body">
+                            <div class="nav-group-label">SDK</div>
+                            <button class="nav-sub-item" onclick="navigate('sdk-catalog')" id="nav-sdk-catalog">Catalog</button>
+                            <button class="nav-sub-item" onclick="navigate('sdk-rules')" id="nav-sdk-rules">Rules</button>
+                            <div class="nav-group-label" style="margin-top:4px;">Webstore</div>
+                            <button class="nav-sub-item" onclick="navigate('webstore-catalog')" id="nav-webstore-catalog">Catalog</button>
+                            <button class="nav-sub-item" onclick="navigate('webstore-rules')" id="nav-webstore-rules">Rules</button>
+                        </div>
+                    </div>
                     <button class="nav-item" onclick="navigate('purchase-condition')" id="nav-purchase-condition">
                         <span class="nav-icon">⚿</span> Purchase Condition
                     </button>
@@ -3340,204 +3406,145 @@
                     </div>
                 </div>
 
-                <!-- ─── PRODUCTS ─────────────────────────────────────── -->
-                <div class="page" id="page-products">
+                <!-- ─── ALL GAMES ─────────────────────────────────────── -->
+                <div class="page sa-only" id="page-all-games">
                     <div class="page-header">
                         <div>
-                            <h1 class="page-title">Products</h1>
-                            <p class="page-sub">Royal Revolt 2 · <span id="prod-env-label">Sandbox</span></p>
+                            <h1 class="page-title">All Games Overview</h1>
+                            <p class="page-sub">Summary across all games · <span id="ag-env-label">Sandbox</span></p>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Game</th><th>Active Products</th><th>Revenue (MTD)</th><th>Transactions (MTD)</th><th>Status</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="g-dot" style="display:inline-block;margin-right:8px;"></span><strong>Royal Revolt 2</strong></td>
+                                    <td>8</td><td class="mono">$284,120</td><td class="mono">3,241</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="g-dot" style="display:inline-block;margin-right:8px;background:#10b981;"></span><strong>Smurf Village</strong></td>
+                                    <td>12</td><td class="mono">$142,880</td><td class="mono">1,847</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="g-dot" style="display:inline-block;margin-right:8px;background:#f59e0b;"></span><strong>EMHQ</strong></td>
+                                    <td>5</td><td class="mono">$38,410</td><td class="mono">612</td>
+                                    <td><span class="badge badge-invited">Setup</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="g-dot" style="display:inline-block;margin-right:8px;background:#e11d48;"></span><strong>War of Nations</strong></td>
+                                    <td>7</td><td class="mono">$91,330</td><td class="mono">1,104</td>
+                                    <td><span class="badge badge-invited">Setup</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="g-dot" style="display:inline-block;margin-right:8px;background:#8b5cf6;"></span><strong>Kitchen Scramble</strong></td>
+                                    <td>6</td><td class="mono">$54,200</td><td class="mono">782</td>
+                                    <td><span class="badge badge-invited">Setup</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ─── SDK CATALOG ───────────────────────────────────── -->
+                <div class="page" id="page-sdk-catalog">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">SDK Products</h1>
+                            <p class="page-sub">Royal Revolt 2 · <span id="sdk-env-label">Sandbox</span> · In-app purchase catalog synced to Xsolla</p>
                         </div>
                         <div class="page-actions">
-                            <button class="btn btn-primary" onclick="openProductDrawer()">+ Add Product</button>
+                            <button class="btn btn-secondary" onclick="alert('Sync triggered')">↺ Sync All</button>
+                            <button class="btn btn-primary" onclick="openSdkProductDrawer()">+ Add Product</button>
                         </div>
                     </div>
-
-                    <!-- Under construction notice -->
-                    <div
-                        style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);margin-bottom:20px;">
-                        <span style="font-size:20px;">🚧</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:600;color:#92400e;">Under active development</div>
-                            <div style="font-size:12px;color:#b45309;margin-top:2px;">Product management is being built
-                                out. Data shown below is read-only and for reference only.</div>
-                        </div>
-                    </div>
-
-                    <!-- Vitals -->
                     <div class="vitals" style="margin-bottom:16px;">
-                        <div class="vital-card">
-                            <div class="vital-label">Total SKUs</div>
-                            <div class="vital-value">8</div>
-                            <div class="vital-delta delta-neutral">2 platforms</div>
+                        <div class="vital-card"><div class="vital-label">Total SKUs</div><div class="vital-value">6</div><div class="vital-delta delta-neutral">2 platforms</div></div>
+                        <div class="vital-card"><div class="vital-label">Active</div><div class="vital-value">6</div><div class="vital-delta delta-up">▲ 1 added last sync</div></div>
+                        <div class="vital-card"><div class="vital-label">iOS SKUs</div><div class="vital-value">6</div><div class="vital-delta delta-neutral">—</div></div>
+                        <div class="vital-card"><div class="vital-label">Android SKUs</div><div class="vital-value">5</div><div class="vital-delta delta-neutral">—</div></div>
+                    </div>
+                    <div class="sync-bars">
+                        <div class="sync-bar">
+                            <div class="sync-indicator sync-ok-dot"></div>
+                            <div><div class="sync-name">Xsolla</div><div class="sync-meta">Last synced today · 09:14 UTC · 6 products</div></div>
+                            <button class="sync-now-btn">Sync now</button>
                         </div>
-                        <div class="vital-card">
-                            <div class="vital-label">Active</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-up">▲ 1 added last sync</div>
-                        </div>
-                        <div class="vital-card">
-                            <div class="vital-label">iOS SKUs</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-neutral">No change</div>
-                        </div>
-                        <div class="vital-card">
-                            <div class="vital-label">Android SKUs</div>
-                            <div class="vital-value">7</div>
-                            <div class="vital-delta delta-neutral">No change</div>
+                        <div class="sync-bar inactive sa-only">
+                            <div class="sync-indicator sync-off-dot"></div>
+                            <div><div class="sync-name-muted">AppCharge</div><div class="sync-meta">Not configured · <span style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">Set up in Config →</span></div></div>
                         </div>
                     </div>
-
-                    <!-- Provider sync status (read-only — syncs automatically) -->
-                    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
-                        <div
-                            style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
-                            <span style="color:var(--success);font-size:10px;">●</span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text-primary);">Xsolla</div>
-                                <div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sa-only"
-                            style="display:flex;align-items:center;gap:10px;background:var(--border-subtle);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
-                            <span style="color:var(--text-tertiary);font-size:10px;">○</span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text-secondary);">AppCharge</div>
-                                <div style="font-size:11px;color:var(--text-tertiary);">Not configured · <span
-                                        style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">Set up
-                                        in Config →</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product table -->
                     <div class="table-wrap">
                         <div class="table-head" style="flex-wrap:wrap;gap:10px;">
-                            <span class="table-head-title">Product Catalog</span>
+                            <span class="table-head-title">SDK Catalog</span>
                             <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
-                                <select class="sel">
-                                    <option>All platforms</option>
-                                    <option>iOS</option>
-                                    <option>Android</option>
-                                </select>
-                                <select class="sel">
-                                    <option>All types</option>
-                                    <option>Consumable</option>
-                                    <option>Non-consumable</option>
-                                    <option>Subscription</option>
-                                </select>
-                                <select class="sel">
-                                    <option>All statuses</option>
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                                <div class="search-wrap">
-                                    <span class="search-ico">🔍</span>
-                                    <input class="search-in" type="text" placeholder="Search SKU or name…">
-                                </div>
+                                <select class="sel"><option>All platforms</option><option>iOS</option><option>Android</option></select>
+                                <select class="sel"><option>All statuses</option><option>Active</option><option>Inactive</option></select>
+                                <div class="search-wrap"><span class="search-ico">🔍</span><input class="search-in" type="text" placeholder="Search SKU or name…"></div>
                             </div>
                         </div>
                         <table>
                             <thead>
-                                <tr>
-                                    <th>SKU</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Price</th>
-                                    <th>Platforms</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
+                                <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Bonus Reward</th><th>Status</th><th>Xsolla Sync</th><th></th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="mono">gold_100</td>
-                                    <td><strong>Gold Pack 100</strong></td>
-                                    <td><span class="tag">Consumable</span></td>
-                                    <td class="mono">$0.99</td>
+                                <tr onclick="openSdkProductDrawer('gold_100')">
+                                    <td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td>
+                                    <td><span class="tag">Consumable</span></td><td class="mono">$0.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">gold_reward_small</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
-                                <tr>
-                                    <td class="mono">gold_500</td>
-                                    <td><strong>Gold Pack 500</strong></td>
-                                    <td><span class="tag">Consumable</span></td>
-                                    <td class="mono">$4.99</td>
+                                <tr onclick="openSdkProductDrawer('gold_500')">
+                                    <td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td>
+                                    <td><span class="tag">Consumable</span></td><td class="mono">$4.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-pending-text">⟳ Pending</span></td><td class="arrow-icon">→</td>
                                 </tr>
-                                <tr>
-                                    <td class="mono">gold_2000</td>
-                                    <td><strong>Gold Pack 2000</strong></td>
-                                    <td><span class="tag">Consumable</span></td>
-                                    <td class="mono">$19.99</td>
+                                <tr onclick="openSdkProductDrawer('gold_2000')">
+                                    <td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td>
+                                    <td><span class="tag">Consumable</span></td><td class="mono">$19.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">gold_reward_large</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
-                                <tr>
-                                    <td class="mono">starter_bundle</td>
-                                    <td><strong>Starter Bundle</strong></td>
-                                    <td><span class="tag">Consumable</span></td>
-                                    <td class="mono">$9.99</td>
+                                <tr onclick="openSdkProductDrawer('starter_bundle')">
+                                    <td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td>
+                                    <td><span class="tag">Consumable</span></td><td class="mono">$9.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">starter_bonus</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
-                                <tr>
-                                    <td class="mono">premium_pass_mo</td>
-                                    <td><strong>Premium Pass</strong></td>
-                                    <td><span class="tag"
-                                            style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span>
-                                    </td>
-                                    <td class="mono">$9.99<span
-                                            style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span>
-                                    </td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">royal_shield_7d</td>
-                                    <td><strong>Royal Shield (7d)</strong></td>
-                                    <td><span class="tag">Consumable</span></td>
-                                    <td class="mono">$2.99</td>
+                                <tr onclick="openSdkProductDrawer('royal_shield_7d')">
+                                    <td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td>
+                                    <td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td>
                                     <td><span class="tag">iOS</span></td>
+                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-error-text">✕ Error</span></td><td class="arrow-icon">→</td>
                                 </tr>
-                                <tr>
-                                    <td class="mono">vip_pack_30d</td>
-                                    <td><strong>VIP Pack (30d)</strong></td>
-                                    <td><span class="tag"
-                                            style="background:#eef2ff;color:var(--accent);border-color:#c7d2fe;">Subscription</span>
-                                    </td>
-                                    <td class="mono">$14.99<span
-                                            style="font-size:11px;color:var(--text-tertiary);font-family:var(--font);">/mo</span>
-                                    </td>
-                                    <td><span class="tag">Android</span></td>
-                                    <td><span class="badge badge-cancelled"
-                                            style="background:#f1f5f9;color:#94a3b8;border:1px solid var(--border);">Inactive</span>
-                                    </td>
-                                    <td class="arrow-icon">→</td>
-                                </tr>
-                                <tr>
-                                    <td class="mono">season_pass_2025</td>
-                                    <td><strong>Season Pass 2025</strong></td>
-                                    <td><span class="tag"
-                                            style="background:#f5f3ff;color:#7c3aed;border-color:#ddd6fe;">Non-consumable</span>
-                                    </td>
-                                    <td class="mono">$24.99</td>
+                                <tr onclick="openSdkProductDrawer('season_pass_2025')">
+                                    <td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td>
+                                    <td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">season_loot_pack</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
-                                    <td class="arrow-icon">→</td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="pag">
-                            <span class="pag-meta">Showing 1–8 of 8 products</span>
+                            <span class="pag-meta">Showing 1–6 of 6 products</span>
                             <div class="pag-controls">
                                 <button class="pag-btn" disabled>← Prev</button>
                                 <span class="pag-info">Page 1 of 1</span>
@@ -3547,7 +3554,194 @@
                     </div>
                 </div>
 
-                <!-- ─── PURCHASE CONDITION ─────────────────────────────── -->
+                <!-- ─── SDK RULES ──────────────────────────────────────── -->
+                <div class="page" id="page-sdk-rules">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">SDK Rules</h1>
+                            <p class="page-sub">Segmentation rules applied to SDK products</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openSdkRuleDrawer()">+ Add Rule</button>
+                        </div>
+                    </div>
+                    <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+                        <div style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:default;">Rules</div>
+                    </div>
+                    <div class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+                        <table>
+                            <thead>
+                                <tr><th>Rule Name</th><th>Condition</th><th>Effect</th><th>Priority</th><th></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Low value guard</strong></td>
+                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">price &lt; $3.00</code></td>
+                                    <td><span class="badge" style="background:#fee2e2;color:var(--danger);border:1px solid #fecaca;">Disable Rook</span></td>
+                                    <td style="color:var(--text-tertiary);">1</td>
+                                    <td><div style="display:flex;gap:6px;">
+                                        <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
+                                        <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
+                                    </div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ─── WEBSTORE CATALOG ───────────────────────────────── -->
+                <div class="page" id="page-webstore-catalog">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Webstore Products</h1>
+                            <p class="page-sub">Royal Revolt 2 · <span id="ws-env-label">Sandbox</span> · B2C storefront catalog synced to Xsolla</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary" onclick="alert('Sync triggered')">↺ Sync All</button>
+                            <button class="btn btn-primary" onclick="openWsProductDrawer()">+ Add Product</button>
+                        </div>
+                    </div>
+                    <div class="vitals" style="margin-bottom:16px;grid-template-columns:repeat(3,1fr);">
+                        <div class="vital-card"><div class="vital-label">Total Products</div><div class="vital-value">5</div><div class="vital-delta delta-neutral">—</div></div>
+                        <div class="vital-card"><div class="vital-label">Active</div><div class="vital-value">5</div><div class="vital-delta delta-up">▲ 1 added this week</div></div>
+                        <div class="vital-card"><div class="vital-label">Featured</div><div class="vital-value">2</div><div class="vital-delta delta-neutral">Homepage slots</div></div>
+                    </div>
+                    <div class="sync-bars">
+                        <div class="sync-bar">
+                            <div class="sync-indicator sync-ok-dot"></div>
+                            <div><div class="sync-name">Xsolla (MoR)</div><div class="sync-meta">Last synced today · 09:14 UTC · Product sync required — Xsolla is MoR</div></div>
+                            <button class="sync-now-btn">Sync now</button>
+                        </div>
+                        <div class="sync-bar inactive" style="background:#fff7ed;border-color:#fed7aa;">
+                            <div class="sync-indicator" style="background:#f97316;"></div>
+                            <div><div class="sync-name" style="color:#c2410c;">Stripe (gateway only)</div><div class="sync-meta" style="color:#c2410c;">Not a MoR — no product sync needed. Configure API keys in Config.</div></div>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <div class="table-head" style="flex-wrap:wrap;gap:10px;">
+                            <span class="table-head-title">Webstore Catalog</span>
+                            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
+                                <select class="sel"><option>All categories</option><option>Pearls</option><option>Boosts</option><option>Dungeons</option><option>Bundles</option></select>
+                                <select class="sel"><option>All statuses</option><option>Active</option><option>Inactive</option></select>
+                                <div class="search-wrap"><span class="search-ico">🔍</span><input class="search-in" type="text" placeholder="Search SKU or name…"></div>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr><th>SKU</th><th>Name</th><th>Price</th><th>Category</th><th>Restrictions</th><th>Status</th><th>Xsolla Sync</th><th></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="openWsProductDrawer('ws_pearl_500')">
+                                    <td class="mono">ws_pearl_500</td><td><strong>Pearl Pack 500</strong></td>
+                                    <td class="mono">$4.99</td><td><span class="tag">Pearls</span></td>
+                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="openWsProductDrawer('ws_vip_bundle')">
+                                    <td class="mono">ws_vip_bundle</td><td><strong>VIP Bundle <span style="color:#f59e0b;">⭐</span></strong></td>
+                                    <td class="mono">$14.99</td><td><span class="tag">Bundles</span></td>
+                                    <td><span class="restriction-tag">🔒 is_vip == true</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="openWsProductDrawer('ws_boost_7d')">
+                                    <td class="mono">ws_boost_7d</td><td><strong>7-Day Boost</strong></td>
+                                    <td><span class="price-original">$2.99</span><span class="price-sale">$1.99</span><span class="badge badge-pending" style="margin-left:4px;font-size:10px;">Sale · ends Mar 20</span></td>
+                                    <td><span class="tag">Boosts</span></td>
+                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td><span class="sync-pending-text">⟳ Pending</span></td><td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="openWsProductDrawer('ws_dungeon_key')">
+                                    <td class="mono">ws_dungeon_key</td><td><strong>Dungeon Key Pack <span style="color:#f59e0b;">⭐</span></strong></td>
+                                    <td class="mono">$7.99</td><td><span class="tag">Dungeons</span></td>
+                                    <td><span class="restriction-tag">🔒 lifetime_spend ≥ 50</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="openWsProductDrawer('ws_welcome_pack')">
+                                    <td class="mono">ws_welcome_pack</td><td><strong>Welcome Pack</strong></td>
+                                    <td class="mono">$0.99</td><td><span class="tag">Bundles</span></td>
+                                    <td><span class="restriction-tag">🔒 purchase_count == 0</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pag">
+                            <span class="pag-meta">Showing 1–5 of 5 products</span>
+                            <div class="pag-controls">
+                                <button class="pag-btn" disabled>← Prev</button>
+                                <span class="pag-info">Page 1 of 1</span>
+                                <button class="pag-btn" disabled>Next →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── WEBSTORE RULES ─────────────────────────────────── -->
+                <div class="page" id="page-webstore-rules">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Webstore Rules</h1>
+                            <p class="page-sub">Product visibility and payment routing rules</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openWsRuleDrawer()">+ Add Rule</button>
+                        </div>
+                    </div>
+                    <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+                        <div id="ws-tab-show" onclick="switchWsTab('show')" style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">Show Product Rules</div>
+                        <div id="ws-tab-mor" onclick="switchWsTab('mor')" style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">MoR Routing Rules</div>
+                    </div>
+                    <div class="table-wrap" id="ws-rules-show" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+                        <table>
+                            <thead><tr><th>Rule Name</th><th>Condition</th><th>Products</th><th>Priority</th><th></th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>VIP only bundle</strong></td>
+                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">is_vip == true</code></td>
+                                    <td><span class="tag">ws_vip_bundle</span></td>
+                                    <td style="color:var(--text-tertiary);">1</td>
+                                    <td><div style="display:flex;gap:6px;"><button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button><button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>High spender unlock</strong></td>
+                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">lifetime_spend &gt;= 50</code></td>
+                                    <td><span class="tag">ws_dungeon_key</span> <span class="tag">ws_boost_7d</span></td>
+                                    <td style="color:var(--text-tertiary);">2</td>
+                                    <td><div style="display:flex;gap:6px;"><button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button><button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-wrap" id="ws-rules-mor" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
+                        <table>
+                            <thead><tr><th>Rule Name</th><th>Condition</th><th>Provider</th><th>Priority</th><th></th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>US Xsolla</strong></td>
+                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">country == US</code></td>
+                                    <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
+                                    <td style="color:var(--text-tertiary);">2</td>
+                                    <td><div style="display:flex;gap:6px;"><button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button><button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Default</strong></td>
+                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">* (catch-all)</code></td>
+                                    <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
+                                    <td style="color:var(--text-tertiary);">99</td>
+                                    <td><div style="display:flex;gap:6px;"><button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button><button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ─── (removed page-products placeholder) ───────────── -->
+                <div class="page" id="page-products" style="display:none!important;"></div>
+
                 <div class="page" id="page-purchase-condition">
                     <div class="page-header">
                         <div>
@@ -3644,6 +3838,286 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  SDK PRODUCT DRAWER                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="overlay" id="sdk-product-overlay" onclick="closeSdkProductDrawer()"></div>
+    <div class="drawer" id="sdk-product-drawer">
+        <div class="drawer-head">
+            <span class="drawer-title" id="sdk-drawer-title">Add SDK Product</span>
+            <button class="drawer-close" onclick="closeSdkProductDrawer()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-section-label">Product Details</div>
+            <div class="dfield">
+                <label class="dfield-label">SKU <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="sdk-sku" placeholder="e.g. gold_100">
+                <div class="dfield-hint">Must match exactly what's in Xsolla. Immutable after creation.</div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Name <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="sdk-name" placeholder="e.g. Gold Pack 100">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Type <span style="color:var(--danger);">*</span></label>
+                <select class="sel" id="sdk-type" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+                    <option value="consumable">Consumable</option>
+                    <option value="non-consumable">Non-consumable</option>
+                </select>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Price (USD) <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="sdk-price" placeholder="e.g. 0.99">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Platforms <span style="color:var(--danger);">*</span></label>
+                <div style="display:flex;gap:12px;margin-top:4px;">
+                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="sdk-plat-ios" checked> iOS</label>
+                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="sdk-plat-android" checked> Android</label>
+                </div>
+            </div>
+            <div class="drawer-section-label">Bonus Reward Metadata</div>
+            <div class="info-banner">
+                <span style="flex-shrink:0;">ℹ</span>
+                <span>Bonus reward IDs are appended to the webhook payload after purchase, enabling augmented reward delivery.</span>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Reward ID(s)</label>
+                <div style="display:flex;gap:8px;">
+                    <input class="dfield-input" style="font-family:var(--mono);font-size:12px;flex:1;" type="text" id="sdk-reward-input" placeholder="e.g. gold_reward_small">
+                    <button class="btn btn-secondary" onclick="addSdkRewardTag()" style="flex-shrink:0;">Add</button>
+                </div>
+                <div class="dfield-hint">Reward IDs will be signed and appended to the webhook rewards array on fulfillment.</div>
+                <div class="reward-tag-row" id="sdk-reward-tags"></div>
+            </div>
+            <div class="drawer-section-label">Xsolla Sync</div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Auto-sync on save</div>
+                    <div class="toggle-hint">Push product changes to Xsolla immediately when saved</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleTrack(this)">
+                    <div class="toggle-track on"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+            <div class="drawer-section-label sa-only">AppCharge Sync</div>
+            <div class="toggle-row sa-only" style="opacity:0.5;">
+                <div>
+                    <div class="toggle-label">Sync to AppCharge</div>
+                    <div class="toggle-hint">AppCharge not configured — <span style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">set up in Config</span></div>
+                </div>
+                <div class="toggle-switch"><div class="toggle-track"><div class="toggle-knob"></div></div></div>
+            </div>
+        </div>
+        <div class="drawer-foot">
+            <button class="btn btn-ghost" onclick="closeSdkProductDrawer()">Cancel</button>
+            <button class="btn btn-secondary" id="sdk-delete-btn" style="color:var(--danger);display:none;" onclick="alert('Delete product')">Delete</button>
+            <button class="btn btn-primary" id="sdk-drawer-cta">Add Product</button>
+        </div>
+    </div>
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  WEBSTORE PRODUCT DRAWER                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="overlay" id="ws-product-overlay" onclick="closeWsProductDrawer()"></div>
+    <div class="drawer" id="ws-product-drawer">
+        <div class="drawer-head">
+            <span class="drawer-title" id="ws-drawer-title">Add Webstore Product</span>
+            <button class="drawer-close" onclick="closeWsProductDrawer()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-section-label">Product Details</div>
+            <div class="dfield">
+                <label class="dfield-label">SKU <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-sku" placeholder="e.g. ws_pearl_500">
+                <div class="dfield-hint">Prefix with <code style="font-size:11px;">ws_</code> to distinguish from SDK catalog.</div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Name <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="ws-name" placeholder="e.g. Pearl Pack 500">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Price (USD) <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="ws-price" placeholder="e.g. 4.99">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Category</label>
+                <select class="sel" id="ws-category" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+                    <option value="">No category</option>
+                    <option>Pearls</option><option>Boosts</option><option>Dungeons</option><option>Bundles</option>
+                </select>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Description</label>
+                <textarea class="notes-area" id="ws-description" placeholder="Short description shown on the webstore product page…"></textarea>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Product Image URL</label>
+                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-image" placeholder="https://cdn.example.com/product.png">
+            </div>
+            <div class="drawer-section-label">Visibility &amp; Promotion</div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">⭐ Feature on homepage</div>
+                    <div class="toggle-hint">Show this product in the featured section on the webstore homepage</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleTrack(this)">
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+            <div class="drawer-section-label">Sale Pricing</div>
+            <div class="toggle-row" style="margin-bottom:12px;">
+                <div>
+                    <div class="toggle-label">Enable sale pricing</div>
+                    <div class="toggle-hint">Show a discounted price with original price crossed out</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleWsSaleFields(this)">
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+            <div id="ws-sale-fields" style="display:none;">
+                <div class="dfield">
+                    <label class="dfield-label">Sale Price (USD)</label>
+                    <input class="dfield-input" type="text" id="ws-sale-price" placeholder="e.g. 1.99">
+                </div>
+                <div class="dfield">
+                    <label class="dfield-label">Sale Period</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px;">Start</div><input class="dfield-input" type="date" id="ws-sale-start"></div>
+                        <div><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px;">End</div><input class="dfield-input" type="date" id="ws-sale-end"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="drawer-section-label">Purchase Restrictions</div>
+            <div class="toggle-row" style="margin-bottom:12px;">
+                <div>
+                    <div class="toggle-label">🔒 Restrict this product</div>
+                    <div class="toggle-hint">Only show or allow purchase when user matches a condition</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleWsRestrictionFields(this)">
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+            <div id="ws-restriction-fields" style="display:none;">
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-bottom:8px;">
+                    <div><label class="dfield-label">Property Key</label><input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-restrict-key" placeholder="e.g. is_vip"></div>
+                    <div style="padding-bottom:9px;font-size:13px;color:var(--text-tertiary);text-align:center;">=</div>
+                    <div><label class="dfield-label">Value</label><input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-restrict-val" placeholder="e.g. true"></div>
+                </div>
+                <div class="dfield-hint" style="margin-bottom:10px;">Retrieved from game server via User Validation endpoint on login / session start / post-purchase.</div>
+                <select class="sel" style="width:100%;height:36px;margin-bottom:12px;">
+                    <option>Hide product if condition not met</option>
+                    <option>Show product but block purchase</option>
+                </select>
+            </div>
+            <div class="drawer-section-label">Xsolla Sync</div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Auto-sync on save</div>
+                    <div class="toggle-hint">Xsolla is the MoR — product must be registered before checkout can process</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleTrack(this)">
+                    <div class="toggle-track on"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="drawer-foot">
+            <button class="btn btn-ghost" onclick="closeWsProductDrawer()">Cancel</button>
+            <button class="btn btn-secondary" id="ws-delete-btn" style="color:var(--danger);display:none;" onclick="alert('Delete product')">Delete</button>
+            <button class="btn btn-primary" id="ws-drawer-cta">Add Product</button>
+        </div>
+    </div>
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  SDK RULE DRAWER                                         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="overlay" id="sdk-rule-overlay" onclick="closeSdkRuleDrawer()"></div>
+    <div class="drawer" id="sdk-rule-drawer">
+        <div class="drawer-head">
+            <span class="drawer-title">Add SDK Rule</span>
+            <button class="drawer-close" onclick="closeSdkRuleDrawer()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="dfield">
+                <label class="dfield-label">Rule Name <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="sdk-rule-name" placeholder="e.g. Low value guard">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Condition <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="sdk-rule-condition" placeholder="e.g. price &lt; $3.00">
+                <div class="dfield-hint">Evaluated against the current purchase context.</div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Action <span style="color:var(--danger);">*</span></label>
+                <select class="sel" id="sdk-rule-action" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+                    <option value="disable">Disable</option>
+                    <option value="enable">Enable</option>
+                </select>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Target <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="sdk-rule-target" placeholder="e.g. Rook">
+                <div class="dfield-hint">The SDK feature or component this rule applies to.</div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Priority <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="number" id="sdk-rule-priority" placeholder="e.g. 1" min="1" style="width:120px;">
+                <div class="dfield-hint">Lower number = higher priority. Rules are evaluated in ascending order.</div>
+            </div>
+        </div>
+        <div class="drawer-foot">
+            <button class="btn btn-ghost" onclick="closeSdkRuleDrawer()">Cancel</button>
+            <button class="btn btn-primary" onclick="closeSdkRuleDrawer()">Add Rule</button>
+        </div>
+    </div>
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  WEBSTORE RULE DRAWER                                    -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="overlay" id="ws-rule-overlay" onclick="closeWsRuleDrawer()"></div>
+    <div class="drawer" id="ws-rule-drawer">
+        <div class="drawer-head">
+            <span class="drawer-title" id="ws-rule-drawer-title">Add Rule</span>
+            <button class="drawer-close" onclick="closeWsRuleDrawer()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="dfield">
+                <label class="dfield-label">Rule Name <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="text" id="ws-rule-name" placeholder="e.g. VIP only bundle">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Condition <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="ws-rule-condition" placeholder="e.g. is_vip == true">
+                <div class="dfield-hint">Use player attribute expressions. Wildcards (<code style="font-size:11px;">*</code>) match all users.</div>
+            </div>
+            <div id="ws-rule-show-fields">
+                <div class="dfield">
+                    <label class="dfield-label">Products <span style="color:var(--danger);">*</span></label>
+                    <div style="display:flex;gap:8px;">
+                        <input class="dfield-input" style="font-family:var(--mono);font-size:12px;flex:1;" type="text" id="ws-rule-product-input" placeholder="e.g. ws_vip_bundle">
+                        <button class="btn btn-secondary" onclick="addWsRuleProductTag()" style="flex-shrink:0;">Add</button>
+                    </div>
+                    <div class="dfield-hint">Enter product SKUs that should be shown when this rule matches.</div>
+                    <div class="reward-tag-row" id="ws-rule-product-tags"></div>
+                </div>
+            </div>
+            <div id="ws-rule-mor-fields" style="display:none;">
+                <div class="dfield">
+                    <label class="dfield-label">Provider <span style="color:var(--danger);">*</span></label>
+                    <select class="sel" id="ws-rule-provider" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+                        <option value="xsolla">Xsolla</option>
+                        <option value="appcharge">AppCharge</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Priority <span style="color:var(--danger);">*</span></label>
+                <input class="dfield-input" type="number" id="ws-rule-priority" placeholder="e.g. 1" min="1" style="width:120px;">
+                <div class="dfield-hint">Lower number = higher priority. Rules are evaluated in ascending order.</div>
+            </div>
+        </div>
+        <div class="drawer-foot">
+            <button class="btn btn-ghost" onclick="closeWsRuleDrawer()">Cancel</button>
+            <button class="btn btn-primary" onclick="closeWsRuleDrawer()">Add Rule</button>
+        </div>
+    </div>
     <!-- ═══════════════════════════════════════════════════════ -->
     <!--  CREATE USER DRAWER                                      -->
     <!-- ═══════════════════════════════════════════════════════ -->
@@ -3809,8 +4283,142 @@
         }
 
 
-        function openProductDrawer() {
-            // placeholder — drawer coming in next iteration
+        // ── Toggle switch helper ─────────────────────────────────
+        function toggleTrack(switchEl) {
+            const track = switchEl.querySelector('.toggle-track');
+            track.classList.toggle('on');
+        }
+
+        // ── SDK reward tags ──────────────────────────────────────
+        function addSdkRewardTag() {
+            const input = document.getElementById('sdk-reward-input');
+            const val = input.value.trim();
+            if (!val) return;
+            const container = document.getElementById('sdk-reward-tags');
+            const tag = document.createElement('span');
+            tag.className = 'reward-tag';
+            tag.innerHTML = val + ' <button class="reward-tag-remove" onclick="this.parentElement.remove()">✕</button>';
+            container.appendChild(tag);
+            input.value = '';
+            input.focus();
+        }
+
+        // ── Webstore sale / restriction toggles ─────────────────
+        function toggleWsSaleFields(el) {
+            toggleTrack(el);
+            const sf = document.getElementById('ws-sale-fields');
+            sf.style.display = sf.style.display === 'none' ? 'block' : 'none';
+        }
+        function toggleWsRestrictionFields(el) {
+            toggleTrack(el);
+            const rf = document.getElementById('ws-restriction-fields');
+            rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // ── SDK PRODUCT DRAWER ────────────────────────────────────
+        function openSdkProductDrawer(sku) {
+            const isEdit = !!sku;
+            document.getElementById('sdk-drawer-title').textContent = isEdit ? 'Edit SDK Product' : 'Add SDK Product';
+            document.getElementById('sdk-drawer-cta').textContent = isEdit ? 'Save Changes' : 'Add Product';
+            const deleteBtn = document.getElementById('sdk-delete-btn');
+            if (deleteBtn) deleteBtn.style.display = isEdit ? 'inline-flex' : 'none';
+            if (!isEdit) {
+                document.getElementById('sdk-sku').value = '';
+                document.getElementById('sdk-name').value = '';
+                document.getElementById('sdk-price').value = '';
+                document.getElementById('sdk-reward-tags').innerHTML = '';
+            }
+            document.getElementById('sdk-product-overlay').classList.add('open');
+            document.getElementById('sdk-product-drawer').classList.add('open');
+        }
+        function closeSdkProductDrawer() {
+            document.getElementById('sdk-product-overlay').classList.remove('open');
+            document.getElementById('sdk-product-drawer').classList.remove('open');
+        }
+
+        // ── WEBSTORE PRODUCT DRAWER ───────────────────────────────
+        function openWsProductDrawer(sku) {
+            const isEdit = !!sku;
+            document.getElementById('ws-drawer-title').textContent = isEdit ? 'Edit Webstore Product' : 'Add Webstore Product';
+            document.getElementById('ws-drawer-cta').textContent = isEdit ? 'Save Changes' : 'Add Product';
+            const deleteBtn = document.getElementById('ws-delete-btn');
+            if (deleteBtn) deleteBtn.style.display = isEdit ? 'inline-flex' : 'none';
+            if (!isEdit) {
+                document.getElementById('ws-sku').value = '';
+                document.getElementById('ws-name').value = '';
+                document.getElementById('ws-price').value = '';
+                document.getElementById('ws-sale-fields').style.display = 'none';
+                document.getElementById('ws-restriction-fields').style.display = 'none';
+            }
+            document.getElementById('ws-product-overlay').classList.add('open');
+            document.getElementById('ws-product-drawer').classList.add('open');
+        }
+        function closeWsProductDrawer() {
+            document.getElementById('ws-product-overlay').classList.remove('open');
+            document.getElementById('ws-product-drawer').classList.remove('open');
+        }
+
+        // ── WEBSTORE RULES TABS ───────────────────────────────────
+        function switchWsTab(tab) {
+            const isShow = tab === 'show';
+            document.getElementById('ws-rules-show').style.display = isShow ? 'block' : 'none';
+            document.getElementById('ws-rules-mor').style.display = isShow ? 'none' : 'block';
+            const showEl = document.getElementById('ws-tab-show');
+            const morEl = document.getElementById('ws-tab-mor');
+            showEl.style.color = isShow ? 'var(--accent)' : 'var(--text-tertiary)';
+            showEl.style.borderBottom = isShow ? '2px solid var(--accent)' : 'none';
+            showEl.style.fontWeight = isShow ? '600' : 'normal';
+            morEl.style.color = isShow ? 'var(--text-tertiary)' : 'var(--accent)';
+            morEl.style.borderBottom = isShow ? 'none' : '2px solid var(--accent)';
+            morEl.style.fontWeight = isShow ? 'normal' : '600';
+        }
+
+        // ── WEBSTORE RULE DRAWER ──────────────────────────────────
+        function openWsRuleDrawer() {
+            const isMor = document.getElementById('ws-rules-mor').style.display !== 'none';
+            document.getElementById('ws-rule-show-fields').style.display = isMor ? 'none' : 'block';
+            document.getElementById('ws-rule-mor-fields').style.display = isMor ? 'block' : 'none';
+            document.getElementById('ws-rule-drawer-title').textContent = isMor ? 'Add MoR Routing Rule' : 'Add Show Product Rule';
+            document.getElementById('ws-rule-overlay').classList.add('open');
+            document.getElementById('ws-rule-drawer').classList.add('open');
+        }
+        function closeWsRuleDrawer() {
+            document.getElementById('ws-rule-overlay').classList.remove('open');
+            document.getElementById('ws-rule-drawer').classList.remove('open');
+            document.getElementById('ws-rule-name').value = '';
+            document.getElementById('ws-rule-condition').value = '';
+            document.getElementById('ws-rule-priority').value = '';
+            document.getElementById('ws-rule-product-input').value = '';
+            document.getElementById('ws-rule-product-tags').innerHTML = '';
+        }
+        function addWsRuleProductTag() {
+            const input = document.getElementById('ws-rule-product-input');
+            const val = input.value.trim();
+            if (!val) return;
+            const container = document.getElementById('ws-rule-product-tags');
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.style.cursor = 'pointer';
+            tag.title = 'Click to remove';
+            tag.textContent = val + ' ×';
+            tag.onclick = () => container.removeChild(tag);
+            container.appendChild(tag);
+            input.value = '';
+        }
+
+        // ── SDK RULE DRAWER ───────────────────────────────────────
+        function openSdkRuleDrawer() {
+            document.getElementById('sdk-rule-overlay').classList.add('open');
+            document.getElementById('sdk-rule-drawer').classList.add('open');
+        }
+        function closeSdkRuleDrawer() {
+            document.getElementById('sdk-rule-overlay').classList.remove('open');
+            document.getElementById('sdk-rule-drawer').classList.remove('open');
+            document.getElementById('sdk-rule-name').value = '';
+            document.getElementById('sdk-rule-condition').value = '';
+            document.getElementById('sdk-rule-target').value = '';
+            document.getElementById('sdk-rule-priority').value = '';
+            document.getElementById('sdk-rule-action').value = 'disable';
         }
 
         function doLogout() {
@@ -3834,7 +4442,7 @@
         // ── Navigation ──────────────────────────────────────────
         function navigate(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item, .nav-sub-item').forEach(n => n.classList.remove('active'));
 
             const pageEl = document.getElementById('page-' + page);
             if (pageEl) pageEl.classList.add('active');
@@ -3842,7 +4450,17 @@
             const navEl = document.getElementById('nav-' + page);
             if (navEl) navEl.classList.add('active');
 
+            // Auto-open Products group for product sub-pages
+            const productPages = ['sdk-catalog', 'sdk-rules', 'webstore-catalog', 'webstore-rules'];
+            if (productPages.includes(page)) {
+                document.getElementById('nav-group-products').classList.add('open');
+            }
+
             closeGameDD();
+        }
+
+        function toggleProductsGroup() {
+            document.getElementById('nav-group-products').classList.toggle('open');
         }
 
         // ── Game switcher ────────────────────────────────────────
@@ -3870,24 +4488,20 @@
             const sbBtn = document.getElementById('env-sandbox');
             const prodBtn = document.getElementById('env-prod');
             const banner = document.getElementById('sb-banner');
-            const ovLabel = document.getElementById('ov-env-label');
-            const cfgLabel = document.getElementById('cfg-env-label');
-            const prodLabel = document.getElementById('prod-env-label');
+            const label = env === 'sandbox' ? 'Sandbox' : 'Production';
+            ['ov-env-label', 'cfg-env-label', 'sdk-env-label', 'ws-env-label', 'ag-env-label'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = label;
+            });
 
             if (env === 'sandbox') {
                 sbBtn.classList.add('active');
                 prodBtn.classList.remove('active');
                 banner.classList.add('visible');
-                if (ovLabel) ovLabel.textContent = 'Sandbox';
-                if (cfgLabel) cfgLabel.textContent = 'Sandbox';
-                if (prodLabel) prodLabel.textContent = 'Sandbox';
             } else {
                 prodBtn.classList.add('active', 'prod');
                 sbBtn.classList.remove('active');
                 banner.classList.remove('visible');
-                if (ovLabel) ovLabel.textContent = 'Production';
-                if (cfgLabel) cfgLabel.textContent = 'Production';
-                if (prodLabel) prodLabel.textContent = 'Production';
             }
         }
 
