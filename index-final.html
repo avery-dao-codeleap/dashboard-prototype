@@ -2549,7 +2549,6 @@
                         <div class="nav-group-body">
                             <div class="nav-group-label">SDK</div>
                             <button class="nav-sub-item" onclick="navigate('sdk-catalog')" id="nav-sdk-catalog">Catalog</button>
-                            <button class="nav-sub-item" onclick="navigate('sdk-rules')" id="nav-sdk-rules">Rules</button>
                             <div class="nav-group-label" style="margin-top:4px;">Webstore</div>
                             <button class="nav-sub-item" onclick="navigate('webstore-catalog')" id="nav-webstore-catalog">Catalog</button>
                             <button class="nav-sub-item" onclick="navigate('webstore-rules')" id="nav-webstore-rules">Rules</button>
@@ -3274,14 +3273,85 @@
 
                     <!-- AppCharge tab content (hidden) -->
                     <div id="tab-appcharge" style="display:none;">
-                        <div
-                            style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
+                        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
                             <div style="font-size:24px;margin-bottom:12px;">⚡</div>
-                            <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">
-                                AppCharge not configured</div>
-                            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect AppCharge
-                                to enable an additional payment provider for this game.</p>
+                            <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">AppCharge not configured</div>
+                            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect AppCharge to enable an additional payment provider for this game.</p>
                             <button class="btn btn-primary">Set up AppCharge</button>
+                        </div>
+                    </div>
+
+                    <!-- ── Webstore Payment Providers ─────────────────────── -->
+                    <div style="margin-top:32px;">
+                        <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Webstore Payment Providers</div>
+                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Configure payment gateways for your B2C webstore. These are separate from SDK in-app purchase providers.</div>
+
+                        <div class="tabs" id="ws-provider-tabs">
+                            <button class="tab active" onclick="switchWsProviderTab(this,'stripe')">Stripe</button>
+                            <button class="tab" onclick="switchWsProviderTab(this,'paypal')">PayPal</button>
+                            <button class="tab add-tab">+ Add Provider</button>
+                        </div>
+
+                        <!-- Stripe -->
+                        <div id="tab-ws-stripe">
+                            <div class="plat-grid" style="grid-template-columns:1fr;">
+                                <div class="plat-card">
+                                    <div class="plat-head" style="justify-content:space-between;">
+                                        <span>💳 Stripe</span>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <span style="font-size:12px;color:var(--text-tertiary);">Mode</span>
+                                            <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;">
+                                                <button id="stripe-test-btn" onclick="setStripeMode('test')" style="padding:4px 10px;background:var(--accent);color:white;border:none;cursor:pointer;font-size:12px;font-family:var(--font);font-weight:600;">Test</button>
+                                                <button id="stripe-live-btn" onclick="setStripeMode('live')" style="padding:4px 10px;background:transparent;color:var(--text-secondary);border:none;cursor:pointer;font-size:12px;font-family:var(--font);">Live</button>
+                                            </div>
+                                            <span class="badge badge-active" id="stripe-status-badge">Connected</span>
+                                        </div>
+                                    </div>
+                                    <div class="plat-body">
+                                        <div class="cf">
+                                            <div class="cf-label">Publishable Key</div>
+                                            <div class="cf-wrap">
+                                                <input class="cf-input plat-input" type="text" id="stripe-pub-key" value="pk_test_51NxYz2abc123def456">
+                                                <button class="cf-copy" onclick="copyText(document.getElementById('stripe-pub-key').value,this)" title="Copy">⎘</button>
+                                            </div>
+                                        </div>
+                                        <div class="cf sa-only">
+                                            <div class="cf-label">Secret Key</div>
+                                            <div class="cf-wrap">
+                                                <input class="cf-input masked pr" type="password" id="stripe-secret-key" value="sk_test_51NxYz2secretkey789">
+                                                <button class="cf-action" onclick="toggleField('stripe-secret-key',this)">Show</button>
+                                            </div>
+                                            <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Never expose this in client-side code.</div>
+                                        </div>
+                                        <div class="cf sa-only">
+                                            <div class="cf-label">Webhook Secret</div>
+                                            <div class="cf-wrap">
+                                                <input class="cf-input masked pr" type="password" id="stripe-webhook-secret" value="whsec_testabcdef1234567890">
+                                                <button class="cf-action" onclick="toggleField('stripe-webhook-secret',this)">Show</button>
+                                            </div>
+                                        </div>
+                                        <div class="cf">
+                                            <div class="cf-label">Webhook URL (read-only)</div>
+                                            <div class="cf-wrap">
+                                                <input class="cf-input ro" type="text" value="https://rook.io/wh/ws/stripe/rr2" readonly>
+                                                <button class="cf-copy" onclick="copyText('https://rook.io/wh/ws/stripe/rr2',this)" title="Copy">⎘</button>
+                                            </div>
+                                            <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Register this URL in your <a href="#" style="color:var(--accent);">Stripe Dashboard → Webhooks</a>.</div>
+                                        </div>
+                                    </div>
+                                    <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PayPal -->
+                        <div id="tab-ws-paypal" style="display:none;">
+                            <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
+                                <div style="font-size:24px;margin-bottom:12px;">🅿</div>
+                                <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">PayPal not configured</div>
+                                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect PayPal to offer it as a payment method on your webstore.</p>
+                                <button class="btn btn-primary">Set up PayPal</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3490,14 +3560,13 @@
                         </div>
                         <table>
                             <thead>
-                                <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Bonus Reward</th><th>Status</th><th>Xsolla Sync</th><th></th></tr>
+                                <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Status</th><th>Xsolla Sync</th><th></th></tr>
                             </thead>
                             <tbody>
                                 <tr onclick="openSdkProductDrawer('gold_100')">
                                     <td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td>
                                     <td><span class="tag">Consumable</span></td><td class="mono">$0.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">gold_reward_small</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3505,7 +3574,6 @@
                                     <td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td>
                                     <td><span class="tag">Consumable</span></td><td class="mono">$4.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-pending-text">⟳ Pending</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3513,7 +3581,6 @@
                                     <td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td>
                                     <td><span class="tag">Consumable</span></td><td class="mono">$19.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">gold_reward_large</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3521,7 +3588,6 @@
                                     <td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td>
                                     <td><span class="tag">Consumable</span></td><td class="mono">$9.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">starter_bonus</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3529,7 +3595,6 @@
                                     <td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td>
                                     <td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td>
                                     <td><span class="tag">iOS</span></td>
-                                    <td><span style="color:var(--text-tertiary);font-size:12px;">—</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-error-text">✕ Error</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3537,7 +3602,6 @@
                                     <td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td>
                                     <td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td>
                                     <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="tag" style="background:var(--accent-light);color:var(--accent);border-color:#c7d2fe;">season_loot_pack</span></td>
                                     <td><span class="badge badge-active">Active</span></td>
                                     <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
                                 </tr>
@@ -3551,41 +3615,6 @@
                                 <button class="pag-btn" disabled>Next →</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- ─── SDK RULES ──────────────────────────────────────── -->
-                <div class="page" id="page-sdk-rules">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">SDK Rules</h1>
-                            <p class="page-sub">Segmentation rules applied to SDK products</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-primary" onclick="openSdkRuleDrawer()">+ Add Rule</button>
-                        </div>
-                    </div>
-                    <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
-                        <div style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:default;">Rules</div>
-                    </div>
-                    <div class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
-                        <table>
-                            <thead>
-                                <tr><th>Rule Name</th><th>Condition</th><th>Effect</th><th>Priority</th><th></th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Low value guard</strong></td>
-                                    <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">price &lt; $3.00</code></td>
-                                    <td><span class="badge" style="background:#fee2e2;color:var(--danger);border:1px solid #fecaca;">Disable Rook</span></td>
-                                    <td style="color:var(--text-tertiary);">1</td>
-                                    <td><div style="display:flex;gap:6px;">
-                                        <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
-                                        <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
-                                    </div></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -4021,48 +4050,6 @@
         </div>
     </div>
     <!-- ═══════════════════════════════════════════════════════ -->
-    <!--  SDK RULE DRAWER                                         -->
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <div class="overlay" id="sdk-rule-overlay" onclick="closeSdkRuleDrawer()"></div>
-    <div class="drawer" id="sdk-rule-drawer">
-        <div class="drawer-head">
-            <span class="drawer-title">Add SDK Rule</span>
-            <button class="drawer-close" onclick="closeSdkRuleDrawer()">✕</button>
-        </div>
-        <div class="drawer-body">
-            <div class="dfield">
-                <label class="dfield-label">Rule Name <span style="color:var(--danger);">*</span></label>
-                <input class="dfield-input" type="text" id="sdk-rule-name" placeholder="e.g. Low value guard">
-            </div>
-            <div class="dfield">
-                <label class="dfield-label">Condition <span style="color:var(--danger);">*</span></label>
-                <input class="dfield-input" style="font-family:var(--mono);font-size:12px;" type="text" id="sdk-rule-condition" placeholder="e.g. price &lt; $3.00">
-                <div class="dfield-hint">Evaluated against the current purchase context.</div>
-            </div>
-            <div class="dfield">
-                <label class="dfield-label">Action <span style="color:var(--danger);">*</span></label>
-                <select class="sel" id="sdk-rule-action" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
-                    <option value="disable">Disable</option>
-                    <option value="enable">Enable</option>
-                </select>
-            </div>
-            <div class="dfield">
-                <label class="dfield-label">Target <span style="color:var(--danger);">*</span></label>
-                <input class="dfield-input" type="text" id="sdk-rule-target" placeholder="e.g. Rook">
-                <div class="dfield-hint">The SDK feature or component this rule applies to.</div>
-            </div>
-            <div class="dfield">
-                <label class="dfield-label">Priority <span style="color:var(--danger);">*</span></label>
-                <input class="dfield-input" type="number" id="sdk-rule-priority" placeholder="e.g. 1" min="1" style="width:120px;">
-                <div class="dfield-hint">Lower number = higher priority. Rules are evaluated in ascending order.</div>
-            </div>
-        </div>
-        <div class="drawer-foot">
-            <button class="btn btn-ghost" onclick="closeSdkRuleDrawer()">Cancel</button>
-            <button class="btn btn-primary" onclick="closeSdkRuleDrawer()">Add Rule</button>
-        </div>
-    </div>
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!--  WEBSTORE RULE DRAWER                                    -->
     <!-- ═══════════════════════════════════════════════════════ -->
     <div class="overlay" id="ws-rule-overlay" onclick="closeWsRuleDrawer()"></div>
@@ -4352,6 +4339,24 @@
             document.getElementById('ws-product-drawer').classList.remove('open');
         }
 
+        // ── WEBSTORE PAYMENT PROVIDERS ────────────────────────────
+        function switchWsProviderTab(btn, tab) {
+            document.querySelectorAll('#ws-provider-tabs .tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-ws-stripe').style.display = tab === 'stripe' ? 'block' : 'none';
+            document.getElementById('tab-ws-paypal').style.display = tab === 'paypal' ? 'block' : 'none';
+        }
+        function setStripeMode(mode) {
+            const testBtn = document.getElementById('stripe-test-btn');
+            const liveBtn = document.getElementById('stripe-live-btn');
+            testBtn.style.background = mode === 'test' ? 'var(--accent)' : 'transparent';
+            testBtn.style.color = mode === 'test' ? 'white' : 'var(--text-secondary)';
+            testBtn.style.fontWeight = mode === 'test' ? '600' : 'normal';
+            liveBtn.style.background = mode === 'live' ? 'var(--accent)' : 'transparent';
+            liveBtn.style.color = mode === 'live' ? 'white' : 'var(--text-secondary)';
+            liveBtn.style.fontWeight = mode === 'live' ? '600' : 'normal';
+        }
+
         // ── WEBSTORE RULES TABS ───────────────────────────────────
         function switchWsTab(tab) {
             const isShow = tab === 'show';
@@ -4400,21 +4405,6 @@
             input.value = '';
         }
 
-        // ── SDK RULE DRAWER ───────────────────────────────────────
-        function openSdkRuleDrawer() {
-            document.getElementById('sdk-rule-overlay').classList.add('open');
-            document.getElementById('sdk-rule-drawer').classList.add('open');
-        }
-        function closeSdkRuleDrawer() {
-            document.getElementById('sdk-rule-overlay').classList.remove('open');
-            document.getElementById('sdk-rule-drawer').classList.remove('open');
-            document.getElementById('sdk-rule-name').value = '';
-            document.getElementById('sdk-rule-condition').value = '';
-            document.getElementById('sdk-rule-target').value = '';
-            document.getElementById('sdk-rule-priority').value = '';
-            document.getElementById('sdk-rule-action').value = 'disable';
-        }
-
         function doLogout() {
             currentRole = 'superadmin';
             applyRoleUI();
@@ -4445,7 +4435,7 @@
             if (navEl) navEl.classList.add('active');
 
             // Auto-open Products group for product sub-pages
-            const productPages = ['sdk-catalog', 'sdk-rules', 'webstore-catalog', 'webstore-rules'];
+            const productPages = ['sdk-catalog', 'webstore-catalog', 'webstore-rules'];
             if (productPages.includes(page)) {
                 document.getElementById('nav-group-products').classList.add('open');
             }
