@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RookDashboard Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/shell.css">
+    <link rel="stylesheet" href="css/overview.css">
+    <link rel="stylesheet" href="css/transaction.css">
+    <link rel="stylesheet" href="css/config.css">
+    <link rel="stylesheet" href="css/users.css">
+    <link rel="stylesheet" href="css/drawer.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/curl-builder.css">
+    <link rel="stylesheet" href="css/analytics.css">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  LOGIN                                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-mark">R</div>
+                <span class="logo-text">RookDashboard</span>
+            </div>
+            <h1 class="login-heading">Welcome back</h1>
+            <p class="login-sub">Sign in to your dashboard account</p>
+
+            <div class="field">
+                <label class="field-label">Username</label>
+                <input class="field-input" type="text" placeholder="e.g. avery.dao" id="login-user">
+            </div>
+            <div class="field">
+                <label class="field-label">Password</label>
+                <div class="field-wrap">
+                    <input class="field-input pr" type="password" placeholder="Enter your password" id="login-pass">
+                    <button class="field-action" onclick="togglePass()">Show</button>
+                </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">Sign In</button>
+            </div>
+            <p class="login-forgot">Forgot password? Contact your admin.</p>
+            <p style="text-align:center;margin-top:12px;font-size:11px;color:var(--text-tertiary);">Demo: Use
+                <strong>avery</strong> for Superadmin · <strong>rr2team</strong> for Game Admin
+            </p>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  APP SHELL                                              -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="app-shell">
+
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <div class="topbar-brand">
+                <div class="tb-logo-mark">R</div>
+                <span class="tb-logo-text">RookDashboard</span>
+            </div>
+            <div class="topbar-mid">
+                <!-- Game switcher -->
+                <div class="game-sw" id="game-sw">
+                    <button class="game-sw-btn" id="game-sw-btn" onclick="toggleGameDD()">
+                        <span class="g-dot"></span>
+                        <span id="game-label">Royal Revolt 2 (Android)</span>
+                        <span class="chev game-sw-chevron">▼</span>
+                    </button>
+                    <div class="dropdown" id="game-dd">
+                        <div class="dd-header">Switch Game</div>
+                        <div id="game-dd-list"></div>
+                        <div class="dd-divider"></div>
+                        <div class="dd-item" style="color:var(--text-tertiary);font-size:12px;" onclick="closeGameDD()">
+                            All Games →</div>
+                    </div>
+                </div>
+
+                <span id="game-label-static"></span>
+
+                <!-- Environment toggle -->
+                <div class="env-toggle">
+                    <button class="env-btn active" id="env-sandbox" onclick="setEnv('sandbox')">Sandbox</button>
+                    <button class="env-btn prod" id="env-prod" onclick="setEnv('production')">Production</button>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="user-btn">
+                    <div class="user-av" id="user-av">AD</div>
+                    <span id="user-name">Avery Dao</span>
+                    <span class="chev">▼</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SANDBOX BANNER -->
+        <div class="sb-banner visible" id="sb-banner">
+            ⚠ You are viewing <strong>Sandbox</strong> data — not real orders
+        </div>
+
+        <div class="app-layout">
+            <!-- SIDEBAR -->
+            <nav class="sidebar">
+                <div class="sb-section">
+                    <button class="nav-item active" onclick="navigate('overview')" id="nav-overview">
+                        <span class="nav-icon">▦</span> Overview
+                    </button>
+                    <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
+                        <span class="nav-icon">↕</span> Orders
+                    </button>
+                    <button class="nav-item" onclick="navigate('config')" id="nav-config">
+                        <span class="nav-icon">⚙</span> Config
+                    </button>
+                    <button class="nav-item" onclick="navigate('products')" id="nav-products">
+                        <span class="nav-icon">⊞</span> Products
+                    </button>
+                </div>
+                <div class="sb-divider sa-only"></div>
+                <div class="sb-section sa-only">
+                    <button class="nav-item" onclick="navigate('users')" id="nav-users">
+                        <span class="nav-icon">◉</span> Users
+                    </button>
+                    <!-- <button class="nav-item" onclick="navigate('support')" id="nav-support">
+                        <span class="nav-icon">◑</span> Support
+                    </button> -->
+                    <button class="nav-item disabled">
+                        <span class="nav-icon">☰</span> Audit Log
+                        <span class="nav-badge">Soon</span>
+                    </button>
+                    <button class="nav-item disabled">
+                        <span class="nav-icon">◈</span> Settings
+                        <span class="nav-badge">Soon</span>
+                    </button>
+                </div>
+                <div class="sb-bottom">
+                    <button class="nav-item" onclick="doLogout()" style="color:var(--text-tertiary);">
+                        <span class="nav-icon">⇤</span> Sign Out
+                    </button>
+                </div>
+            </nav>
+
+            <!-- MAIN CONTENT -->
+            <main class="main">
+
+                <!-- ─── OVERVIEW ─────────────────────────────────────── -->
+                <div class="page active" id="page-overview">
+                    <!-- <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Overview</h1>
+                            <p class="page-sub">Royal Revolt 2 · <span id="ov-env-label">Sandbox</span></p>
+                        </div>
+                        <div class="page-actions">
+                            <select class="sel">
+                                <option>This month</option>
+                                <option>Last 7 days</option>
+                                <option>Last month</option>
+                                <option>Custom range</option>
+                            </select>
+                            <button class="btn btn-secondary">Export</button>
+                            <button class="btn btn-secondary">⤓ Export .CSV</button>
+                            <button class="btn btn-secondary">⤓ Export .XLS</button>
+                        </div>
+                    </div> -->
+
+                    <!-- Vitals -->
+                    <!-- <div class="vitals">
+                        <div class="vital-card">
+                            <div class="vital-label">Revenue</div>
+                            <div class="vital-value">$284,120</div>
+                            <div class="vital-delta delta-up">▲ +12% MoM</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">ARPU</div>
+                            <div class="vital-value">$4.20</div>
+                            <div class="vital-delta delta-down">▼ −0.3% MoM</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">Refunds</div>
+                            <div class="vital-value">$1,204</div>
+                            <div class="vital-delta delta-up" style="color:var(--warning);">▲ +2% MoM</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">Net Revenue</div>
+                            <div class="vital-value">$271,340</div>
+                            <div class="vital-delta delta-up">▲ +11% MoM</div>
+                        </div>
+                    </div> -->
+
+                    <!-- Charts row -->
+
+
+                    <!-- Recent transactions -->
+                    <!-- <div class="table-wrap">
+                        <div class="table-head">
+                            <span class="table-head-title">Recent Orders</span>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>User ID</th>
+                                    <th>Product</th>
+                                    <th>Platform</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00821</td>
+                                    <td class="mono">user_9821</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 14</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00820</td>
+                                    <td class="mono">user_4401</td>
+                                    <td>Starter Bundle</td>
+                                    <td><span class="tag">Android</span></td>
+                                    <td class="mono">$9.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 14</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00819</td>
+                                    <td class="mono">user_3390</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-refunded">Refunded</span></td>
+                                    <td class="text-sec">Jun 13</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00818</td>
+                                    <td class="mono">user_7712</td>
+                                    <td>Premium Pass</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$19.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 13</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00817</td>
+                                    <td class="mono">user_2201</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">Android</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-cancelled">Cancelled</span></td>
+                                    <td class="text-sec">Jun 12</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="tf">
+                            <span class="tf-meta">Last 5 orders</span>
+                            <span class="tf-link" onclick="navigate('transactions')">View all orders →</span>
+                        </div>
+                    </div> -->
+
+                    <!-- Date range filter -->
+                    <div class="an-filter-row">
+                        <button class="an-range-btn active">7D</button>
+                        <button class="an-range-btn">30D</button>
+                        <button class="an-range-btn">90D</button>
+                        <button class="an-range-btn">YTD</button>
+                        <button class="an-range-btn">12M</button>
+                        <button class="an-range-btn">Custom</button>
+                        <span class="an-filter-sep"></span>
+                        <!-- <select class="sel" style="font-size:12px;">
+                            <option>All Games</option>
+                            <option>Royal Revolt 2 (Android)</option>
+                            <option>Smurf Village (iOS)</option>
+                            <option>EMHQ (Android)</option>
+                            <option>War of Nations (iOS)</option>
+                            <option>Kitchen Scramble (iOS)</option>
+                        </select> -->
+                    </div>
+
+                    <!-- KPI cards -->
+                    <div class="an-kpi-grid">
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Gross Revenue</div>
+                            <div class="an-kpi-value">$2,847,320</div>
+                            <div class="an-kpi-badge up">↑ 12.4%</div>
+                            <div class="an-kpi-sub">vs. previous period</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Net Revenue</div>
+                            <div class="an-kpi-value">$2,419,422</div>
+                            <div class="an-kpi-badge up">↑ 11.8%</div>
+                            <div class="an-kpi-sub">after platform fees</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Total Savings (Rook)</div>
+                            <div class="an-kpi-value">$427,898</div>
+                            <div class="an-kpi-badge up">↑ 15.0%</div>
+                            <div class="an-kpi-sub">vs. Apple/Android native</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Refunds</div>
+                            <div class="an-kpi-value">$38,241</div>
+                            <div class="an-kpi-badge down">↑ 2.1%</div>
+                            <div class="an-kpi-sub">1.3% refund rate</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">Orders</div>
+                            <div class="an-kpi-value">94,182</div>
+                            <div class="an-kpi-badge up">↑ 8.7%</div>
+                            <div class="an-kpi-sub">across all titles</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">ARPU</div>
+                            <div class="an-kpi-value">$4.82</div>
+                            <div class="an-kpi-badge up">↑ 5.3%</div>
+                            <div class="an-kpi-sub">all active players</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">ARPPU</div>
+                            <div class="an-kpi-value">$38.14</div>
+                            <div class="an-kpi-badge up">↑ 9.1%</div>
+                            <div class="an-kpi-sub">paying players only</div>
+                        </div>
+                        <div class="an-kpi-card">
+                            <div class="an-kpi-label">% Return Spenders</div>
+                            <div class="an-kpi-value">68.4%</div>
+                            <div class="an-kpi-badge up">↑ 3.2%</div>
+                            <div class="an-kpi-sub">repeat purchasers</div>
+                        </div>
+                    </div>
+
+                    <!-- Stacked revenue chart (full width) -->
+                    <div class="an-charts-row" style="grid-template-columns:1fr; margin-bottom:16px;">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Portfolio Revenue — Stacked by Game</div>
+                            <div class="an-chart-sub">Gross revenue contribution per title · Last 30 days</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 900 220" width="100%" style="display:block;">
+                                    <!-- Grid lines -->
+                                    <line x1="60" y1="10" x2="60" y2="195" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="60" y1="195" x2="890" y2="195" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="60" y1="155" x2="890" y2="155" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="115" x2="890" y2="115" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="75" x2="890" y2="75" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="60" y1="35" x2="890" y2="35" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <!-- Y labels -->
+                                    <text x="55" y="198" text-anchor="end" font-size="9" fill="#94a3b8">$0</text>
+                                    <text x="55" y="158" text-anchor="end" font-size="9" fill="#94a3b8">$50k</text>
+                                    <text x="55" y="118" text-anchor="end" font-size="9" fill="#94a3b8">$100k</text>
+                                    <text x="55" y="78" text-anchor="end" font-size="9" fill="#94a3b8">$150k</text>
+                                    <text x="55" y="38" text-anchor="end" font-size="9" fill="#94a3b8">$200k</text>
+                                    <!-- Stacked bars for 12 weeks -->
+                                    <!-- Week 1 -->
+                                    <rect x="70" y="135" width="55" height="60" fill="#4f46e5" rx="2" />
+                                    <rect x="70" y="105" width="55" height="30" fill="#818cf8" rx="2" />
+                                    <rect x="70" y="82" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="70" y="65" width="55" height="17" fill="#f59e0b" rx="2" />
+                                    <rect x="70" y="55" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 2 -->
+                                    <rect x="138" y="128" width="55" height="67" fill="#4f46e5" rx="2" />
+                                    <rect x="138" y="97" width="55" height="31" fill="#818cf8" rx="2" />
+                                    <rect x="138" y="74" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="138" y="58" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="138" y="48" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 3 -->
+                                    <rect x="206" y="130" width="55" height="65" fill="#4f46e5" rx="2" />
+                                    <rect x="206" y="99" width="55" height="31" fill="#818cf8" rx="2" />
+                                    <rect x="206" y="76" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="206" y="60" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="206" y="50" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 4 -->
+                                    <rect x="274" y="118" width="55" height="77" fill="#4f46e5" rx="2" />
+                                    <rect x="274" y="85" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="274" y="62" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="274" y="45" width="55" height="17" fill="#f59e0b" rx="2" />
+                                    <rect x="274" y="35" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 5 -->
+                                    <rect x="342" y="122" width="55" height="73" fill="#4f46e5" rx="2" />
+                                    <rect x="342" y="90" width="55" height="32" fill="#818cf8" rx="2" />
+                                    <rect x="342" y="67" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="342" y="51" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="342" y="41" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 6 -->
+                                    <rect x="410" y="115" width="55" height="80" fill="#4f46e5" rx="2" />
+                                    <rect x="410" y="82" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="410" y="59" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="410" y="43" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="410" y="33" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 7 -->
+                                    <rect x="478" y="108" width="55" height="87" fill="#4f46e5" rx="2" />
+                                    <rect x="478" y="74" width="55" height="34" fill="#818cf8" rx="2" />
+                                    <rect x="478" y="51" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="478" y="35" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="478" y="25" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 8 -->
+                                    <rect x="546" y="112" width="55" height="83" fill="#4f46e5" rx="2" />
+                                    <rect x="546" y="79" width="55" height="33" fill="#818cf8" rx="2" />
+                                    <rect x="546" y="56" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="546" y="40" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="546" y="30" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 9 -->
+                                    <rect x="614" y="105" width="55" height="90" fill="#4f46e5" rx="2" />
+                                    <rect x="614" y="70" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="614" y="47" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="614" y="31" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="614" y="21" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 10 -->
+                                    <rect x="682" y="100" width="55" height="95" fill="#4f46e5" rx="2" />
+                                    <rect x="682" y="65" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="682" y="42" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="682" y="26" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="682" y="16" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 11 -->
+                                    <rect x="750" y="96" width="55" height="99" fill="#4f46e5" rx="2" />
+                                    <rect x="750" y="61" width="55" height="35" fill="#818cf8" rx="2" />
+                                    <rect x="750" y="38" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="750" y="22" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="750" y="12" width="55" height="10" fill="#e11d48" rx="2" />
+                                    <!-- Week 12 -->
+                                    <rect x="818" y="90" width="55" height="105" fill="#4f46e5" rx="2" />
+                                    <rect x="818" y="54" width="55" height="36" fill="#818cf8" rx="2" />
+                                    <rect x="818" y="31" width="55" height="23" fill="#10b981" rx="2" />
+                                    <rect x="818" y="15" width="55" height="16" fill="#f59e0b" rx="2" />
+                                    <rect x="818" y="10" width="55" height="5" fill="#e11d48" rx="2" />
+                                    <!-- X labels -->
+                                    <text x="97" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W1</text>
+                                    <text x="165" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W2</text>
+                                    <text x="233" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W3</text>
+                                    <text x="301" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W4</text>
+                                    <text x="369" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W5</text>
+                                    <text x="437" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W6</text>
+                                    <text x="505" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W7</text>
+                                    <text x="573" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W8</text>
+                                    <text x="641" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W9</text>
+                                    <text x="709" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W10</text>
+                                    <text x="777" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W11</text>
+                                    <text x="845" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">W12</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;"></div> Royal Revolt 2
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#818cf8;"></div> Smurf Village
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;"></div> EMHQ
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#f59e0b;"></div> War of Nations
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#e11d48;"></div> Kitchen Scramble
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ARPU/ARPPU line chart + Revenue by game bar -->
+                    <div class="an-charts-row cols-2">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">ARPU &amp; ARPPU Over Time</div>
+                            <div class="an-chart-sub">Average revenue per user vs. per paying user · 30D</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 420 180" width="100%" style="display:block;">
+                                    <!-- Grid -->
+                                    <line x1="40" y1="10" x2="40" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="40" y1="155" x2="415" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="40" y1="120" x2="415" y2="120" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <line x1="40" y1="85" x2="415" y2="85" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <line x1="40" y1="50" x2="415" y2="50" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <!-- Y labels -->
+                                    <text x="35" y="158" text-anchor="end" font-size="8" fill="#94a3b8">$0</text>
+                                    <text x="35" y="123" text-anchor="end" font-size="8" fill="#94a3b8">$15</text>
+                                    <text x="35" y="88" text-anchor="end" font-size="8" fill="#94a3b8">$30</text>
+                                    <text x="35" y="53" text-anchor="end" font-size="8" fill="#94a3b8">$45</text>
+                                    <!-- ARPPU line (higher values) -->
+                                    <polyline
+                                        points="45,118 75,112 105,115 135,105 165,98 195,102 225,94 255,90 285,88 315,82 345,78 375,74 405,70"
+                                        fill="none" stroke="#4f46e5" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- ARPU line (lower values) -->
+                                    <polyline
+                                        points="45,142 75,139 105,140 135,136 165,132 195,134 225,130 255,127 285,126 315,122 345,119 375,116 405,113"
+                                        fill="none" stroke="#10b981" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- Dots ARPPU -->
+                                    <circle cx="405" cy="70" r="3" fill="#4f46e5" />
+                                    <!-- Dots ARPU -->
+                                    <circle cx="405" cy="113" r="3" fill="#10b981" />
+                                    <!-- X labels -->
+                                    <text x="45" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">1</text>
+                                    <text x="135" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">8</text>
+                                    <text x="225" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">15</text>
+                                    <text x="315" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">22</text>
+                                    <text x="405" y="168" text-anchor="middle" font-size="8" fill="#94a3b8">30</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;border-radius:50%;"></div>
+                                    ARPPU $38.14
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;border-radius:50%;"></div> ARPU
+                                    $4.82
+                                </div>
+                            </div>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Revenue by Title</div>
+                            <div class="an-chart-sub">Gross revenue share · Current period</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 380 180" width="100%" style="display:block;">
+                                    <line x1="130" y1="10" x2="130" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="130" y1="155" x2="375" y2="155" stroke="#e2e8f0" stroke-width="1" />
+                                    <!-- Royal Revolt 2 -->
+                                    <rect x="130" y="18" width="180" height="22" fill="#4f46e5" rx="3" />
+                                    <text x="125" y="33" text-anchor="end" font-size="9" fill="#64748b">Royal Revolt
+                                        2</text>
+                                    <text x="316" y="33" font-size="9" fill="#4f46e5" font-weight="600">$1.12M</text>
+                                    <!-- Smurf Village -->
+                                    <rect x="130" y="48" width="120" height="22" fill="#818cf8" rx="3" />
+                                    <text x="125" y="63" text-anchor="end" font-size="9" fill="#64748b">Smurf
+                                        Village</text>
+                                    <text x="256" y="63" font-size="9" fill="#818cf8" font-weight="600">$748k</text>
+                                    <!-- EMHQ -->
+                                    <rect x="130" y="78" width="85" height="22" fill="#10b981" rx="3" />
+                                    <text x="125" y="93" text-anchor="end" font-size="9" fill="#64748b">EMHQ</text>
+                                    <text x="221" y="93" font-size="9" fill="#10b981" font-weight="600">$531k</text>
+                                    <!-- War of Nations -->
+                                    <rect x="130" y="108" width="60" height="22" fill="#f59e0b" rx="3" />
+                                    <text x="125" y="123" text-anchor="end" font-size="9" fill="#64748b">War of
+                                        Nations</text>
+                                    <text x="196" y="123" font-size="9" fill="#f59e0b" font-weight="600">$374k</text>
+                                    <!-- Kitchen Scramble -->
+                                    <rect x="130" y="138" width="30" height="14" fill="#e11d48" rx="3" />
+                                    <text x="125" y="149" text-anchor="end" font-size="9" fill="#64748b">Kitchen
+                                        Scramble</text>
+                                    <text x="166" y="149" font-size="9" fill="#e11d48" font-weight="600">$93k</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player segmentation + Whales + LTV -->
+                    <div class="an-charts-row cols-3">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Player Geography</div>
+                            <div class="an-chart-sub">Revenue by top markets</div>
+                            <ul class="an-seg-list" style="margin-top:4px;">
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">United States</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:78%;background:#4f46e5;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$1.23M</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Germany</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:42%;background:#818cf8;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$416k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">United Kingdom</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:35%;background:#10b981;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$312k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">France</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:22%;background:#f59e0b;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$198k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Canada</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:18%;background:#e11d48;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$164k</span>
+                                </li>
+                                <li class="an-seg-item">
+                                    <span class="an-seg-label">Other</span>
+                                    <div class="an-seg-bar-wrap">
+                                        <div class="an-seg-bar" style="width:55%;background:#cbd5e1;"></div>
+                                    </div>
+                                    <span class="an-seg-pct">$534k</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Whale Spenders</div>
+                            <div class="an-chart-sub">Players spending &gt; $100 threshold</div>
+                            <div style="margin-top:8px;">
+                                <div
+                                    style="font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">
+                                    2,847</div>
+                                <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:16px;">3.0% of
+                                    paying players</div>
+                                <div style="display:flex;flex-direction:column;gap:8px;">
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$100–$500</span><span>1,924</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:68%;height:100%;background:#4f46e5;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$500–$1,000</span><span>621</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:22%;height:100%;background:#818cf8;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:3px;">
+                                            <span>$1,000+</span><span>302</span>
+                                        </div>
+                                        <div
+                                            style="background:var(--bg);border-radius:99px;height:6px;overflow:hidden;">
+                                            <div style="width:11%;height:100%;background:#e11d48;border-radius:99px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+                                    <div style="font-size:11px;color:var(--text-tertiary);">Total whale revenue</div>
+                                    <div style="font-size:18px;font-weight:700;color:var(--text-primary);">$1,408,220
+                                    </div>
+                                    <div style="font-size:11px;color:var(--text-tertiary);">49.5% of gross revenue</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Lifetime Value (LTV)</div>
+                            <div class="an-chart-sub">Average LTV by cohort</div>
+                            <div style="margin-top:8px;">
+                                <svg viewBox="0 0 160 130" width="100%" style="display:block;">
+                                    <!-- Simple LTV bar chart by cohort month -->
+                                    <line x1="20" y1="10" x2="20" y2="110" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="20" y1="110" x2="155" y2="110" stroke="#e2e8f0" stroke-width="1" />
+                                    <rect x="25" y="80" width="16" height="30" fill="#4f46e5" rx="2" />
+                                    <rect x="47" y="68" width="16" height="42" fill="#4f46e5" rx="2" />
+                                    <rect x="69" y="55" width="16" height="55" fill="#4f46e5" rx="2" />
+                                    <rect x="91" y="42" width="16" height="68" fill="#4f46e5" rx="2" />
+                                    <rect x="113" y="28" width="16" height="82" fill="#4f46e5" rx="2" />
+                                    <rect x="135" y="18" width="16" height="92" fill="#818cf8" rx="2" />
+                                    <text x="33" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M1</text>
+                                    <text x="55" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M3</text>
+                                    <text x="77" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M6</text>
+                                    <text x="99" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M9</text>
+                                    <text x="121" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M12</text>
+                                    <text x="143" y="122" text-anchor="middle" font-size="7" fill="#94a3b8">M18</text>
+                                </svg>
+                                <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+                                    <div style="display:flex;justify-content:space-between;font-size:11px;">
+                                        <span style="color:var(--text-tertiary);">Avg LTV (12M)</span>
+                                        <span style="font-weight:700;">$142.80</span>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;font-size:11px;">
+                                        <span style="color:var(--text-tertiary);">Avg LTV (18M)</span>
+                                        <span style="font-weight:700;">$198.40</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly revenue line chart -->
+                    <div class="an-charts-row" style="grid-template-columns:1fr;margin-bottom:16px;">
+                        <div class="an-chart-card">
+                            <div class="an-chart-title">Monthly Gross vs Net Revenue</div>
+                            <div class="an-chart-sub">12-month trailing · All games</div>
+                            <div class="an-chart-area">
+                                <svg viewBox="0 0 900 160" width="100%" style="display:block;">
+                                    <line x1="50" y1="10" x2="50" y2="130" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="50" y1="130" x2="890" y2="130" stroke="#e2e8f0" stroke-width="1" />
+                                    <line x1="50" y1="100" x2="890" y2="100" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="50" y1="70" x2="890" y2="70" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <line x1="50" y1="40" x2="890" y2="40" stroke="#f1f5f9" stroke-width="1"
+                                        stroke-dasharray="4,4" />
+                                    <text x="45" y="133" text-anchor="end" font-size="8" fill="#94a3b8">$0</text>
+                                    <text x="45" y="103" text-anchor="end" font-size="8" fill="#94a3b8">$150k</text>
+                                    <text x="45" y="73" text-anchor="end" font-size="8" fill="#94a3b8">$300k</text>
+                                    <text x="45" y="43" text-anchor="end" font-size="8" fill="#94a3b8">$450k</text>
+                                    <!-- Gross revenue area fill -->
+                                    <polygon
+                                        points="55,115 125,110 195,105 265,98 335,92 405,88 475,82 545,79 615,74 685,68 755,62 825,55 895,48 895,130 55,130"
+                                        fill="rgba(79,70,229,0.08)" />
+                                    <!-- Gross revenue line -->
+                                    <polyline
+                                        points="55,115 125,110 195,105 265,98 335,92 405,88 475,82 545,79 615,74 685,68 755,62 825,55 895,48"
+                                        fill="none" stroke="#4f46e5" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- Net revenue area fill -->
+                                    <polygon
+                                        points="55,122 125,117 195,112 265,106 335,100 405,96 475,91 545,88 615,83 685,77 755,72 825,65 895,58 895,130 55,130"
+                                        fill="rgba(16,185,129,0.08)" />
+                                    <!-- Net revenue line -->
+                                    <polyline
+                                        points="55,122 125,117 195,112 265,106 335,100 405,96 475,91 545,88 615,83 685,77 755,72 825,65 895,58"
+                                        fill="none" stroke="#10b981" stroke-width="2" stroke-linejoin="round" />
+                                    <!-- X labels -->
+                                    <text x="55" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Mar</text>
+                                    <text x="125" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Apr</text>
+                                    <text x="195" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">May</text>
+                                    <text x="265" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jun</text>
+                                    <text x="335" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jul</text>
+                                    <text x="405" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Aug</text>
+                                    <text x="475" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Sep</text>
+                                    <text x="545" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Oct</text>
+                                    <text x="615" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Nov</text>
+                                    <text x="685" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Dec</text>
+                                    <text x="755" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Jan</text>
+                                    <text x="825" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Feb</text>
+                                    <text x="895" y="145" text-anchor="middle" font-size="8" fill="#94a3b8">Mar</text>
+                                </svg>
+                            </div>
+                            <div class="an-legend">
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#4f46e5;border-radius:50%;"></div>
+                                    Gross Revenue
+                                </div>
+                                <div class="an-legend-item">
+                                    <div class="an-legend-dot" style="background:#10b981;border-radius:50%;"></div> Net
+                                    Revenue
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders table -->
+                    <div class="an-table-card">
+                        <div class="an-table-head">
+                            <span class="an-table-head-title">Orders</span>
+                            <span class="an-table-head-count">94,182</span>
+                            <input class="an-search" type="text" placeholder="Search orders…">
+                            <button class="btn btn-secondary btn-sm">Filters</button>
+                        </div>
+                        <table class="an-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Order ID</th>
+                                    <th>Transaction ID</th>
+                                    <th>Game</th>
+                                    <th>Product</th>
+                                    <th>Player ID</th>
+                                    <th>Country</th>
+                                    <th>Gross</th>
+                                    <th>Net</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:31</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182736</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7291048</td>
+                                    <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
+                                    <td>Gem Pack 1200</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-48291</td>
+                                    <td>🇺🇸 US</td>
+                                    <td style="font-weight:600;">$9.99</td>
+                                    <td style="color:var(--success);">$8.49</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:28</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182735</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7289201</td>
+                                    <td><span class="an-game-dot" style="background:#818cf8;"></span>Smurf Village</td>
+                                    <td>Starter Bundle</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-71049</td>
+                                    <td>🇩🇪 DE</td>
+                                    <td style="font-weight:600;">$4.99</td>
+                                    <td style="color:var(--success);">$4.24</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:22</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182734</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7281034</td>
+                                    <td><span class="an-game-dot" style="background:#10b981;"></span>EMHQ</td>
+                                    <td>Premium Season Pass</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-33812</td>
+                                    <td>🇬🇧 GB</td>
+                                    <td style="font-weight:600;">$24.99</td>
+                                    <td style="color:var(--success);">$21.24</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:18</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182733</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7271188</td>
+                                    <td><span class="an-game-dot" style="background:#f59e0b;"></span>War of Nations</td>
+                                    <td>Gold 5000</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-90124</td>
+                                    <td>🇫🇷 FR</td>
+                                    <td style="font-weight:600;">$19.99</td>
+                                    <td style="color:var(--warning);">Refunded</td>
+                                    <td><span class="badge badge-warning">Refunded</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 14:09</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182732</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7268920</td>
+                                    <td><span class="an-game-dot" style="background:#4f46e5;"></span>Royal Revolt 2</td>
+                                    <td>Whale Bundle $99</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-11203</td>
+                                    <td>🇨🇦 CA</td>
+                                    <td style="font-weight:600;">$99.99</td>
+                                    <td style="color:var(--success);">$84.99</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--text-secondary);">2025-03-22 13:55</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">ORD-9182731</td>
+                                    <td style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);">TXN-7251093</td>
+                                    <td><span class="an-game-dot" style="background:#e11d48;"></span>Kitchen Scramble
+                                    </td>
+                                    <td>Energy Refill x10</td>
+                                    <td style="font-family:var(--mono);font-size:11px;">USR-58847</td>
+                                    <td>🇦🇺 AU</td>
+                                    <td style="font-weight:600;">$2.99</td>
+                                    <td style="color:var(--text-tertiary);">Pending</td>
+                                    <td><span class="badge badge-warning"
+                                            style="background:var(--warning-light);color:var(--warning);">Pending</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ─── TRANSACTIONS ──────────────────────────────────── -->
+                <div class="page" id="page-transactions">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Orders</h1>
+                            <p class="page-sub">Royal Revolt 2 · Sandbox</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary" onclick="openModal('csv-modal')">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="filters">
+                        <select class="sel">
+                            <option>This month</option>
+                            <option>Last 7 days</option>
+                            <option>Last month</option>
+                        </select>
+                        <select class="sel">
+                            <option>All statuses</option>
+                            <option>Paid</option>
+                            <option>Refunded</option>
+                            <option>Cancelled</option>
+                        </select>
+                        <select class="sel">
+                            <option>All platforms</option>
+                            <option>iOS</option>
+                            <option>Android</option>
+                        </select>
+                        <div class="search-wrap">
+                            <span class="search-ico">🔍</span>
+                            <input class="search-in" type="text" placeholder="Search user ID...">
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>User ID</th>
+                                    <th>Product</th>
+                                    <th>Platform</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00821</td>
+                                    <td class="mono">user_9821</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 14</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00820</td>
+                                    <td class="mono">user_4401</td>
+                                    <td>Starter Bundle</td>
+                                    <td><span class="tag">Android</span></td>
+                                    <td class="mono">$9.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 14</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00819</td>
+                                    <td class="mono">user_3390</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-refunded">Refunded</span></td>
+                                    <td class="text-sec">Jun 13</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00818</td>
+                                    <td class="mono">user_7712</td>
+                                    <td>Premium Pass</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$19.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 13</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00817</td>
+                                    <td class="mono">user_2201</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">Android</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-cancelled">Cancelled</span></td>
+                                    <td class="text-sec">Jun 12</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00816</td>
+                                    <td class="mono">user_8843</td>
+                                    <td>Starter Bundle</td>
+                                    <td><span class="tag">Android</span></td>
+                                    <td class="mono">$9.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 12</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00815</td>
+                                    <td class="mono">user_1102</td>
+                                    <td>Premium Pass</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$19.99</td>
+                                    <td><span class="badge badge-paid">Paid</span></td>
+                                    <td class="text-sec">Jun 11</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr onclick="navigate('txn-detail')">
+                                    <td class="mono">INV-00814</td>
+                                    <td class="mono">user_5530</td>
+                                    <td>Gold Pack 500</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="badge badge-refunded">Refunded</span></td>
+                                    <td class="text-sec">Jun 11</td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pag">
+                            <span class="pag-meta">Showing 1–8 of 3,241</span>
+                            <div class="pag-controls">
+                                <button class="pag-btn" disabled>← Prev</button>
+                                <span class="pag-info">Page 1 of 406</span>
+                                <button class="pag-btn">Next →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── TRANSACTION DETAIL ────────────────────────────── -->
+                <div class="page" id="page-txn-detail">
+                    <button class="back-btn" onclick="navigate('transactions')">← Back to Orders</button>
+
+                    <div class="page-header">
+                        <div class="flex items-center gap-8">
+                            <h1 class="page-title" style="margin-bottom:0;">INV-00821</h1>
+                            <span id="txn-status-badge" class="badge badge-paid"
+                                style="font-size:13px;padding:4px 10px;">Paid</span>
+                        </div>
+                        <div class="page-actions" style="gap:6px;">
+                            <span
+                                style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-right:4px;">Demo
+                                status:</span>
+                            <button class="btn btn-sm btn-secondary" onclick="setTxnStatus('paid')">Paid</button>
+                            <button class="btn btn-sm btn-secondary"
+                                onclick="setTxnStatus('refunded')">Refunded</button>
+                            <button class="btn btn-sm btn-secondary"
+                                onclick="setTxnStatus('cancelled')">Cancelled</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-grid">
+                        <div class="full-card">
+                            <div class="card-header"><span class="card-title">Order Details</span></div>
+                            <div class="card-body">
+                                <div class="detail-row"><span class="dk">Invoice ID</span><span
+                                        class="dv mono">INV-00821</span></div>
+                                <div class="detail-row"><span class="dk">User ID</span><span
+                                        class="dv mono">user_9821</span></div>
+                                <div class="detail-row"><span class="dk">Payment provider</span><span
+                                        class="dv">Xsolla</span></div>
+                                <div class="detail-row"><span class="dk">Payment method</span><span class="dv">Credit
+                                        Card</span></div>
+                                <div class="detail-row"><span class="dk">Currency</span><span class="dv">USD</span>
+                                </div>
+                                <div class="detail-row"><span class="dk">Amount</span><span class="dv mono"
+                                        style="color:var(--success);font-size:15px;">$4.99</span></div>
+                                <div class="detail-row"><span class="dk">Paid at</span><span class="dv">Jun 14, 2025 ·
+                                        09:32 UTC</span></div>
+                            </div>
+                        </div>
+                        <div class="full-card">
+                            <div class="card-header"><span class="card-title">Product</span></div>
+                            <div class="card-body">
+                                <div class="detail-row"><span class="dk">SKU</span><span
+                                        class="dv mono">gold_pack_500</span></div>
+                                <div class="detail-row"><span class="dk">Name</span><span class="dv">Gold Pack
+                                        500</span></div>
+                                <div class="detail-row"><span class="dk">Quantity</span><span class="dv">1</span></div>
+                                <div class="detail-row"><span class="dk">Platform</span><span class="dv"><span
+                                            class="tag">iOS</span></span></div>
+                                <div class="detail-row"><span class="dk">Environment</span><span class="dv"><span
+                                            class="badge badge-pending">Sandbox</span></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="full-card">
+                        <div class="card-header"><span class="card-title">Custom Parameters</span></div>
+                        <div class="card-body">
+                            <div class="detail-row"><span class="dk">playerID</span><span class="dv mono">8821004</span>
+                            </div>
+                            <div class="detail-row"><span class="dk">region</span><span class="dv mono">EU</span></div>
+                            <div class="detail-row"><span class="dk">sessionToken</span><span
+                                    class="dv mono">tok_xk2j9af8c1...</span></div>
+                        </div>
+                    </div>
+
+                    <div class="full-card">
+                        <div class="card-header"><span class="card-title">Timeline</span></div>
+                        <div class="card-body" id="txn-timeline">
+                            <!-- Timeline populated by renderTimeline() based on current status -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── CONFIG ───────────────────────────────────────── -->
+                <div class="page" id="page-config">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Configuration</h1>
+                            <p class="page-sub">Royal Revolt 2 · <span id="cfg-env-label">Sandbox</span></p>
+                        </div>
+                        <div class="page-actions">
+                            <span class="badge badge-approved">● Approved</span>
+                        </div>
+                    </div>
+
+                    <!-- General Information -->
+                    <div class="full-card" style="margin-bottom:20px;">
+                        <div class="card-header">
+                            <h2 class="card-title">General Information</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="cf" style="max-width:400px;margin-bottom:24px;">
+                                <div class="cf-label">App ID (read-only)</div>
+                                <div class="cf-wrap">
+                                    <input class="cf-input ro" type="text" value="12" readonly>
+                                    <button class="cf-copy" onclick="copyText('12',this)" title="Copy">⎘</button>
+                                </div>
+                            </div>
+
+                            <!-- Configuration Progress -->
+                            <div style="padding-top:20px;border-top:1px solid var(--border);">
+                                <h3
+                                    style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">
+                                    Configuration Progress</h3>
+
+                                <!-- Progress Bar -->
+                                <div style="margin-bottom:16px;">
+                                    <div
+                                        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                        <span style="font-size:13px;font-weight:600;color:var(--text-primary);"
+                                            id="progress-text">0/7 completed</span>
+                                        <span style="font-size:12px;color:var(--text-secondary);"
+                                            id="progress-percent">0%</span>
+                                    </div>
+                                    <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
+                                        <div id="progress-bar"
+                                            style="height:100%;background:var(--accent);width:0%;transition:width 0.3s ease;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Checklist -->
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                    <div class="progress-item" data-field="validation-rule"
+                                        onclick="scrollToField('validation-rule')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Validation Rule configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="user-validation-curl"
+                                        onclick="scrollToField('user-validation-curl')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">User Validation cURL configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="valid-test-user-id"
+                                        onclick="scrollToField('valid-test-user-id')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Valid Test User ID configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="invalid-test-user-id"
+                                        onclick="scrollToField('invalid-test-user-id')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Invalid Test User ID configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="purchase-callback"
+                                        onclick="scrollToField('purchase-callback')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Purchase Callback cURL configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="refund-callback"
+                                        onclick="scrollToField('refund-callback')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Refund Callback cURL configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="ios-credentials"
+                                        onclick="scrollToField('ios-credentials')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">iOS Xsolla credentials configured</span>
+                                    </div>
+                                    <div class="progress-item" data-field="android-credentials"
+                                        onclick="scrollToField('android-credentials')"
+                                        style="cursor:pointer;padding:8px;border-radius:4px;transition:background 0.15s;">
+                                        <span class="progress-icon">○</span>
+                                        <span class="progress-label">Android Xsolla credentials configured</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Validation -->
+                    <div class="full-card" style="margin-bottom:20px;">
+                        <div class="card-header">
+                            <h2 class="card-title">User Validation</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="user-validation-step"></div>
+
+                            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+                                <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Validation Rule</div>
+                                <p style="font-size:13px;color:#64748b;margin-bottom:12px;">
+                                    The rule must be written in JMESPath syntax. <a href="https://jmespath.org/"
+                                        target="_blank" rel="noopener" style="color:var(--accent);">https://jmespath.org/ ↗</a>
+                                </p>
+                                <div class="ep-row">
+                                    <span class="ep-label">Validation Rule (JMESPath)</span>
+                                    <input id="validation-rule" class="ep-input" type="text"
+                                        value="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                                        placeholder="`user-properties`.country == 'US' && `user-properties`.age >= `18`"
+                                        style="font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;">
+                                </div>
+                                <div style="margin-top:16px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);">
+                                    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Test User IDs</div>
+                                    <div class="ep-row" style="margin-bottom:8px;">
+                                        <span class="ep-label" style="width:180px;">Valid Test User ID</span>
+                                        <input id="valid-test-user-id" class="ep-input" type="text" value="user_sandbox_001"
+                                            placeholder="A user ID that should pass validation">
+                                    </div>
+                                    <div class="ep-row" style="margin-bottom:0;">
+                                        <span class="ep-label" style="width:180px;">Invalid Test User ID</span>
+                                        <input id="invalid-test-user-id" class="ep-input" type="text" value=""
+                                            placeholder="A user ID that should fail validation">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:16px;">
+                                <button class="btn btn-primary btn-sm">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Callbacks -->
+                    <div class="full-card" style="margin-bottom:16px;">
+                        <div class="card-header">
+                            <span class="card-title">Callbacks</span>
+                            <span class="text-sec" style="font-size:12px;">Shared across platforms · Sandbox</span>
+                        </div>
+                        <div class="card-body">
+                            <div id="cb-steps"></div>
+                            <!-- <button class="btn btn-secondary btn-sm" onclick="cbAddCallback()"
+                                style="margin-bottom:16px;">+
+                                Add Step</button> -->
+
+                            <div>
+                                <button class="btn btn-primary btn-sm">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Provider tabs -->
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab(this,'xsolla')">Xsolla</button>
+
+                    </div>
+
+                    <!-- Export Configuration -->
+                    <div
+                        style="margin:20px 0;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
+                        <button class="btn btn-primary" onclick="exportRookConfig()">Export RookConfig.json
+                            files</button>
+                        <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;margin-bottom:0;">
+                            Downloads configuration files for all platform-environment combinations
+                        </p>
+                    </div>
+
+                    <!-- Xsolla tab content -->
+                    <div id="tab-xsolla">
+                        <div class="plat-card">
+                            <div class="plat-body">
+                                <div class="cf">
+                                    <div class="cf-label">Login Project ID</div>
+                                    <input class="cf-input plat-input" type="text" value="login-royalrevolt2-sb">
+                                </div>
+                                <div class="cf">
+                                    <div class="cf-label">Merchant ID</div>
+                                    <input class="cf-input plat-input" type="text" value="merchant_rr2_123">
+                                </div>
+                                <div class="cf">
+                                    <div class="cf-label">Xsolla Project ID</div>
+                                    <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-sb">
+                                </div>
+                                <div class="cf sa-only">
+                                    <div class="cf-label">API Key</div>
+                                    <div class="cf-wrap">
+                                        <input class="cf-input masked pr" type="password" id="plat-key"
+                                            value="sk_live_abcdef123456">
+                                        <button class="cf-action" onclick="toggleField('plat-key',this)">Show</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AppCharge tab content (hidden) -->
+                    <div id="tab-appcharge" style="display:none;">
+                        <div
+                            style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
+                            <div style="font-size:24px;margin-bottom:12px;">⚡</div>
+                            <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">
+                                AppCharge not configured</div>
+                            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect AppCharge
+                                to enable an additional payment provider for this game.</p>
+                            <button class="btn btn-primary">Set up AppCharge</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── USERS ─────────────────────────────────────────── -->
+                <div class="page" id="page-users">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Users</h1>
+                            <p class="page-sub">Manage access and roles</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openDrawer()">+ Create User</button>
+                        </div>
+                    </div>
+
+                    <div class="users-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Game</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Nils Freitag</strong></td>
+                                    <td class="mono">nils.freitag</td>
+                                    <td><span class="badge"
+                                            style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span>
+                                    </td>
+                                    <td class="text-tert">—</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Jan 10, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Avery Dao</strong></td>
+                                    <td class="mono">avery.dao</td>
+                                    <td><span class="badge"
+                                            style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span>
+                                    </td>
+                                    <td class="text-tert">—</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Jan 12, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ty Pham</strong></td>
+                                    <td class="mono">ty.pham</td>
+                                    <td><span class="badge"
+                                            style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span>
+                                    </td>
+                                    <td class="text-tert">—</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Jan 15, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Linh Pham</strong></td>
+                                    <td class="mono">linh.pham</td>
+                                    <td><span class="badge"
+                                            style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Superadmin</span>
+                                    </td>
+                                    <td class="text-tert">—</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Jan 15, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Royal Revolt 2 Team</strong></td>
+                                    <td class="mono">studio-royalrevolt2</td>
+                                    <td><span class="badge"
+                                            style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game
+                                            Admin</span></td>
+                                    <td>Royal Revolt 2</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Feb 1, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Smurf Village Team</strong></td>
+                                    <td class="mono">studio-smurfvillage</td>
+                                    <td><span class="badge"
+                                            style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game
+                                            Admin</span></td>
+                                    <td>Smurf Village</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="text-sec">Feb 5, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EMHQ Team</strong></td>
+                                    <td class="mono">studio-emhq</td>
+                                    <td><span class="badge"
+                                            style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game
+                                            Admin</span></td>
+                                    <td>EMHQ</td>
+                                    <td><span class="badge badge-invited">Invited</span></td>
+                                    <td class="text-sec">Feb 18, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>War of Nations Team</strong></td>
+                                    <td class="mono">studio-warnations</td>
+                                    <td><span class="badge"
+                                            style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game
+                                            Admin</span></td>
+                                    <td>War of Nations</td>
+                                    <td><span class="badge badge-invited">Invited</span></td>
+                                    <td class="text-sec">Feb 19, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kitchen Scramble Team</strong></td>
+                                    <td class="mono">studio-kitchenscramble</td>
+                                    <td><span class="badge"
+                                            style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Game
+                                            Admin</span></td>
+                                    <td>Kitchen Scramble</td>
+                                    <td><span class="badge badge-invited">Invited</span></td>
+                                    <td class="text-sec">Feb 20, 2025</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ─── PRODUCTS ─────────────────────────────────────── -->
+                <div class="page" id="page-products">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Products</h1>
+                            <p class="page-sub">Royal Revolt 2 · <span id="prod-env-label">Sandbox</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Under construction notice -->
+                    <div
+                        style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);margin-bottom:20px;">
+                        <span style="font-size:20px;">🚧</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:600;color:#92400e;">Under active development</div>
+                            <div style="font-size:12px;color:#b45309;margin-top:2px;">Product management is being built
+                                out. Data shown below is read-only and for reference only.</div>
+                        </div>
+                    </div>
+
+                    <!-- Vitals -->
+                    <div class="vitals" style="margin-bottom:16px;">
+                        <div class="vital-card">
+                            <div class="vital-label">Total SKUs</div>
+                            <div class="vital-value">8</div>
+                            <div class="vital-delta delta-neutral">2 platforms</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">Active</div>
+                            <div class="vital-value">7</div>
+                            <div class="vital-delta delta-up">▲ 1 added last sync</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">iOS SKUs</div>
+                            <div class="vital-value">7</div>
+                            <div class="vital-delta delta-neutral">No change</div>
+                        </div>
+                        <div class="vital-card">
+                            <div class="vital-label">Android SKUs</div>
+                            <div class="vital-value">7</div>
+                            <div class="vital-delta delta-neutral">No change</div>
+                        </div>
+                    </div>
+
+                    <!-- Provider sync status (read-only — syncs automatically) -->
+                    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+                        <div
+                            style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
+                            <span style="color:var(--success);font-size:10px;">●</span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text-primary);">Xsolla</div>
+                                <div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sa-only"
+                            style="display:flex;align-items:center;gap:10px;background:var(--border-subtle);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 14px;font-size:13px;">
+                            <span style="color:var(--text-tertiary);font-size:10px;">○</span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text-secondary);">AppCharge</div>
+                                <div style="font-size:11px;color:var(--text-tertiary);">Not configured · <span
+                                        style="color:var(--accent);cursor:pointer;" onclick="navigate('config')">Set up
+                                        in Config →</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product table -->
+                    <div class="table-wrap">
+                        <div class="table-head" style="flex-wrap:wrap;gap:10px;">
+                            <span class="table-head-title">Product Catalog</span>
+                            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
+                                <select class="sel">
+                                    <option>All platforms</option>
+                                    <option>iOS</option>
+                                    <option>Android</option>
+                                </select>
+                                <select class="sel">
+                                    <option>All statuses</option>
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div class="search-wrap">
+                                    <span class="search-ico">🔍</span>
+                                    <input class="search-in" type="text" placeholder="Search SKU or name…">
+                                </div>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Platforms</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono">gold_100</td>
+                                    <td><strong>Gold Pack 100</strong></td>
+                                    <td class="mono">$0.99</td>
+                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">gold_500</td>
+                                    <td><strong>Gold Pack 500</strong></td>
+                                    <td class="mono">$4.99</td>
+                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">gold_2000</td>
+                                    <td><strong>Gold Pack 2000</strong></td>
+                                    <td class="mono">$19.99</td>
+                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">starter_bundle</td>
+                                    <td><strong>Starter Bundle</strong></td>
+                                    <td class="mono">$9.99</td>
+                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">royal_shield_7d</td>
+                                    <td><strong>Royal Shield (7d)</strong></td>
+                                    <td class="mono">$2.99</td>
+                                    <td><span class="tag">iOS</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">season_pass_2025</td>
+                                    <td><strong>Season Pass 2025</strong></td>
+                                    <td class="mono">$24.99</td>
+                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td class="arrow-icon">→</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pag">
+                            <span class="pag-meta">Showing 1–6 of 6 products</span>
+                            <div class="pag-controls">
+                                <button class="pag-btn" disabled>← Prev</button>
+                                <span class="pag-info">Page 1 of 1</span>
+                                <button class="pag-btn" disabled>Next →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ═══════════════════════════════════════════════════════ -->
+                <!--  SUPPORT                                                -->
+                <!-- ═══════════════════════════════════════════════════════ -->
+                <div class="page" id="page-support">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Support</h1>
+                            <p class="page-sub">Customer &amp; Community Support</p>
+                        </div>
+                    </div>
+
+                    <div class="sup-design-banner">⚠ Design preview — this section is scoped for a future implementation
+                        phase and is not part of the current MVP build.</div>
+
+                    <!-- KPI cards -->
+                    <div class="sup-kpi-grid">
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Open Tickets</div>
+                            <div class="sup-kpi-value">248</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Resolved (7D)</div>
+                            <div class="sup-kpi-value">1,402</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Avg Resolution</div>
+                            <div class="sup-kpi-value">3.2h</div>
+                        </div>
+                        <div class="sup-kpi-card">
+                            <div class="sup-kpi-label">Refunds Issued</div>
+                            <div class="sup-kpi-value">$12,480</div>
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="sup-search-card">
+                        <div class="sup-search-title">Player Lookup</div>
+                        <div class="sup-search-row">
+                            <select class="sup-search-type">
+                                <option>Order ID</option>
+                                <option>Order ID</option>
+                                <option>Game User ID</option>
+                                <option>Platform User ID</option>
+                                <option>Webstore User ID</option>
+                                <option>Email Address</option>
+                            </select>
+                            <input class="sup-search-input" type="text" placeholder="Search…" value="USR-48291">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+
+                    <!-- Player detail + orders -->
+                    <div class="sup-content-row">
+                        <!-- Player card -->
+                        <div>
+                            <div class="sup-player-card">
+                                <div class="sup-player-avatar">MK</div>
+                                <div class="sup-player-name">Marcus Kim</div>
+                                <div class="sup-player-id">USR-48291 · Royal Revolt 2</div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Email</span>
+                                    <span class="sup-player-val">marcus.k@email.com</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Platform</span>
+                                    <span class="sup-player-val">Android</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Country</span>
+                                    <span class="sup-player-val">🇺🇸 United States</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Joined</span>
+                                    <span class="sup-player-val">Jan 14, 2023</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Tenure</span>
+                                    <span class="sup-player-val">26 months</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Total Spend</span>
+                                    <span class="sup-player-val" style="color:var(--accent);">$847.20</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">LTV</span>
+                                    <span class="sup-player-val">$847.20</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Orders</span>
+                                    <span class="sup-player-val">34 orders</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Last Purchase</span>
+                                    <span class="sup-player-val">2 days ago</span>
+                                </div>
+                                <div class="sup-player-row">
+                                    <span class="sup-player-key">Status</span>
+                                    <span class="sup-player-val"><span class="badge badge-success">Active</span></span>
+                                </div>
+                                <div class="sup-action-row">
+                                    <button class="btn btn-secondary btn-sm">Issue Refund</button>
+                                    <button class="btn btn-ghost btn-sm" style="color:var(--danger);">Flag
+                                        Account</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order / transaction history -->
+                        <div>
+                            <div class="an-table-card">
+                                <div class="an-table-head">
+                                    <span class="an-table-head-title">Order History</span>
+                                    <span class="an-table-head-count">34</span>
+                                    <input class="an-search" type="text" placeholder="Filter orders…">
+                                </div>
+                                <table class="an-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Order ID</th>
+                                            <th>Product</th>
+                                            <th>Amount</th>
+                                            <th>Order ID</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-22 14:31
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9182736</td>
+                                            <td>Gem Pack 1200</td>
+                                            <td style="font-weight:600;">$9.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7291048</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-19 09:14
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9174201</td>
+                                            <td>Gem Pack 2500</td>
+                                            <td style="font-weight:600;">$19.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7289912</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-15 17:02
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9162847</td>
+                                            <td>Whale Bundle $99</td>
+                                            <td style="font-weight:600;">$99.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7281034</td>
+                                            <td><span class="sup-status refunded">↩ Refunded</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-10 11:48
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9148392</td>
+                                            <td>Premium Season Pass</td>
+                                            <td style="font-weight:600;">$24.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7271188</td>
+                                            <td><span class="sup-status completed">● Completed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-03-08 08:33
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9141029</td>
+                                            <td>Gem Pack 500</td>
+                                            <td style="font-weight:600;">$4.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--danger);">
+                                                TXN-7268847</td>
+                                            <td><span class="sup-status failed">✕ Failed</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-secondary);font-size:11px;">2025-02-28 20:11
+                                            </td>
+                                            <td style="font-family:var(--mono);font-size:11px;">ORD-9118204</td>
+                                            <td>Battle Pass Monthly</td>
+                                            <td style="font-weight:600;">$14.99</td>
+                                            <td style="font-family:var(--mono);font-size:11px;color:var(--accent);">
+                                                TXN-7251093</td>
+                                            <td><span class="sup-status chargedback">⚡ Charged-back</span></td>
+                                            <td><button class="btn btn-ghost btn-sm"
+                                                    style="font-size:11px;">Details</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Failure reason example -->
+                            <div
+                                style="background:var(--danger-light);border:1px solid var(--danger-border);border-radius:var(--r-sm);padding:12px 16px;margin-top:8px;font-size:12px;">
+                                <strong style="color:var(--danger);">Failed Order — TXN-7268847</strong><br>
+                                <span style="color:var(--text-secondary);margin-top:4px;display:block;">Reason: Payment
+                                    declined by issuing bank. Error code: CARD_DECLINED_INSUFFICIENT_FUNDS. Player was
+                                    not charged.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  CREATE USER DRAWER                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+    <div class="drawer" id="create-drawer">
+        <div class="drawer-head">
+            <span class="drawer-title">Create User</span>
+            <button class="drawer-close" onclick="closeDrawer()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="dfield">
+                <label class="dfield-label">Full Name</label>
+                <input class="dfield-input" type="text" placeholder="e.g. Studio A Team">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Email</label>
+                <input class="dfield-input" type="email" placeholder="studio@game.com">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Username</label>
+                <input class="dfield-input" type="text" placeholder="e.g. studio-gamename">
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Temporary Password</label>
+                <input class="dfield-input" type="text" id="temp-pass" placeholder="Set a temporary password">
+                <div class="autogen-row">
+                    <button class="autogen-btn" onclick="generatePass()">⚡ Auto-generate</button>
+                    <span style="font-size:11px;color:var(--text-tertiary);">User must change on first login</span>
+                </div>
+            </div>
+            <div class="dfield">
+                <label class="dfield-label">Role</label>
+                <div class="radio-group">
+                    <div class="radio-opt sel" onclick="selectRole(this,'gameadmin')">
+                        <div class="radio-dot"></div>
+                        <span class="radio-lbl">Game Admin</span>
+                    </div>
+                    <div class="radio-opt" onclick="selectRole(this,'superadmin')">
+                        <div class="radio-dot"></div>
+                        <span class="radio-lbl">Superadmin</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dfield" id="game-assign-field">
+                <label class="dfield-label">Assign to Game</label>
+                <select class="sel" style="width:100%;height:38px;font-size:13px;padding:0 28px 0 12px;">
+                    <option value="">Select game...</option>
+                    <option>Royal Revolt 2</option>
+                    <option>Smurf Village</option>
+                    <option>EMHQ</option>
+                    <option>War of Nations</option>
+                    <option>Kitchen Scramble</option>
+                </select>
+                <div class="dfield-hint">Required for Game Admin role.</div>
+            </div>
+            <div class="check-row">
+                <div class="checkmark">✓</div>
+                <span class="check-lbl">Send credentials via email</span>
+            </div>
+        </div>
+        <div class="drawer-foot">
+            <button class="btn btn-ghost" onclick="closeDrawer()">Cancel</button>
+            <button class="btn btn-primary" onclick="createUser()">Create User</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  CSV EXPORT MODAL                                        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-ov" id="csv-modal">
+        <div class="modal">
+            <div class="modal-head">
+                <span class="modal-title">Export Orders</span>
+                <button class="drawer-close" onclick="closeModal('csv-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="dfield">
+                    <label class="dfield-label">Date Range</label>
+                    <div class="flex gap-8 items-center">
+                        <input class="dfield-input" type="date" value="2025-06-01" style="flex:1;">
+                        <span class="text-tert" style="font-size:13px;">→</span>
+                        <input class="dfield-input" type="date" value="2025-06-14" style="flex:1;">
+                    </div>
+                </div>
+                <div class="check-row" style="margin-bottom:16px;">
+                    <div class="checkmark">✓</div>
+                    <span class="check-lbl">Apply current filters</span>
+                </div>
+                <div class="dfield" style="margin-bottom:0;">
+                    <label class="dfield-label">Format</label>
+                    <input class="dfield-input" type="text" value="CSV" disabled
+                        style="background:var(--bg);color:var(--text-secondary);">
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-ghost" onclick="closeModal('csv-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('csv-modal')">⬇ Download CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  EXECUTE MODAL                                          -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-ov" id="execute-modal">
+        <div class="modal" style="width:500px;max-width:95vw;">
+            <div class="modal-head">
+                <div>
+                    <span class="modal-title" id="exec-modal-title">Execute Step</span>
+                    <div id="exec-modal-url"
+                        style="font-size:11px;font-family:var(--mono);color:var(--text-tertiary);margin-top:2px;"></div>
+                </div>
+                <button class="drawer-close" onclick="closeModal('execute-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">Provide test values for each
+                    template variable used in this step.</p>
+                <div id="exec-modal-vars"></div>
+                <div id="exec-modal-empty"
+                    style="display:none;text-align:center;padding:20px 0;color:var(--text-tertiary);font-size:13px;">No
+                    <code style="font-family:var(--mono);">{{variables}}</code> found in this step.
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-ghost" onclick="closeModal('execute-modal')">Cancel</button>
+                <button class="btn btn-primary" id="exec-modal-run" onclick="runExecuteModal()">Run</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  SCRIPT                                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <script src="js/state.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/field-helpers.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/drawer.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/curl-builder.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/callbacks.js"></script>
+</body>
+
+</html>
