@@ -840,9 +840,8 @@
           <span class="nav-icon">☰</span> Audit Log
           <span class="nav-badge">Soon</span>
         </button>
-        <button class="nav-item disabled">
+        <button class="nav-item" onclick="navigate('settings')" id="nav-settings">
           <span class="nav-icon">◈</span> Settings
-          <span class="nav-badge">Soon</span>
         </button>
       </div>
       <div class="sb-bottom">
@@ -1232,13 +1231,6 @@
           </div>
         </div>
 
-        <!-- Provider tabs -->
-        <div class="tabs">
-          <button class="tab active" onclick="switchTab(this,'xsolla')">Xsolla</button>
-          <button class="tab sa-only" onclick="switchTab(this,'appcharge')">AppCharge</button>
-          <button class="tab add-tab sa-only">+ Add Provider</button>
-        </div>
-
         <!-- Export Configuration -->
         <div style="margin:20px 0;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
           <button class="btn btn-primary" onclick="exportRookConfig()">Export RookConfig.json files</button>
@@ -1246,15 +1238,33 @@
             Downloads configuration files for all platform-environment combinations
           </p>
         </div>
+      </div>
 
-        <!-- Xsolla tab content -->
-        <div id="tab-xsolla">
+      <!-- ─── SETTINGS ──────────────────────────────────────── -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-sub">Royal Revolt 2 · Credentials &amp; integrations</p>
+          </div>
+        </div>
+
+        <!-- SDK Providers -->
+        <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">SDK Providers</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">API credentials used by the Rook SDK for in-app purchase processing and catalog/data sync.</div>
+
+        <div class="tabs" id="sdk-provider-tabs">
+          <button class="tab active" onclick="switchSdkProviderTab(this,'xsolla')">Xsolla</button>
+          <button class="tab sa-only" onclick="switchSdkProviderTab(this,'appcharge')">AppCharge</button>
+          <button class="tab add-tab sa-only">+ Add Provider</button>
+        </div>
+
+        <!-- Xsolla -->
+        <div id="tab-settings-xsolla">
           <div class="plat-grid">
             <!-- iOS -->
             <div class="plat-card">
-              <div class="plat-head">
-                <span>📱</span> iOS
-              </div>
+              <div class="plat-head"><span>📱</span> iOS</div>
               <div class="plat-body">
                 <div class="cf">
                   <div class="cf-label">Login Project ID</div>
@@ -1269,11 +1279,20 @@
                   <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-ios-sb">
                 </div>
                 <div class="cf sa-only">
-                  <div class="cf-label">API Key</div>
+                  <div class="cf-label">Payment API Key</div>
                   <div class="cf-wrap">
-                    <input class="cf-input masked pr" type="password" id="ios-key" value="sk_live_abcdef123456">
-                    <button class="cf-action" onclick="toggleField('ios-key',this)">Show</button>
+                    <input class="cf-input masked pr" type="password" id="ios-pay-key" value="sk_pay_abcdef123456">
+                    <button class="cf-action" onclick="toggleField('ios-pay-key',this)">Show</button>
                   </div>
+                  <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Used for payment processing via Xsolla Pay Station.</div>
+                </div>
+                <div class="cf sa-only">
+                  <div class="cf-label">Data API Key</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input masked pr" type="password" id="ios-data-key" value="sk_data_ios_xyz9876">
+                    <button class="cf-action" onclick="toggleField('ios-data-key',this)">Show</button>
+                  </div>
+                  <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Used for catalog sync, transaction retrieval, and reporting.</div>
                 </div>
                 <div class="cf">
                   <div class="cf-label">Webhook URL (read-only)</div>
@@ -1287,9 +1306,7 @@
             </div>
             <!-- Android -->
             <div class="plat-card">
-              <div class="plat-head">
-                <span>🤖</span> Android
-              </div>
+              <div class="plat-head"><span>🤖</span> Android</div>
               <div class="plat-body">
                 <div class="cf">
                   <div class="cf-label">Login Project ID</div>
@@ -1304,11 +1321,20 @@
                   <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-and-sb">
                 </div>
                 <div class="cf sa-only">
-                  <div class="cf-label">API Key</div>
+                  <div class="cf-label">Payment API Key</div>
                   <div class="cf-wrap">
-                    <input class="cf-input masked pr" type="password" id="and-key" value="sk_live_xyz789456">
-                    <button class="cf-action" onclick="toggleField('and-key',this)">Show</button>
+                    <input class="cf-input masked pr" type="password" id="and-pay-key" value="sk_pay_xyz789456">
+                    <button class="cf-action" onclick="toggleField('and-pay-key',this)">Show</button>
                   </div>
+                  <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Used for payment processing via Xsolla Pay Station.</div>
+                </div>
+                <div class="cf sa-only">
+                  <div class="cf-label">Data API Key</div>
+                  <div class="cf-wrap">
+                    <input class="cf-input masked pr" type="password" id="and-data-key" value="sk_data_and_abc1234">
+                    <button class="cf-action" onclick="toggleField('and-data-key',this)">Show</button>
+                  </div>
+                  <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Used for catalog sync, transaction retrieval, and reporting.</div>
                 </div>
                 <div class="cf">
                   <div class="cf-label">Webhook URL (read-only)</div>
@@ -1323,8 +1349,8 @@
           </div>
         </div>
 
-        <!-- AppCharge tab content (hidden) -->
-        <div id="tab-appcharge" style="display:none;">
+        <!-- AppCharge -->
+        <div id="tab-settings-appcharge" style="display:none;">
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
             <div style="font-size:24px;margin-bottom:12px;">⚡</div>
             <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">AppCharge not configured</div>
@@ -1333,8 +1359,8 @@
           </div>
         </div>
 
-        <!-- ── Webstore Payment Providers ──────────────────────── -->
-        <div style="margin-top:32px;">
+        <!-- Webstore Payment Providers -->
+        <div style="margin-top:40px;">
           <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Webstore Payment Providers</div>
           <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Configure payment gateways for your B2C webstore. These are separate from SDK in-app purchase providers.</div>
 
@@ -1565,6 +1591,8 @@
             <p class="page-sub">Royal Revolt 2 · <span id="sdk-env-label">Sandbox</span> · In-app purchase catalog synced to Xsolla</p>
           </div>
           <div class="page-actions">
+            <button class="btn btn-secondary" onclick="document.getElementById('sdk-json-input').click()">↑ Import JSON</button>
+            <input type="file" id="sdk-json-input" accept=".json" style="display:none" onchange="handleSdkJsonImport(event)">
             <button class="btn btn-secondary" onclick="alert('Sync triggered')">↺ Sync All</button>
             <button class="btn btn-primary" onclick="openSdkProductDrawer()">+ Add Product</button>
           </div>
@@ -1826,27 +1854,14 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">Webstore Rules</h1>
-            <p class="page-sub">Product visibility and payment routing rules</p>
+            <p class="page-sub">Royal Revolt 2 · <span id="ws-rules-env-label">Sandbox</span> · Product visibility rules</p>
           </div>
           <div class="page-actions">
             <button class="btn btn-primary" onclick="openWsRuleDrawer()">+ Add Rule</button>
           </div>
         </div>
 
-        <!-- Underline tab bar -->
-        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
-          <div id="ws-tab-show" onclick="switchWsTab('show')"
-            style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">
-            Show Product Rules
-          </div>
-          <div id="ws-tab-mor" onclick="switchWsTab('mor')"
-            style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">
-            MoR Routing Rules
-          </div>
-        </div>
-
-        <!-- Show Product Rules table -->
-        <div class="table-wrap" id="ws-rules-show" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+        <div class="table-wrap">
           <table>
             <thead>
               <tr><th>Rule Name</th><th>Condition</th><th>Products</th><th>Priority</th><th></th></tr>
@@ -1867,37 +1882,6 @@
                 <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">lifetime_spend &gt;= 50</code></td>
                 <td><span class="tag">ws_dungeon_key</span> <span class="tag">ws_boost_7d</span></td>
                 <td style="color:var(--text-tertiary);">2</td>
-                <td><div style="display:flex;gap:6px;">
-                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
-                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
-                </div></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- MoR Routing Rules table (hidden by default) -->
-        <div class="table-wrap" id="ws-rules-mor" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
-          <table>
-            <thead>
-              <tr><th>Rule Name</th><th>Condition</th><th>Provider</th><th>Priority</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>US Xsolla</strong></td>
-                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">country == US</code></td>
-                <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
-                <td style="color:var(--text-tertiary);">2</td>
-                <td><div style="display:flex;gap:6px;">
-                  <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
-                  <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
-                </div></td>
-              </tr>
-              <tr>
-                <td><strong>Default</strong></td>
-                <td><code style="background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12px;font-family:var(--mono);">* (catch-all)</code></td>
-                <td><span class="badge" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe;">Xsolla</span></td>
-                <td style="color:var(--text-tertiary);">99</td>
                 <td><div style="display:flex;gap:6px;">
                   <button class="btn btn-secondary" style="height:28px;font-size:12px;">Edit</button>
                   <button class="btn btn-secondary" style="height:28px;font-size:12px;color:var(--danger);">Delete</button>
@@ -2268,6 +2252,39 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!--  SDK JSON IMPORT MODAL                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="modal-ov" id="sdk-import-modal">
+  <div class="modal" style="width:600px;max-width:90vw;">
+    <div class="modal-head">
+      <div>
+        <span class="modal-title">Import SDK Products</span>
+        <div id="sdk-import-subtitle" style="font-size:12px;color:var(--text-secondary);margin-top:2px;"></div>
+      </div>
+      <button class="drawer-close" onclick="closeSdkJsonImport()">✕</button>
+    </div>
+    <div class="modal-body" style="max-height:340px;overflow-y:auto;padding-bottom:4px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:.5px;font-weight:600;">SKU</th>
+            <th style="text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:.5px;font-weight:600;">Name</th>
+            <th style="text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:.5px;font-weight:600;">Type</th>
+            <th style="text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:.5px;font-weight:600;">Price</th>
+            <th style="text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:.5px;font-weight:600;">Status</th>
+          </tr>
+        </thead>
+        <tbody id="sdk-import-preview-body"></tbody>
+      </table>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeSdkJsonImport()">Cancel</button>
+      <button class="btn btn-primary" id="sdk-import-confirm-btn" onclick="confirmSdkJsonImport()">Import</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!--  SCRIPT                                                 -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <script>
@@ -2409,36 +2426,22 @@
     const sbBtn = document.getElementById('env-sandbox');
     const prodBtn = document.getElementById('env-prod');
     const banner = document.getElementById('sb-banner');
-    const ovLabel = document.getElementById('ov-env-label');
-    const cfgLabel = document.getElementById('cfg-env-label');
-    const sdkLabel = document.getElementById('sdk-env-label');
-    const wsLabel = document.getElementById('ws-env-label');
+    const label = env === 'sandbox' ? 'Sandbox' : 'Production';
     if (env === 'sandbox') {
       sbBtn.classList.add('active');
       prodBtn.classList.remove('active');
-      banner.classList.add('visible');
-      if (ovLabel) ovLabel.textContent = 'Sandbox';
-      if (cfgLabel) cfgLabel.textContent = 'Sandbox';
-      if (sdkLabel) sdkLabel.textContent = 'Sandbox';
-      if (wsLabel) wsLabel.textContent = 'Sandbox';
+      document.getElementById('sb-banner').classList.add('visible');
     } else {
       prodBtn.classList.add('active', 'prod');
       sbBtn.classList.remove('active');
-      banner.classList.remove('visible');
-      if (ovLabel) ovLabel.textContent = 'Production';
-      if (cfgLabel) cfgLabel.textContent = 'Production';
-      if (sdkLabel) sdkLabel.textContent = 'Production';
-      if (wsLabel) wsLabel.textContent = 'Production';
+      document.getElementById('sb-banner').classList.remove('visible');
     }
+    ['ov-env-label','cfg-env-label','sdk-env-label','ws-env-label','ws-rules-env-label'].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = label;
+    });
   }
 
-  // ── Config tabs ──────────────────────────────────────────
-  function switchTab(btn, tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-xsolla').style.display = tab === 'xsolla' ? 'block' : 'none';
-    document.getElementById('tab-appcharge').style.display = tab === 'appcharge' ? 'block' : 'none';
-  }
 
   // ── Field helpers ────────────────────────────────────────
   function toggleField(id, btn) {
@@ -2892,25 +2895,10 @@
     alert('User created and credentials email sent.');
   }
 
-  // ── WEBSTORE RULES TABS ───────────────────────────────────
-  function switchWsTab(tab) {
-    const isShow = tab === 'show';
-    document.getElementById('ws-rules-show').style.display = isShow ? 'block' : 'none';
-    document.getElementById('ws-rules-mor').style.display = isShow ? 'none' : 'block';
-    const showEl = document.getElementById('ws-tab-show');
-    const morEl = document.getElementById('ws-tab-mor');
-    showEl.style.color = isShow ? 'var(--accent)' : 'var(--text-tertiary)';
-    showEl.style.borderBottom = isShow ? '2px solid var(--accent)' : 'none';
-    showEl.style.fontWeight = isShow ? '600' : 'normal';
-    morEl.style.color = isShow ? 'var(--text-tertiary)' : 'var(--accent)';
-    morEl.style.borderBottom = isShow ? 'none' : '2px solid var(--accent)';
-    morEl.style.fontWeight = isShow ? 'normal' : '600';
-  }
   function openWsRuleDrawer() {
-    const isMor = document.getElementById('ws-rules-mor').style.display !== 'none';
-    document.getElementById('ws-rule-show-fields').style.display = isMor ? 'none' : 'block';
-    document.getElementById('ws-rule-mor-fields').style.display = isMor ? 'block' : 'none';
-    document.getElementById('ws-rule-drawer-title').textContent = isMor ? 'Add MoR Routing Rule' : 'Add Show Product Rule';
+    document.getElementById('ws-rule-show-fields').style.display = 'block';
+    document.getElementById('ws-rule-mor-fields').style.display = 'none';
+    document.getElementById('ws-rule-drawer-title').textContent = 'Add Rule';
     document.getElementById('ws-rule-overlay').classList.add('open');
     document.getElementById('ws-rule-drawer').classList.add('open');
   }
@@ -3011,6 +2999,62 @@
   function closeWsProductDrawer() {
     document.getElementById('ws-product-overlay').classList.remove('open');
     document.getElementById('ws-product-drawer').classList.remove('open');
+  }
+
+  // ── SDK JSON IMPORT ──────────────────────────────────────
+  function handleSdkJsonImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        let data = JSON.parse(e.target.result);
+        const products = Array.isArray(data) ? data : (data.products || []);
+        if (!products.length) { alert('No products found in file.'); return; }
+        document.getElementById('sdk-import-subtitle').textContent =
+          products.length + ' product' + (products.length !== 1 ? 's' : '') + ' found in ' + file.name;
+        document.getElementById('sdk-import-confirm-btn').textContent =
+          'Import ' + products.length + ' Product' + (products.length !== 1 ? 's' : '');
+        const tbody = document.getElementById('sdk-import-preview-body');
+        tbody.innerHTML = '';
+        products.forEach(function(p) {
+          const tr = document.createElement('tr');
+          tr.style.borderBottom = '1px solid var(--border)';
+          tr.innerHTML =
+            '<td style="padding:8px 10px;font-family:var(--mono);font-size:12px;">' + (p.sku || p.id || '—') + '</td>' +
+            '<td style="padding:8px 10px;font-size:13px;"><strong>' + (p.name || p.display_name || '—') + '</strong></td>' +
+            '<td style="padding:8px 10px;"><span class="tag">' + (p.type || '—') + '</span></td>' +
+            '<td style="padding:8px 10px;font-family:var(--mono);font-size:12px;">' + (p.price != null ? '$' + Number(p.price).toFixed(2) : '—') + '</td>' +
+            '<td style="padding:8px 10px;"><span class="badge badge-active">' + (p.status || 'Active') + '</span></td>';
+          tbody.appendChild(tr);
+        });
+        document.getElementById('sdk-import-modal').classList.add('open');
+      } catch(err) {
+        alert('Invalid JSON file. Please check the format and try again.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+  function closeSdkJsonImport() {
+    document.getElementById('sdk-import-modal').classList.remove('open');
+  }
+  function confirmSdkJsonImport() {
+    const count = document.getElementById('sdk-import-preview-body').children.length;
+    closeSdkJsonImport();
+    const toast = document.createElement('div');
+    toast.textContent = '✓ ' + count + ' product' + (count !== 1 ? 's' : '') + ' imported successfully';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.15);';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 3000);
+  }
+
+  // ── SDK provider tabs (Settings page) ────────────────────
+  function switchSdkProviderTab(btn, tab) {
+    document.querySelectorAll('#sdk-provider-tabs .tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-settings-xsolla').style.display = tab === 'xsolla' ? 'block' : 'none';
+    document.getElementById('tab-settings-appcharge').style.display = tab === 'appcharge' ? 'block' : 'none';
   }
 
   // ── Webstore provider tabs ───────────────────────────────
