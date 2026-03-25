@@ -1,7 +1,7 @@
         // ── Navigation ──────────────────────────────────────────
         function navigate(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item, .nav-sub-item').forEach(n => n.classList.remove('active'));
 
             const pageEl = document.getElementById('page-' + page);
             if (pageEl) pageEl.classList.add('active');
@@ -9,7 +9,16 @@
             const navEl = document.getElementById('nav-' + page);
             if (navEl) navEl.classList.add('active');
 
+            const productPages = ['sdk-catalog', 'webstore-catalog', 'webstore-rules'];
+            if (productPages.includes(page)) {
+                document.getElementById('nav-group-products').classList.add('open');
+            }
+
             closeGameDD();
+        }
+
+        function toggleProductsGroup() {
+            document.getElementById('nav-group-products').classList.toggle('open');
         }
 
         // ── Game switcher ────────────────────────────────────────
@@ -36,24 +45,18 @@
         function setEnv(env) {
             const sbBtn = document.getElementById('env-sandbox');
             const prodBtn = document.getElementById('env-prod');
-            const banner = document.getElementById('sb-banner');
-            const ovLabel = document.getElementById('ov-env-label');
-            const cfgLabel = document.getElementById('cfg-env-label');
-            const prodLabel = document.getElementById('prod-env-label');
-
+            const label = env === 'sandbox' ? 'Sandbox' : 'Production';
             if (env === 'sandbox') {
                 sbBtn.classList.add('active');
                 prodBtn.classList.remove('active');
-                banner.classList.add('visible');
-                if (ovLabel) ovLabel.textContent = 'Sandbox';
-                if (cfgLabel) cfgLabel.textContent = 'Sandbox';
-                if (prodLabel) prodLabel.textContent = 'Sandbox';
+                document.getElementById('sb-banner').classList.add('visible');
             } else {
                 prodBtn.classList.add('active', 'prod');
                 sbBtn.classList.remove('active');
-                banner.classList.remove('visible');
-                if (ovLabel) ovLabel.textContent = 'Production';
-                if (cfgLabel) cfgLabel.textContent = 'Production';
-                if (prodLabel) prodLabel.textContent = 'Production';
+                document.getElementById('sb-banner').classList.remove('visible');
             }
+            ['ov-env-label','cfg-env-label','sdk-env-label','ws-env-label','ws-rules-env-label'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = label;
+            });
         }
