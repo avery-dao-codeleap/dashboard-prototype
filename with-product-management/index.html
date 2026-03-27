@@ -1619,7 +1619,7 @@
           <div class="vital-card">
             <div class="vital-label">Total SKUs</div>
             <div class="vital-value">6</div>
-            <div class="vital-delta delta-neutral">2 platforms</div>
+            <div class="vital-delta delta-neutral">—</div>
           </div>
           <div class="vital-card">
             <div class="vital-label">Active</div>
@@ -1627,13 +1627,8 @@
             <div class="vital-delta delta-up">▲ 1 added last sync</div>
           </div>
           <div class="vital-card">
-            <div class="vital-label">iOS SKUs</div>
-            <div class="vital-value">6</div>
-            <div class="vital-delta delta-neutral">—</div>
-          </div>
-          <div class="vital-card">
-            <div class="vital-label">Android SKUs</div>
-            <div class="vital-value">5</div>
+            <div class="vital-label">Inactive</div>
+            <div class="vital-value">0</div>
             <div class="vital-delta delta-neutral">—</div>
           </div>
         </div>
@@ -1657,14 +1652,7 @@
           </div>
         </div>
 
-        <!-- Platform tabs -->
-        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
-          <div id="sdk-tab-ios" onclick="switchSdkPlatformTab('ios')" style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">📱 iOS</div>
-          <div id="sdk-tab-android" onclick="switchSdkPlatformTab('android')" style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">🤖 Android</div>
-        </div>
-
-        <!-- iOS table -->
-        <div id="sdk-plat-ios" class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
+        <div class="table-wrap">
           <table>
             <thead>
               <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
@@ -1678,22 +1666,14 @@
               <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
             </tbody>
           </table>
-        </div>
-
-        <!-- Android table -->
-        <div id="sdk-plat-android" class="table-wrap" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
-          <table>
-            <thead>
-              <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr onclick="openSdkProductDrawer('gold_100')"><td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$0.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
-              <tr onclick="openSdkProductDrawer('gold_500')"><td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$4.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
-              <tr onclick="openSdkProductDrawer('gold_2000')"><td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$19.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
-              <tr onclick="openSdkProductDrawer('starter_bundle')"><td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$9.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
-              <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
-            </tbody>
-          </table>
+          <div class="pag">
+            <span class="pag-meta">Showing 1–6 of 6 products</span>
+            <div class="pag-controls">
+              <button class="pag-btn" disabled>← Prev</button>
+              <span class="pag-info">Page 1 of 1</span>
+              <button class="pag-btn" disabled>Next →</button>
+            </div>
+          </div>
         </div>
       </div>
 
