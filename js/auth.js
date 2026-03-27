@@ -13,7 +13,7 @@
                 currentRole = 'superadmin';
             } else if (ul === 'rr2' || ul === 'royalrevolt' || ul === 'rr2team') {
                 currentRole = 'gameadmin';
-                currentGameName = 'Royal Revolt 2 (Android)';
+                currentGameName = 'Royal Revolt 2 (iOS)';
                 document.getElementById('user-av').textContent = 'RR';
                 document.getElementById('user-name').textContent = 'Royal Revolt 2 Team';
             } else if (ul === 'smurf') {
