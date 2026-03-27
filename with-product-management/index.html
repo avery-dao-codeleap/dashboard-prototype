@@ -693,12 +693,7 @@
 
     /* Game Admin role-gating */
     #app-shell[data-role="gameadmin"] .sa-only { display: none !important; }
-    #app-shell[data-role="gameadmin"] #game-sw-btn { display: none; }
     #app-shell[data-role="gameadmin"] .plat-input { background: var(--border-subtle); color: var(--text-secondary); pointer-events: none; cursor: default; }
-
-    /* Static game label (visible only for game admin) */
-    #game-label-static { display: none; font-size: 13px; font-weight: 600; color: var(--text-primary); }
-    #app-shell[data-role="gameadmin"] #game-label-static { display: flex; align-items: center; gap: 6px; }
   </style>
 </head>
 <body>
@@ -756,61 +751,11 @@
         </button>
         <div class="dropdown" id="game-dd">
           <div class="dd-header">Switch Project</div>
-          <div class="dd-item active" onclick="selectGame('Royal Revolt 2 (iOS)')">
-            <span class="g-dot"></span> Royal Revolt 2 (iOS)
-          </div>
-          <div class="dd-item" onclick="selectGame('Royal Revolt 2 (Android)')">
-            <span class="g-dot"></span> Royal Revolt 2 (Android)
-          </div>
-          <div class="dd-item" onclick="selectGame('Royal Revolt 2 (Webstore)')" style="color:var(--text-secondary);">
-            <span class="g-dot" style="opacity:0.5;"></span> Royal Revolt 2 (Webstore)
-          </div>
-          <div class="dd-divider"></div>
-          <div class="dd-item" onclick="selectGame('Smurf Village (iOS)')">
-            <span class="g-dot" style="background:#10b981"></span> Smurf Village (iOS)
-          </div>
-          <div class="dd-item" onclick="selectGame('Smurf Village (Android)')">
-            <span class="g-dot" style="background:#10b981"></span> Smurf Village (Android)
-          </div>
-          <div class="dd-item" onclick="selectGame('Smurf Village (Webstore)')" style="color:var(--text-secondary);">
-            <span class="g-dot" style="background:#10b981;opacity:0.5;"></span> Smurf Village (Webstore)
-          </div>
-          <div class="dd-divider"></div>
-          <div class="dd-item" onclick="selectGame('EMHQ (iOS)')">
-            <span class="g-dot" style="background:#f59e0b"></span> EMHQ (iOS)
-          </div>
-          <div class="dd-item" onclick="selectGame('EMHQ (Android)')">
-            <span class="g-dot" style="background:#f59e0b"></span> EMHQ (Android)
-          </div>
-          <div class="dd-item" onclick="selectGame('EMHQ (Webstore)')" style="color:var(--text-secondary);">
-            <span class="g-dot" style="background:#f59e0b;opacity:0.5;"></span> EMHQ (Webstore)
-          </div>
-          <div class="dd-divider"></div>
-          <div class="dd-item" onclick="selectGame('War of Nations (iOS)')">
-            <span class="g-dot" style="background:#e11d48"></span> War of Nations (iOS)
-          </div>
-          <div class="dd-item" onclick="selectGame('War of Nations (Android)')">
-            <span class="g-dot" style="background:#e11d48"></span> War of Nations (Android)
-          </div>
-          <div class="dd-item" onclick="selectGame('War of Nations (Webstore)')" style="color:var(--text-secondary);">
-            <span class="g-dot" style="background:#e11d48;opacity:0.5;"></span> War of Nations (Webstore)
-          </div>
-          <div class="dd-divider"></div>
-          <div class="dd-item" onclick="selectGame('Kitchen Scramble (iOS)')">
-            <span class="g-dot" style="background:#8b5cf6"></span> Kitchen Scramble (iOS)
-          </div>
-          <div class="dd-item" onclick="selectGame('Kitchen Scramble (Android)')">
-            <span class="g-dot" style="background:#8b5cf6"></span> Kitchen Scramble (Android)
-          </div>
-          <div class="dd-item" onclick="selectGame('Kitchen Scramble (Webstore)')" style="color:var(--text-secondary);">
-            <span class="g-dot" style="background:#8b5cf6;opacity:0.5;"></span> Kitchen Scramble (Webstore)
-          </div>
-          <div class="dd-divider"></div>
-          <div class="dd-item" style="color:var(--text-tertiary);font-size:12px;" onclick="closeGameDD()">All Games →</div>
+          <div id="game-dd-list"></div>
+          <div class="dd-divider sa-only"></div>
+          <div class="dd-item sa-only" style="color:var(--text-tertiary);font-size:12px;" onclick="closeGameDD()">All Games →</div>
         </div>
       </div>
-
-      <span id="game-label-static"></span>
 
       <!-- Environment toggle -->
       <div class="env-toggle">
@@ -2252,7 +2197,33 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <script>
   let currentRole = 'superadmin';
-  let currentGameName = 'Royal Revolt 2';
+  let currentGameName = 'Royal Revolt 2 (iOS)';
+
+  const GAMES = [
+    { name: 'Royal Revolt 2', color: '#4f46e5' },
+    { name: 'Smurf Village',  color: '#10b981' },
+    { name: 'EMHQ',           color: '#f59e0b' },
+    { name: 'War of Nations', color: '#e11d48' },
+    { name: 'Kitchen Scramble', color: '#8b5cf6' },
+  ];
+
+  function renderGameDD() {
+    const list = document.getElementById('game-dd-list');
+    if (!list) return;
+    const currentBase = currentGameName.replace(/ \(.*\)$/, '');
+    const visible = currentRole === 'gameadmin' ? GAMES.filter(g => g.name === currentBase) : GAMES;
+    list.innerHTML = visible.flatMap(g => {
+      const sdk = ['iOS', 'Android'].map(p => {
+        const label = `${g.name} (${p})`;
+        const active = label === currentGameName ? ' active' : '';
+        return `<div class="dd-item${active}" onclick="selectGame('${label}')"><span class="g-dot" style="background:${g.color}"></span> ${label}</div>`;
+      });
+      const wsLabel = `${g.name} (Webstore)`;
+      const wsActive = wsLabel === currentGameName ? ' active' : '';
+      const ws = `<div class="dd-item${wsActive}" onclick="selectGame('${wsLabel}')" style="color:var(--text-secondary);"><span class="g-dot" style="background:${g.color};opacity:0.5;"></span> ${wsLabel}</div>`;
+      return [...sdk, ws];
+    }).join('');
+  }
 
   // ── Auth ────────────────────────────────────────────────
   function doLogin() {
@@ -2269,27 +2240,27 @@
       currentRole = 'superadmin';
     } else if (ul === 'rr2' || ul === 'royalrevolt' || ul === 'rr2team') {
       currentRole = 'gameadmin';
-      currentGameName = 'Royal Revolt 2';
+      currentGameName = 'Royal Revolt 2 (iOS)';
       document.getElementById('user-av').textContent = 'RR';
       document.getElementById('user-name').textContent = 'Royal Revolt 2 Team';
     } else if (ul === 'smurf') {
       currentRole = 'gameadmin';
-      currentGameName = 'Smurf Village';
+      currentGameName = 'Smurf Village (iOS)';
       document.getElementById('user-av').textContent = 'SV';
       document.getElementById('user-name').textContent = 'Smurf Village Team';
     } else if (ul === 'emhq') {
       currentRole = 'gameadmin';
-      currentGameName = 'EMHQ';
+      currentGameName = 'EMHQ (iOS)';
       document.getElementById('user-av').textContent = 'EM';
       document.getElementById('user-name').textContent = 'EMHQ Team';
     } else if (ul === 'warofnations' || ul === 'wow') {
       currentRole = 'gameadmin';
-      currentGameName = 'War of Nations';
+      currentGameName = 'War of Nations (iOS)';
       document.getElementById('user-av').textContent = 'WN';
       document.getElementById('user-name').textContent = 'War of Nations Team';
     } else if (ul === 'kitchen') {
       currentRole = 'gameadmin';
-      currentGameName = 'Kitchen Scramble';
+      currentGameName = 'Kitchen Scramble (iOS)';
       document.getElementById('user-av').textContent = 'KS';
       document.getElementById('user-name').textContent = 'Kitchen Scramble Team';
     } else {
@@ -2302,12 +2273,8 @@
   function applyRoleUI() {
     const shell = document.getElementById('app-shell');
     shell.dataset.role = currentRole;
-    const staticLabel = document.getElementById('game-label-static');
-    if (currentRole === 'gameadmin') {
-      staticLabel.textContent = currentGameName;
-    } else {
-      staticLabel.textContent = '';
-    }
+    document.getElementById('game-label').textContent = currentGameName;
+    renderGameDD();
   }
 
 
@@ -2374,9 +2341,9 @@
   }
 
   function selectGame(name) {
+    currentGameName = name;
     document.getElementById('game-label').textContent = name;
-    document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active'));
-    event.target.classList.add('active');
+    renderGameDD();
     closeGameDD();
   }
 
@@ -2712,6 +2679,7 @@
 
   // Initialize on page load
   window.addEventListener('DOMContentLoaded', () => {
+    renderGameDD();
     renderTimeline('paid');
     cbRender();
     updateConfigProgress();
