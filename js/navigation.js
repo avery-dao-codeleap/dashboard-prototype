@@ -42,6 +42,12 @@
             var isWebstore = currentGameName.endsWith('(Webstore)');
             document.getElementById('nav-sdk-items').style.display = isWebstore ? 'none' : 'block';
             document.getElementById('nav-ws-items').style.display = isWebstore ? 'block' : 'none';
+            var gameBase = currentGameName.replace(/ \(.*\)$/, '');
+            var platform = (currentGameName.match(/\((.+)\)/) || [])[1] || '';
+            var gameLabel = document.getElementById('nav-label-game');
+            var projLabel = document.getElementById('nav-label-project');
+            if (gameLabel) gameLabel.textContent = gameBase;
+            if (projLabel) projLabel.textContent = platform;
         }
 
         document.addEventListener('click', function (e) {

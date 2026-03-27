@@ -113,12 +113,20 @@
             <!-- SIDEBAR -->
             <nav class="sidebar">
                 <div class="sb-section">
+                    <span class="sb-label" id="nav-label-game">Royal Revolt 2</span>
                     <button class="nav-item active" onclick="navigate('overview')" id="nav-overview">
                         <span class="nav-icon">▦</span> Overview
                     </button>
                     <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
                         <span class="nav-icon">↕</span> Orders
                     </button>
+                    <button class="nav-item" onclick="navigate('settings')" id="nav-settings">
+                        <span class="nav-icon">◈</span> Settings
+                    </button>
+                </div>
+                <div class="sb-divider"></div>
+                <div class="sb-section">
+                    <span class="sb-label" id="nav-label-project">iOS</span>
                     <button class="nav-item" onclick="navigate('config')" id="nav-config">
                         <span class="nav-icon">⚙</span> Config
                     </button>
@@ -137,12 +145,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="sb-divider"></div>
-                <div class="sb-section">
-                    <button class="nav-item" onclick="navigate('settings')" id="nav-settings">
-                        <span class="nav-icon">◈</span> Settings
-                    </button>
                 </div>
                 <div class="sb-divider sa-only"></div>
                 <div class="sb-section sa-only">
@@ -169,7 +171,7 @@
                     <!-- <div class="page-header">
                         <div>
                             <h1 class="page-title">Overview</h1>
-                            <p class="page-sub">Royal Revolt 2 · <span id="ov-env-label">Sandbox</span></p>
+                            <p class="page-sub">Royal Revolt 2 · All platforms · <span id="ov-env-label">Sandbox</span></p>
                         </div>
                         <div class="page-actions">
                             <select class="sel">
@@ -890,7 +892,7 @@
                     <div class="page-header">
                         <div>
                             <h1 class="page-title">Orders</h1>
-                            <p class="page-sub">Royal Revolt 2 · Sandbox</p>
+                            <p class="page-sub">Royal Revolt 2 · All platforms · Sandbox</p>
                         </div>
                         <div class="page-actions">
                             <button class="btn btn-secondary" onclick="openModal('csv-modal')">Export CSV</button>
