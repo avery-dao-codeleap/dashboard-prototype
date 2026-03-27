@@ -88,8 +88,6 @@
                     </div>
                 </div>
 
-                <span id="game-label-static"></span>
-
                 <!-- Environment toggle -->
                 <div class="env-toggle">
                     <button class="env-btn active" id="env-sandbox" onclick="setEnv('sandbox')">Sandbox</button>
@@ -130,11 +128,13 @@
                             <span class="nav-group-arrow">▶</span>
                         </button>
                         <div class="nav-group-body">
-                            <span class="nav-group-label">SDK</span>
-                            <button class="nav-sub-item" onclick="navigate('sdk-catalog')" id="nav-sdk-catalog">Catalog</button>
-                            <span class="nav-group-label" style="margin-top:4px;">Webstore</span>
-                            <button class="nav-sub-item" onclick="navigate('webstore-catalog')" id="nav-webstore-catalog">Catalog</button>
-                            <button class="nav-sub-item" onclick="navigate('webstore-rules')" id="nav-webstore-rules">Rules</button>
+                            <div id="nav-sdk-items">
+                                <button class="nav-sub-item" onclick="navigate('sdk-catalog')" id="nav-sdk-catalog">Catalog</button>
+                            </div>
+                            <div id="nav-ws-items" style="display:none;">
+                                <button class="nav-sub-item" onclick="navigate('webstore-catalog')" id="nav-webstore-catalog">Catalog</button>
+                                <button class="nav-sub-item" onclick="navigate('webstore-rules')" id="nav-webstore-rules">Rules</button>
+                            </div>
                         </div>
                     </div>
                 </div>

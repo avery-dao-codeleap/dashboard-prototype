@@ -34,7 +34,14 @@
             currentGameName = name;
             document.getElementById('game-label').textContent = name;
             renderGameDD();
+            updateProductsNav();
             closeGameDD();
+        }
+
+        function updateProductsNav() {
+            var isWebstore = currentGameName.endsWith('(Webstore)');
+            document.getElementById('nav-sdk-items').style.display = isWebstore ? 'none' : 'block';
+            document.getElementById('nav-ws-items').style.display = isWebstore ? 'block' : 'none';
         }
 
         document.addEventListener('click', function (e) {

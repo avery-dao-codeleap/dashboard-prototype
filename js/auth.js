@@ -47,13 +47,8 @@
             const shell = document.getElementById('app-shell');
             shell.dataset.role = currentRole;
             document.getElementById('game-label').textContent = currentGameName;
-            const staticLabel = document.getElementById('game-label-static');
-            if (currentRole === 'gameadmin') {
-                staticLabel.textContent = currentGameName;
-            } else {
-                staticLabel.textContent = '';
-            }
             renderGameDD();
+            updateProductsNav();
         }
 
 
