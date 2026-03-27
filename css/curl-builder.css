@@ -357,27 +357,9 @@
             display: none !important;
         }
 
-        #app-shell[data-role="gameadmin"] #game-sw-btn {
-            display: none;
-        }
-
         #app-shell[data-role="gameadmin"] .plat-input {
             background: var(--border-subtle);
             color: var(--text-secondary);
             pointer-events: none;
             cursor: default;
-        }
-
-        /* Static game label (visible only for game admin) */
-        #game-label-static {
-            display: none;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        #app-shell[data-role="gameadmin"] #game-label-static {
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
