@@ -12,7 +12,12 @@
         function renderGameDD() {
             const list = document.getElementById('game-dd-list');
             if (!list) return;
-            list.innerHTML = GAMES.flatMap(g => {
+            // Game admin: only show their own game's projects
+            const currentGameBase = currentGameName.replace(/ \(.*\)$/, '');
+            const visibleGames = currentRole === 'gameadmin'
+                ? GAMES.filter(g => g.name === currentGameBase)
+                : GAMES;
+            list.innerHTML = visibleGames.flatMap(g => {
                 const sdkEntries = ['iOS', 'Android'].map(p => {
                     const label = `${g.name} (${p})`;
                     const isActive = label === currentGameName ? ' active' : '';
