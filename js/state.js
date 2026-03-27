@@ -2,23 +2,29 @@
         let currentGameName = 'Royal Revolt 2 (iOS)';
 
         const GAMES = [
-            { name: 'Royal Revolt 2', color: '#4f46e5', platforms: ['iOS', 'Android'] },
-            { name: 'Smurf Village', color: '#10b981', platforms: ['iOS', 'Android'] },
-            { name: 'EMHQ', color: '#f59e0b', platforms: ['iOS', 'Android'] },
-            { name: 'War of Nations', color: '#e11d48', platforms: ['iOS', 'Android'] },
-            { name: 'Kitchen Scramble', color: '#8b5cf6', platforms: ['iOS', 'Android'] },
+            { name: 'Royal Revolt 2', color: '#4f46e5', platforms: ['iOS', 'Android', 'Webstore'] },
+            { name: 'Smurf Village', color: '#10b981', platforms: ['iOS', 'Android', 'Webstore'] },
+            { name: 'EMHQ', color: '#f59e0b', platforms: ['iOS', 'Android', 'Webstore'] },
+            { name: 'War of Nations', color: '#e11d48', platforms: ['iOS', 'Android', 'Webstore'] },
+            { name: 'Kitchen Scramble', color: '#8b5cf6', platforms: ['iOS', 'Android', 'Webstore'] },
         ];
 
         function renderGameDD() {
             const list = document.getElementById('game-dd-list');
             if (!list) return;
-            list.innerHTML = GAMES.flatMap(g =>
-                g.platforms.map(p => {
+            list.innerHTML = GAMES.flatMap(g => {
+                const sdkEntries = ['iOS', 'Android'].map(p => {
                     const label = `${g.name} (${p})`;
                     const isActive = label === currentGameName ? ' active' : '';
                     return `<div class="dd-item${isActive}" onclick="selectGame('${label}')">
                         <span class="g-dot" style="background:${g.color}"></span> ${label}
                     </div>`;
-                })
-            ).join('');
+                });
+                const wsLabel = `${g.name} (Webstore)`;
+                const wsActive = wsLabel === currentGameName ? ' active' : '';
+                const wsEntry = `<div class="dd-item${wsActive}" onclick="selectGame('${wsLabel}')" style="color:var(--text-secondary);">
+                    <span class="g-dot" style="background:${g.color};opacity:0.5;"></span> ${wsLabel}
+                </div>`;
+                return [...sdkEntries, wsEntry];
+            }).join('');
         }
