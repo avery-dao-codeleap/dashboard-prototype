@@ -1423,62 +1423,39 @@
                             <div><div style="font-weight:600;color:var(--text-primary);font-size:13px;">Xsolla</div><div style="font-size:11px;color:var(--text-tertiary);">Last synced today · 09:14 UTC</div></div>
                         </div>
                     </div>
-                    <div class="table-wrap">
+                    <!-- Platform tabs -->
+                    <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+                        <div id="sdk-tab-ios" onclick="switchSdkPlatformTab('ios')" style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">📱 iOS</div>
+                        <div id="sdk-tab-android" onclick="switchSdkPlatformTab('android')" style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">🤖 Android</div>
+                    </div>
+                    <!-- iOS table -->
+                    <div id="sdk-plat-ios" class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
                         <table>
-                            <thead><tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Status</th><th>Xsolla Sync</th><th></th></tr></thead>
+                            <thead><tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr></thead>
                             <tbody>
-                                <tr onclick="openSdkProductDrawer('gold_100')">
-                                    <td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td>
-                                    <td><span class="tag">Consumable</span></td><td class="mono">$0.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-                                </tr>
-                                <tr onclick="openSdkProductDrawer('gold_500')">
-                                    <td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td>
-                                    <td><span class="tag">Consumable</span></td><td class="mono">$4.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-pending-text">⟳ Pending</span></td><td class="arrow-icon">→</td>
-                                </tr>
-                                <tr onclick="openSdkProductDrawer('gold_2000')">
-                                    <td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td>
-                                    <td><span class="tag">Consumable</span></td><td class="mono">$19.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-                                </tr>
-                                <tr onclick="openSdkProductDrawer('starter_bundle')">
-                                    <td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td>
-                                    <td><span class="tag">Consumable</span></td><td class="mono">$9.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-                                </tr>
-                                <tr onclick="openSdkProductDrawer('royal_shield_7d')">
-                                    <td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td>
-                                    <td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td>
-                                    <td><span class="tag">iOS</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-error-text">✕ Error</span></td><td class="arrow-icon">→</td>
-                                </tr>
-                                <tr onclick="openSdkProductDrawer('season_pass_2025')">
-                                    <td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td>
-                                    <td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td>
-                                    <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                                    <td><span class="badge badge-active">Active</span></td>
-                                    <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-                                </tr>
+                                <tr onclick="openSdkProductDrawer('gold_100')"><td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$0.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('gold_500')"><td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$4.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('gold_2000')"><td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$19.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('starter_bundle')"><td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$9.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('royal_shield_7d')"><td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
                             </tbody>
                         </table>
-                        <div class="pag">
-                            <span class="pag-meta">Showing 1–6 of 6 products</span>
-                            <div class="pag-controls">
-                                <button class="pag-btn" disabled>← Prev</button>
-                                <span class="pag-info">Page 1 of 1</span>
-                                <button class="pag-btn" disabled>Next →</button>
-                            </div>
-                        </div>
+                        <div class="pag"><span class="pag-meta">Showing 1–6 of 6 products</span><div class="pag-controls"><button class="pag-btn" disabled>← Prev</button><span class="pag-info">Page 1 of 1</span><button class="pag-btn" disabled>Next →</button></div></div>
+                    </div>
+                    <!-- Android table -->
+                    <div id="sdk-plat-android" class="table-wrap" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
+                        <table>
+                            <thead><tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr></thead>
+                            <tbody>
+                                <tr onclick="openSdkProductDrawer('gold_100')"><td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$0.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('gold_500')"><td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$4.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('gold_2000')"><td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$19.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('starter_bundle')"><td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$9.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                                <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="pag"><span class="pag-meta">Showing 1–5 of 5 products</span><div class="pag-controls"><button class="pag-btn" disabled>← Prev</button><span class="pag-info">Page 1 of 1</span><button class="pag-btn" disabled>Next →</button></div></div>
                     </div>
                 </div>
 
@@ -1599,36 +1576,73 @@
                     </div>
 
                     <div id="tab-settings-xsolla">
-                        <div class="plat-card">
-                            <div class="plat-body">
-                                <div class="cf">
-                                    <div class="cf-label">Login Project ID</div>
-                                    <input class="cf-input plat-input" type="text" value="login-royalrevolt2-sb">
-                                </div>
-                                <div class="cf">
-                                    <div class="cf-label">Merchant ID</div>
-                                    <input class="cf-input plat-input" type="text" value="merchant_rr2_123">
-                                </div>
-                                <div class="cf">
-                                    <div class="cf-label">Xsolla Project ID</div>
-                                    <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-sb">
-                                </div>
-                                <div class="cf sa-only">
-                                    <div class="cf-label">API Key</div>
-                                    <div class="cf-wrap">
-                                        <input class="cf-input masked pr" type="password" id="xsolla-api-key" value="sk_live_abcdef123456">
-                                        <button class="cf-action" onclick="toggleField('xsolla-api-key',this)">Show</button>
+                        <div class="plat-grid">
+                            <!-- iOS -->
+                            <div class="plat-card">
+                                <div class="plat-head"><span>📱</span> iOS</div>
+                                <div class="plat-body">
+                                    <div class="cf">
+                                        <div class="cf-label">Login Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="login-royalrevolt2-ios-sb">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Merchant ID</div>
+                                        <input class="cf-input plat-input" type="text" value="merchant_rr2_ios_123">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Xsolla Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-ios-sb">
+                                    </div>
+                                    <div class="cf sa-only">
+                                        <div class="cf-label">API Key</div>
+                                        <div class="cf-wrap">
+                                            <input class="cf-input masked pr" type="password" id="xsolla-ios-key" value="sk_live_abcdef123456">
+                                            <button class="cf-action" onclick="toggleField('xsolla-ios-key',this)">Show</button>
+                                        </div>
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Webhook URL (read-only)</div>
+                                        <div class="cf-wrap">
+                                            <input class="cf-input ro" type="text" value="https://rook.io/wh/ios/rr2-sb" readonly>
+                                            <button class="cf-copy" onclick="copyText('https://rook.io/wh/ios/rr2-sb',this)" title="Copy">⎘</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="cf">
-                                    <div class="cf-label">Webhook URL (read-only)</div>
-                                    <div class="cf-wrap">
-                                        <input class="cf-input ro" type="text" value="https://rook.io/wh/rr2-sb" readonly>
-                                        <button class="cf-copy" onclick="copyText('https://rook.io/wh/rr2-sb',this)" title="Copy">⎘</button>
-                                    </div>
-                                </div>
+                                <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
                             </div>
-                            <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+                            <!-- Android -->
+                            <div class="plat-card">
+                                <div class="plat-head"><span>🤖</span> Android</div>
+                                <div class="plat-body">
+                                    <div class="cf">
+                                        <div class="cf-label">Login Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="login-royalrevolt2-and-sb">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Merchant ID</div>
+                                        <input class="cf-input plat-input" type="text" value="merchant_rr2_and_456">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Xsolla Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-and-sb">
+                                    </div>
+                                    <div class="cf sa-only">
+                                        <div class="cf-label">API Key</div>
+                                        <div class="cf-wrap">
+                                            <input class="cf-input masked pr" type="password" id="xsolla-and-key" value="sk_live_xyz789456">
+                                            <button class="cf-action" onclick="toggleField('xsolla-and-key',this)">Show</button>
+                                        </div>
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Webhook URL (read-only)</div>
+                                        <div class="cf-wrap">
+                                            <input class="cf-input ro" type="text" value="https://rook.io/wh/and/rr2-sb" readonly>
+                                            <button class="cf-copy" onclick="copyText('https://rook.io/wh/and/rr2-sb',this)" title="Copy">⎘</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
+                            </div>
                         </div>
                     </div>
 
@@ -2331,6 +2345,21 @@
             toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.15);';
             document.body.appendChild(toast);
             setTimeout(function() { toast.remove(); }, 3000);
+        }
+
+        // ── SDK CATALOG PLATFORM TABS ─────────────────────────────
+        function switchSdkPlatformTab(platform) {
+            var isIos = platform === 'ios';
+            document.getElementById('sdk-plat-ios').style.display = isIos ? 'block' : 'none';
+            document.getElementById('sdk-plat-android').style.display = isIos ? 'none' : 'block';
+            var iosTab = document.getElementById('sdk-tab-ios');
+            var andTab = document.getElementById('sdk-tab-android');
+            iosTab.style.color = isIos ? 'var(--accent)' : 'var(--text-tertiary)';
+            iosTab.style.borderBottom = isIos ? '2px solid var(--accent)' : 'none';
+            iosTab.style.fontWeight = isIos ? '600' : 'normal';
+            andTab.style.color = isIos ? 'var(--text-tertiary)' : 'var(--accent)';
+            andTab.style.borderBottom = isIos ? 'none' : '2px solid var(--accent)';
+            andTab.style.fontWeight = isIos ? 'normal' : '600';
         }
 
         // ── SETTINGS PAGE TABS ────────────────────────────────────

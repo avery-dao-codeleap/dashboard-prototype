@@ -1623,76 +1623,43 @@
           </div>
         </div>
 
-        <!-- Product table -->
-        <div class="table-wrap">
-          <div class="table-head" style="flex-wrap:wrap;gap:10px;">
-            <span class="table-head-title">SDK Catalog</span>
-            <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
-              <select class="sel"><option>All platforms</option><option>iOS</option><option>Android</option></select>
-              <select class="sel"><option>All statuses</option><option>Active</option><option>Inactive</option></select>
-              <div class="search-wrap">
-                <span class="search-ico">🔍</span>
-                <input class="search-in" type="text" placeholder="Search SKU or name…">
-              </div>
-            </div>
-          </div>
+        <!-- Platform tabs -->
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:0;">
+          <div id="sdk-tab-ios" onclick="switchSdkPlatformTab('ios')" style="padding:8px 16px 10px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer;">📱 iOS</div>
+          <div id="sdk-tab-android" onclick="switchSdkPlatformTab('android')" style="padding:8px 16px 10px;font-size:13px;color:var(--text-tertiary);cursor:pointer;">🤖 Android</div>
+        </div>
+
+        <!-- iOS table -->
+        <div id="sdk-plat-ios" class="table-wrap" style="border-top:none;border-radius:0 0 var(--r) var(--r);">
           <table>
             <thead>
-              <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Platforms</th><th>Status</th><th>Xsolla Sync</th><th></th></tr>
+              <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
             </thead>
             <tbody>
-              <tr onclick="openSdkProductDrawer('gold_100')">
-                <td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td>
-                <td><span class="tag">Consumable</span></td><td class="mono">$0.99</td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-              </tr>
-              <tr onclick="openSdkProductDrawer('gold_500')">
-                <td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td>
-                <td><span class="tag">Consumable</span></td><td class="mono">$4.99</td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-pending-text">⟳ Pending</span></td><td class="arrow-icon">→</td>
-              </tr>
-              <tr onclick="openSdkProductDrawer('gold_2000')">
-                <td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td>
-                <td><span class="tag">Consumable</span></td><td class="mono">$19.99</td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-              </tr>
-              <tr onclick="openSdkProductDrawer('starter_bundle')">
-                <td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td>
-                <td><span class="tag">Consumable</span></td><td class="mono">$9.99</td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-              </tr>
-              <tr onclick="openSdkProductDrawer('royal_shield_7d')">
-                <td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td>
-                <td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td>
-                <td><span class="tag">iOS</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-error-text">✕ Error</span></td><td class="arrow-icon">→</td>
-              </tr>
-              <tr onclick="openSdkProductDrawer('season_pass_2025')">
-                <td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td>
-                <td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td>
-                <td><span class="tag">iOS</span> <span class="tag">Android</span></td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><span class="sync-ok-text">✓ Synced</span></td><td class="arrow-icon">→</td>
-              </tr>
+              <tr onclick="openSdkProductDrawer('gold_100')"><td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$0.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('gold_500')"><td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$4.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('gold_2000')"><td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$19.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('starter_bundle')"><td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$9.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('royal_shield_7d')"><td class="mono">royal_shield_7d</td><td><strong>Royal Shield (7d)</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$2.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
             </tbody>
           </table>
-          <div class="pag">
-            <span class="pag-meta">Showing 1–6 of 6 products</span>
-            <div class="pag-controls">
-              <button class="pag-btn" disabled>← Prev</button>
-              <span class="pag-info">Page 1 of 1</span>
-              <button class="pag-btn" disabled>Next →</button>
-            </div>
-          </div>
+        </div>
+
+        <!-- Android table -->
+        <div id="sdk-plat-android" class="table-wrap" style="display:none;border-top:none;border-radius:0 0 var(--r) var(--r);">
+          <table>
+            <thead>
+              <tr><th>SKU</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr onclick="openSdkProductDrawer('gold_100')"><td class="mono">gold_100</td><td><strong>Gold Pack 100</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$0.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('gold_500')"><td class="mono">gold_500</td><td><strong>Gold Pack 500</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$4.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('gold_2000')"><td class="mono">gold_2000</td><td><strong>Gold Pack 2000</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$19.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('starter_bundle')"><td class="mono">starter_bundle</td><td><strong>Starter Bundle</strong></td><td><span class="tag">Consumable</span></td><td class="mono">$9.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+              <tr onclick="openSdkProductDrawer('season_pass_2025')"><td class="mono">season_pass_2025</td><td><strong>Season Pass 2025</strong></td><td><span class="tag">Non-consumable</span></td><td class="mono">$24.99</td><td><span class="badge badge-active">Active</span></td><td class="arrow-icon">→</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -3032,6 +2999,20 @@
   }
 
   // ── SDK provider tabs (Settings page) ────────────────────
+  function switchSdkPlatformTab(platform) {
+    var isIos = platform === 'ios';
+    document.getElementById('sdk-plat-ios').style.display = isIos ? 'block' : 'none';
+    document.getElementById('sdk-plat-android').style.display = isIos ? 'none' : 'block';
+    var iosTab = document.getElementById('sdk-tab-ios');
+    var andTab = document.getElementById('sdk-tab-android');
+    iosTab.style.color = isIos ? 'var(--accent)' : 'var(--text-tertiary)';
+    iosTab.style.borderBottom = isIos ? '2px solid var(--accent)' : 'none';
+    iosTab.style.fontWeight = isIos ? '600' : 'normal';
+    andTab.style.color = isIos ? 'var(--text-tertiary)' : 'var(--accent)';
+    andTab.style.borderBottom = isIos ? 'none' : '2px solid var(--accent)';
+    andTab.style.fontWeight = isIos ? 'normal' : '600';
+  }
+
   function switchSdkProviderTab(btn, tab) {
     document.querySelectorAll('#sdk-provider-tabs .tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
