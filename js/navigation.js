@@ -33,8 +33,25 @@
         function selectGame(name) {
             currentGameName = name;
             document.getElementById('game-label').textContent = name;
+            var projSection = document.getElementById('sb-section-project');
+            if (projSection) projSection.style.display = '';
+            var divider = projSection && projSection.previousElementSibling;
+            if (divider && divider.classList.contains('sb-divider')) divider.style.display = '';
             renderGameDD();
             updateProductsNav();
+            closeGameDD();
+        }
+
+        function selectAllGames() {
+            currentGameName = 'All Games';
+            document.getElementById('game-label').textContent = 'All Games';
+            var gameLabel = document.getElementById('nav-label-game');
+            if (gameLabel) gameLabel.textContent = 'All Games';
+            var projSection = document.getElementById('sb-section-project');
+            if (projSection) projSection.style.display = 'none';
+            var divider = projSection && projSection.previousElementSibling;
+            if (divider && divider.classList.contains('sb-divider')) divider.style.display = 'none';
+            renderGameDD();
             closeGameDD();
         }
 

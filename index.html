@@ -83,7 +83,7 @@
                         <div class="dd-header">Switch Project</div>
                         <div id="game-dd-list"></div>
                         <div class="dd-divider sa-only"></div>
-                        <div class="dd-item sa-only" style="color:var(--text-tertiary);font-size:12px;" onclick="closeGameDD()">
+                        <div class="dd-item sa-only" style="color:var(--text-tertiary);font-size:12px;" onclick="selectAllGames()">
                             All Games →</div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                     </button>
                 </div>
                 <div class="sb-divider"></div>
-                <div class="sb-section">
+                <div class="sb-section" id="sb-section-project">
                     <span class="sb-label" id="nav-label-project">iOS</span>
                     <button class="nav-item" onclick="navigate('config')" id="nav-config">
                         <span class="nav-icon">⚙</span> Config
