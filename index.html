@@ -1637,70 +1637,46 @@
                     </div>
 
                     <div style="margin-top:40px;">
-                        <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Webstore Payment Providers</div>
-                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Configure payment gateways for your B2C webstore. These are separate from SDK in-app purchase providers.</div>
+                        <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Webstore Providers</div>
+                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">API credentials used by the Rook platform for webstore payment processing and catalog sync.</div>
 
                         <div class="tabs" id="ws-provider-tabs">
-                            <button class="tab active" onclick="switchWsProviderTab(this,'stripe')">Stripe</button>
-                            <button class="tab" onclick="switchWsProviderTab(this,'paypal')">PayPal</button>
-                            <button class="tab add-tab">+ Add Provider</button>
+                            <button class="tab active" onclick="switchWsProviderTab(this,'xsolla')">Xsolla</button>
+                            <button class="tab add-tab sa-only">+ Add Provider</button>
                         </div>
 
-                        <div id="tab-ws-stripe">
+                        <div id="tab-ws-xsolla">
                             <div class="plat-card">
-                                <div class="plat-head" style="justify-content:space-between;">
-                                    <span>💳 Stripe</span>
-                                    <div style="display:flex;align-items:center;gap:8px;">
-                                        <span style="font-size:12px;color:var(--text-tertiary);">Mode</span>
-                                        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;">
-                                            <button id="stripe-test-btn" onclick="setStripeMode('test')" style="padding:4px 10px;background:var(--accent);color:white;border:none;cursor:pointer;font-size:12px;font-family:var(--font);font-weight:600;">Test</button>
-                                            <button id="stripe-live-btn" onclick="setStripeMode('live')" style="padding:4px 10px;background:transparent;color:var(--text-secondary);border:none;cursor:pointer;font-size:12px;font-family:var(--font);">Live</button>
-                                        </div>
-                                        <span class="badge badge-active">Connected</span>
-                                    </div>
-                                </div>
+                                <div class="plat-head">🛒 Xsolla</div>
                                 <div class="plat-body">
                                     <div class="cf">
-                                        <div class="cf-label">Publishable Key</div>
-                                        <div class="cf-wrap">
-                                            <input class="cf-input plat-input" type="text" id="stripe-pub-key" value="pk_test_51NxYz2abc123def456">
-                                            <button class="cf-copy" onclick="copyText(document.getElementById('stripe-pub-key').value,this)" title="Copy">⎘</button>
-                                        </div>
+                                        <div class="cf-label">Login Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="login-royalrevolt2-ws-sb">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Merchant ID</div>
+                                        <input class="cf-input plat-input" type="text" value="merchant_rr2_ws_789">
+                                    </div>
+                                    <div class="cf">
+                                        <div class="cf-label">Xsolla Project ID</div>
+                                        <input class="cf-input plat-input" type="text" value="xsolla-royalrevolt2-ws-sb">
                                     </div>
                                     <div class="cf sa-only">
-                                        <div class="cf-label">Secret Key</div>
+                                        <div class="cf-label">API Key</div>
                                         <div class="cf-wrap">
-                                            <input class="cf-input masked pr" type="password" id="stripe-secret-key" value="sk_test_51NxYz2secretkey789">
-                                            <button class="cf-action" onclick="toggleField('stripe-secret-key',this)">Show</button>
-                                        </div>
-                                        <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Never expose this in client-side code.</div>
-                                    </div>
-                                    <div class="cf sa-only">
-                                        <div class="cf-label">Webhook Secret</div>
-                                        <div class="cf-wrap">
-                                            <input class="cf-input masked pr" type="password" id="stripe-webhook-secret" value="whsec_testabcdef1234567890">
-                                            <button class="cf-action" onclick="toggleField('stripe-webhook-secret',this)">Show</button>
+                                            <input class="cf-input masked pr" type="password" id="xsolla-ws-key" value="sk_live_ws_abc123xyz789">
+                                            <button class="cf-action" onclick="toggleField('xsolla-ws-key',this)">Show</button>
                                         </div>
                                     </div>
                                     <div class="cf">
                                         <div class="cf-label">Webhook URL (read-only)</div>
                                         <div class="cf-wrap">
-                                            <input class="cf-input ro" type="text" value="https://rook.io/wh/ws/stripe/rr2" readonly>
-                                            <button class="cf-copy" onclick="copyText('https://rook.io/wh/ws/stripe/rr2',this)" title="Copy">⎘</button>
+                                            <input class="cf-input ro" type="text" value="https://rook.io/wh/ws/rr2-sb" readonly>
+                                            <button class="cf-copy" onclick="copyText('https://rook.io/wh/ws/rr2-sb',this)" title="Copy">⎘</button>
                                         </div>
-                                        <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Register this URL in your <a href="#" style="color:var(--accent);">Stripe Dashboard → Webhooks</a>.</div>
                                     </div>
                                 </div>
                                 <div class="plat-foot sa-only"><button class="btn btn-primary btn-sm">Save changes</button></div>
-                            </div>
-                        </div>
-
-                        <div id="tab-ws-paypal" style="display:none;">
-                            <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:48px;text-align:center;">
-                                <div style="font-size:24px;margin-bottom:12px;">🅿</div>
-                                <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">PayPal not configured</div>
-                                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Connect PayPal to offer it as a payment method on your webstore.</p>
-                                <button class="btn btn-primary">Set up PayPal</button>
                             </div>
                         </div>
                     </div>
@@ -2353,8 +2329,7 @@
         function switchWsProviderTab(btn, tab) {
             document.querySelectorAll('#ws-provider-tabs .tab').forEach(function(t) { t.classList.remove('active'); });
             btn.classList.add('active');
-            document.getElementById('tab-ws-stripe').style.display = tab === 'stripe' ? 'block' : 'none';
-            document.getElementById('tab-ws-paypal').style.display = tab === 'paypal' ? 'block' : 'none';
+            document.getElementById('tab-ws-xsolla').style.display = tab === 'xsolla' ? 'block' : 'none';
         }
         function setStripeMode(mode) {
             var testBtn = document.getElementById('stripe-test-btn');
