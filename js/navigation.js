@@ -62,14 +62,24 @@
 
         function updateProductsNav() {
             var isWebstore = currentGameName.endsWith('(Webstore)');
+            var platform = (currentGameName.match(/\((.+)\)/) || [])[1] || '';
+            var isIos = platform === 'iOS';
+            var isAndroid = platform === 'Android';
+
             document.getElementById('nav-sdk-items').style.display = isWebstore ? 'none' : 'block';
             document.getElementById('nav-ws-items').style.display = isWebstore ? 'block' : 'none';
+
             var sdkSettings = document.getElementById('settings-sdk-section');
             var wsSettings = document.getElementById('settings-ws-section');
             if (sdkSettings) sdkSettings.style.display = isWebstore ? 'none' : 'block';
             if (wsSettings) wsSettings.style.display = isWebstore ? 'block' : 'none';
+
+            var iosCard = document.getElementById('settings-ios-card');
+            var andCard = document.getElementById('settings-android-card');
+            if (iosCard) iosCard.style.display = isIos ? 'block' : 'none';
+            if (andCard) andCard.style.display = isAndroid ? 'block' : 'none';
+
             var gameBase = currentGameName.replace(/ \(.*\)$/, '');
-            var platform = (currentGameName.match(/\((.+)\)/) || [])[1] || '';
             var gameLabel = document.getElementById('nav-label-game');
             var projLabel = document.getElementById('nav-label-project');
             if (gameLabel) gameLabel.textContent = gameBase;
