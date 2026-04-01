@@ -1,4 +1,6 @@
         // ── Navigation ──────────────────────────────────────────
+        var currentPage = 'overview';
+
         function navigate(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item, .nav-sub-item').forEach(n => n.classList.remove('active'));
@@ -14,6 +16,7 @@
                 document.getElementById('nav-group-products').classList.add('open');
             }
 
+            currentPage = page;
             closeGameDD();
         }
 
@@ -39,6 +42,8 @@
             if (divider && divider.classList.contains('sb-divider')) divider.style.display = '';
             renderGameDD();
             updateProductsNav();
+            var projectPages = ['config', 'sdk-catalog', 'webstore-catalog', 'webstore-rules'];
+            if (projectPages.includes(currentPage)) navigate('overview');
             closeGameDD();
         }
 
