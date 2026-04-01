@@ -64,6 +64,10 @@
             var isWebstore = currentGameName.endsWith('(Webstore)');
             document.getElementById('nav-sdk-items').style.display = isWebstore ? 'none' : 'block';
             document.getElementById('nav-ws-items').style.display = isWebstore ? 'block' : 'none';
+            var sdkSettings = document.getElementById('settings-sdk-section');
+            var wsSettings = document.getElementById('settings-ws-section');
+            if (sdkSettings) sdkSettings.style.display = isWebstore ? 'none' : 'block';
+            if (wsSettings) wsSettings.style.display = isWebstore ? 'block' : 'none';
             var gameBase = currentGameName.replace(/ \(.*\)$/, '');
             var platform = (currentGameName.match(/\((.+)\)/) || [])[1] || '';
             var gameLabel = document.getElementById('nav-label-game');

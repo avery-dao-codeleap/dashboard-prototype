@@ -120,15 +120,15 @@
                     <button class="nav-item" onclick="navigate('transactions')" id="nav-transactions">
                         <span class="nav-icon">↕</span> Orders
                     </button>
-                    <button class="nav-item" onclick="navigate('settings')" id="nav-settings">
-                        <span class="nav-icon">◈</span> Settings
-                    </button>
                 </div>
                 <div class="sb-divider"></div>
                 <div class="sb-section" id="sb-section-project">
                     <span class="sb-label" id="nav-label-project">iOS</span>
                     <button class="nav-item" onclick="navigate('config')" id="nav-config">
                         <span class="nav-icon">⚙</span> Config
+                    </button>
+                    <button class="nav-item" onclick="navigate('settings')" id="nav-settings">
+                        <span class="nav-icon">◈</span> Settings
                     </button>
                     <div class="nav-group" id="nav-group-products">
                         <button class="nav-group-trigger" onclick="toggleProductsGroup()">
@@ -1547,6 +1547,7 @@
                         </div>
                     </div>
 
+                    <div id="settings-sdk-section">
                     <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">SDK Providers</div>
                     <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">API credentials used by the Rook SDK for in-app purchase processing and catalog/data sync.</div>
 
@@ -1636,8 +1637,11 @@
                         </div>
                     </div>
 
+                    </div><!-- /settings-sdk-section -->
+
+                    <div id="settings-ws-section" style="display:none;">
                     <!-- Webstore: Xsolla -->
-                    <div style="margin-top:40px;">
+                    <div style="margin-top:0;">
                         <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Webstore — Xsolla Integration</div>
                         <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">API credentials for webstore catalog sync and payment processing via Xsolla.</div>
 
@@ -1744,6 +1748,7 @@
                             </div>
                         </div>
                     </div>
+                    </div><!-- /settings-ws-section -->
                 </div>
 
 
