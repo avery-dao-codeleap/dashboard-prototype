@@ -1,5 +1,5 @@
 # Dashboard Prototype
-
+READ ME OUTDATED
 HTML prototypes for the Rook dashboard — the developer-facing portal for managing in-app purchases, transactions, users, and product catalog across iOS and Android.
 
 ## Structure
